@@ -13,11 +13,6 @@ import java.util.UUID;
 @NoArgsConstructor
 public class TutorEntity {
 
-    public TutorEntity(String name, String email, String password) {
-        this.name = name;
-        this.email = email;
-        this.password = password;
-    }
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
@@ -30,6 +25,12 @@ public class TutorEntity {
 
     @Column(nullable = false)
     private String password;
+
+    public TutorEntity(String name, String email, String password) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+    }
 
     public TutorEntity update(String name, String email, String password) {
         if (name != null)
