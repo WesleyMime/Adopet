@@ -1,8 +1,8 @@
 package com.adopet.tutor;
 
-import com.adopet.tutor.dto.PatchTutorForm;
-import com.adopet.tutor.dto.Tutor;
+import com.adopet.tutor.dto.TutorDTO;
 import com.adopet.tutor.dto.TutorForm;
+import com.adopet.tutor.dto.TutorPatchForm;
 import com.adopet.tutor.mapper.TutorEntityToTutorMapper;
 import com.adopet.tutor.mapper.TutorFormToTutorEntityMapper;
 import lombok.AllArgsConstructor;
@@ -22,23 +22,23 @@ public class TutorService {
 
     private final TutorFormToTutorEntityMapper formToTutorEntityMapper;
 
-    public List<Tutor> getAllTutores() {
+    public List<TutorDTO> getAllTutores() {
         List<TutorEntity> tutorEntityList = repository.findAll();
         return tutorEntityList.stream().map(entityToTutorMapper::map).toList();
     }
 
-    public Tutor getTutorById(UUID id) {
+    public TutorDTO getTutorById(UUID id) {
         Optional<TutorEntity> tutorEntityOptional = repository.findById(id);
         return tutorEntityOptional.map(entityToTutorMapper::map).orElse(null);
     }
 
-    public Tutor insertNewTutor(TutorForm tutorForm) {
+    public TutorDTO insertNewTutor(TutorForm tutorForm) {
         TutorEntity tutorEntity = formToTutorEntityMapper.map(tutorForm);
         TutorEntity saved = repository.save(tutorEntity);
         return entityToTutorMapper.map(saved);
     }
 
-    public Tutor updateTutor(UUID id, TutorForm tutorForm) {
+    public TutorDTO updateTutor(UUID id, TutorForm tutorForm) {
         Optional<TutorEntity> optionalTutorEntity = repository.findById(id);
         if (optionalTutorEntity.isEmpty())
             return null;
@@ -48,7 +48,7 @@ public class TutorService {
         return entityToTutorMapper.map(repository.save(updated));
     }
 
-    public Tutor patchTutor(UUID id, PatchTutorForm tutorForm) {
+    public TutorDTO patchTutor(UUID id, TutorPatchForm tutorForm) {
         Optional<TutorEntity> optionalTutorEntity = repository.findById(id);
         if (optionalTutorEntity.isEmpty())
             return null;
@@ -60,11 +60,12 @@ public class TutorService {
     }
 
 
-    public Optional<TutorEntity> deleteTutor(UUID id) {
+    public Optional<TutorDTO> deleteTutor(UUID id) {
         Optional<TutorEntity> optionalTutorEntity = repository.findById(id);
         if (optionalTutorEntity.isEmpty())
-            return optionalTutorEntity;
+            return Optional.empty();
         repository.deleteById(id);
-        return optionalTutorEntity;
+        TutorDTO tutor = entityToTutorMapper.map(optionalTutorEntity.get());
+        return Optional.of(tutor);
     }
 }

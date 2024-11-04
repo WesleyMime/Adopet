@@ -1,4 +1,4 @@
-package com.adopet.adopet;
+package com.adopet;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
