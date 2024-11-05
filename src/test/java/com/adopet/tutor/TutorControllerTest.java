@@ -245,6 +245,26 @@ class TutorControllerTest {
     }
 
     @Test
+    void patchTutor_ValidPass_Return200() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.patch(URL + "/" + tutor.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"password\":\"passwordPatch\"}"))
+                .andExpect(
+                        status()
+                                .isOk());
+    }
+
+    @Test
+    void patchTutor_InvalidPass_Return400() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.patch(URL + "/" + tutor.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"password\":\"pass\"}"))
+                .andExpect(
+                        status()
+                                .isBadRequest());
+    }
+
+    @Test
     void deleteTutor_ValidId_Return200() throws Exception {
         mvc.perform(MockMvcRequestBuilders.delete(URL + "/" + tutor.getId()))
                 .andExpect(
