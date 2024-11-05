@@ -119,6 +119,18 @@ class TutorControllerTest {
     }
 
     @Test
+    void postNewTutor_DuplicateEmail_Return401() throws Exception {
+        TutorForm form = new TutorForm("testName", "default@email.com", "testPass");
+
+        mvc.perform(post(URL)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(form.toString()))
+                .andExpect(
+                        status()
+                                .isConflict());
+    }
+
+    @Test
     void postNewTutor_InvalidPassword_Return400() throws Exception {
         mvc.perform(post(URL)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -159,6 +171,19 @@ class TutorControllerTest {
     }
 
     @Test
+    void updateTutor_DuplicateEmail_Return400() throws Exception {
+        repository.save(new TutorEntity("testPatchName", "testPut@email.com", "testPatchPass"));
+
+        TutorForm form = new TutorForm("testPutName", "testPut@email.com", "testPutPass");
+        mvc.perform(put(URL + "/" + tutor.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(form.toString()))
+                .andExpect(
+                        status()
+                                .isConflict());
+    }
+
+    @Test
     void updateTutor_InvalidPassword_Return400() throws Exception {
         TutorForm form = new TutorForm("testPutName", "testPut", "test");
 
@@ -193,6 +218,18 @@ class TutorControllerTest {
                 .andExpect(
                         status()
                                 .isBadRequest());
+    }
+
+    @Test
+    void patchTutor_DuplicateEmail_Return400() throws Exception {
+        repository.save(new TutorEntity("testPatchName", "testPatch@email.com", "testPatchPass"));
+
+        mvc.perform(MockMvcRequestBuilders.patch(URL + "/" + tutor.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"email\":\"testPatch@email.com\"}"))
+                .andExpect(
+                        status()
+                                .isConflict());
     }
 
     @Test
