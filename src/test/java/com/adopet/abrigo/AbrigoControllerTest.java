@@ -1,6 +1,7 @@
 package com.adopet.abrigo;
 
 import com.adopet.abrigo.dto.AbrigoForm;
+import com.adopet.abrigo.dto.AbrigoPatchForm;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,7 +12,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.UUID;
 
@@ -123,9 +123,11 @@ class AbrigoControllerTest {
 
     @Test
     void postNewAbrigo_InvalidForm_Return400() throws Exception {
+        AbrigoForm form = new AbrigoForm("testName", null, "TestLand");
+
         mvc.perform(post(URL)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"name\":\"testName\", \"location\":\"TestLand\"}"))
+                        .content(form.toString()))
                 .andExpect(
                         status()
                                 .isBadRequest())
@@ -175,9 +177,11 @@ class AbrigoControllerTest {
 
     @Test
     void patchAbrigo_ValidForm_Return200() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.patch(URL + "/" + abrigo.getId())
+        AbrigoPatchForm form = new AbrigoPatchForm("PatchName", null, null);
+
+        mvc.perform(patch(URL + "/" + abrigo.getId())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"name\":\"PatchName\"}"))
+                        .content(form.toString()))
                 .andExpect(
                         status()
                                 .isOk())
@@ -188,9 +192,9 @@ class AbrigoControllerTest {
 
     @Test
     void patchAbrigo_InvalidPhone_Return400() throws Exception {
-        AbrigoForm form = new AbrigoForm(null, "1234567", null);
+        AbrigoPatchForm form = new AbrigoPatchForm(null, "1234567", null);
 
-        mvc.perform(MockMvcRequestBuilders.patch(URL + "/" + abrigo.getId())
+        mvc.perform(patch(URL + "/" + abrigo.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(form.toString()))
                 .andExpect(
@@ -202,7 +206,7 @@ class AbrigoControllerTest {
     void patchAbrigo_InvalidName_Return400() throws Exception {
         AbrigoForm form = new AbrigoForm("t", null, null);
 
-        mvc.perform(MockMvcRequestBuilders.patch(URL + "/" + abrigo.getId())
+        mvc.perform(patch(URL + "/" + abrigo.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(form.toString()))
                 .andExpect(
@@ -212,21 +216,21 @@ class AbrigoControllerTest {
 
     @Test
     void deleteAbrigo_ValidId_Return200() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.delete(URL + "/" + abrigo.getId()))
+        mvc.perform(delete(URL + "/" + abrigo.getId()))
                 .andExpect(
                         status().isOk());
     }
 
     @Test
     void deleteAbrigo_WrongId_Return404() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.delete(URL + "/" + UUID.randomUUID()))
+        mvc.perform(delete(URL + "/" + UUID.randomUUID()))
                 .andExpect(
                         status().isNotFound());
     }
 
     @Test
     void deleteAbrigo_InvalidId_Return404() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.delete(URL + "/a"))
+        mvc.perform(delete(URL + "/a"))
                 .andExpect(
                         status().isBadRequest());
     }

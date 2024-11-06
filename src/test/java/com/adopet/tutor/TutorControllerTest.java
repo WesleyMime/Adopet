@@ -1,6 +1,7 @@
 package com.adopet.tutor;
 
 import com.adopet.tutor.dto.TutorForm;
+import com.adopet.tutor.dto.TutorPatchForm;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,7 +12,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import java.util.UUID;
 
@@ -132,9 +132,11 @@ class TutorControllerTest {
 
     @Test
     void postNewTutor_InvalidPassword_Return400() throws Exception {
+        TutorForm form = new TutorForm("testName", "test@email.com", null);
+
         mvc.perform(post(URL)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"name\":\"testName\", \"email\":\"test@email.com\"}"))
+                        .content(form.toString()))
                 .andExpect(
                         status()
                                 .isBadRequest())
@@ -197,9 +199,11 @@ class TutorControllerTest {
 
     @Test
     void patchTutor_ValidForm_Return200() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.patch(URL + "/" + tutor.getId())
+        TutorPatchForm form = new TutorPatchForm(null, "testPut@email.com", null);
+
+        mvc.perform(patch(URL + "/" + tutor.getId())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"email\":\"testPut@email.com\"}"))
+                        .content(form.toString()))
                 .andExpect(
                         status()
                                 .isOk())
@@ -210,9 +214,9 @@ class TutorControllerTest {
 
     @Test
     void patchTutor_InvalidEmail_Return400() throws Exception {
-        TutorForm form = new TutorForm("testPatchName", "testPatchEmail", null);
+        TutorPatchForm form = new TutorPatchForm("testPatchName", "testPatchEmail", null);
 
-        mvc.perform(MockMvcRequestBuilders.patch(URL + "/" + tutor.getId())
+        mvc.perform(patch(URL + "/" + tutor.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(form.toString()))
                 .andExpect(
@@ -224,9 +228,11 @@ class TutorControllerTest {
     void patchTutor_DuplicateEmail_Return400() throws Exception {
         repository.save(new TutorEntity("testPatchName", "testPatch@email.com", "testPatchPass"));
 
-        mvc.perform(MockMvcRequestBuilders.patch(URL + "/" + tutor.getId())
+        TutorPatchForm form = new TutorPatchForm(null, "testPatch@email.com", null);
+
+        mvc.perform(patch(URL + "/" + tutor.getId())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"email\":\"testPatch@email.com\"}"))
+                        .content(form.toString()))
                 .andExpect(
                         status()
                                 .isConflict());
@@ -234,9 +240,9 @@ class TutorControllerTest {
 
     @Test
     void patchTutor_InvalidName_Return400() throws Exception {
-        TutorForm form = new TutorForm("t", null, null);
+        TutorPatchForm form = new TutorPatchForm("p", null, null);
 
-        mvc.perform(MockMvcRequestBuilders.patch(URL + "/" + tutor.getId())
+        mvc.perform(patch(URL + "/" + tutor.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(form.toString()))
                 .andExpect(
@@ -246,9 +252,11 @@ class TutorControllerTest {
 
     @Test
     void patchTutor_ValidPass_Return200() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.patch(URL + "/" + tutor.getId())
+        TutorPatchForm form = new TutorPatchForm(null, null, "passwordPatch");
+
+        mvc.perform(patch(URL + "/" + tutor.getId())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"password\":\"passwordPatch\"}"))
+                        .content(form.toString()))
                 .andExpect(
                         status()
                                 .isOk());
@@ -256,9 +264,11 @@ class TutorControllerTest {
 
     @Test
     void patchTutor_InvalidPass_Return400() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.patch(URL + "/" + tutor.getId())
+        TutorPatchForm form = new TutorPatchForm(null, null, "pass");
+
+        mvc.perform(patch(URL + "/" + tutor.getId())
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content("{\"password\":\"pass\"}"))
+                        .content(form.toString()))
                 .andExpect(
                         status()
                                 .isBadRequest());
@@ -266,21 +276,21 @@ class TutorControllerTest {
 
     @Test
     void deleteTutor_ValidId_Return200() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.delete(URL + "/" + tutor.getId()))
+        mvc.perform(delete(URL + "/" + tutor.getId()))
                 .andExpect(
                         status().isOk());
     }
 
     @Test
     void deleteTutor_WrongId_Return404() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.delete(URL + "/" + UUID.randomUUID()))
+        mvc.perform(delete(URL + "/" + UUID.randomUUID()))
                 .andExpect(
                         status().isNotFound());
     }
 
     @Test
     void deleteTutor_InvalidId_Return404() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.delete(URL + "/a"))
+        mvc.perform(delete(URL + "/a"))
                 .andExpect(
                         status().isBadRequest());
     }
