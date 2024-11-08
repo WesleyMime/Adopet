@@ -2,10 +2,13 @@ package com.adopet;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -16,6 +19,8 @@ import java.util.List;
 
 @RestControllerAdvice
 public class GlobalControllerExceptionHandler {
+
+    Logger logger = LoggerFactory.getLogger(GlobalControllerExceptionHandler.class);
 
     // Unique index or primary key violation
     @ExceptionHandler(DataIntegrityViolationException.class)
@@ -46,11 +51,20 @@ public class GlobalControllerExceptionHandler {
         return ResponseEntity.status(problemDetail.getStatus()).body(problemDetail);
     }
 
+    // Post/Put/Patch without form
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ProblemDetail> httpMessageNotReadableExceptionHandler(HttpMessageNotReadableException e) {
+        ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
+        problemDetail.setDetail("Invalid request content.");
+        return ResponseEntity.status(problemDetail.getStatus()).body(problemDetail);
+    }
+
     // Handler catch all
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ProblemDetail> runtimeExceptionHandler(Exception e) {
+        logger.error(String.valueOf(e));
         ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.INTERNAL_SERVER_ERROR);
-        problemDetail.setDetail(e.getLocalizedMessage());
+        problemDetail.setDetail("Something went wrong.");
         return ResponseEntity.status(problemDetail.getStatus()).body(problemDetail);
     }
 

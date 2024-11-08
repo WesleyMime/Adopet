@@ -84,7 +84,6 @@ class TutorControllerTest {
         mvc.perform(get(URL + "/" + UUID.randomUUID()))
                 .andExpect(
                         status()
-                                .isNotFound());
                                 .isNotFound())
                 .andDo(print());
     }
@@ -101,6 +100,16 @@ class TutorControllerTest {
                         header().exists("Location"),
                         jsonPath("$.name", is("testName")),
                         jsonPath("$.email", is("test@email.com")))
+                .andDo(print());
+    }
+
+    @Test
+    void postNewTutor_NoForm_Return422() throws Exception {
+        mvc.perform(post(URL))
+                .andExpectAll(
+                        status().isBadRequest(),
+                        jsonPath("$.title",  is("Bad Request")),
+                        jsonPath("$.detail",  is("Invalid request content.")))
                 .andDo(print());
     }
 
@@ -122,6 +131,40 @@ class TutorControllerTest {
     }
 
     @Test
+    void postNewTutor_InvalidName_Return422() throws Exception {
+        TutorForm form = new TutorForm("t", "test@email.com", "testPass");
+
+        mvc.perform(post(URL)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(form.toString()))
+                .andExpectAll(
+                        status().isUnprocessableEntity(),
+                        header().doesNotExist("Location"),
+                        jsonPath("$.title",  is("Unprocessable Entity")),
+                        jsonPath("$.detail",  is("Invalid request content.")),
+                        jsonPath("$.errors[0].field",  is("name")),
+                        jsonPath("$.errors[0].detail",  is("size must be between 3 and 30")))
+                .andDo(print());
+    }
+
+    @Test
+    void postNewTutor_InvalidPassword_Return422() throws Exception {
+        TutorForm form = new TutorForm("testName", "test@email.com", "t");
+
+        mvc.perform(post(URL)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(form.toString()))
+                .andExpectAll(
+                        status().isUnprocessableEntity(),
+                        header().doesNotExist("Location"),
+                        jsonPath("$.title",  is("Unprocessable Entity")),
+                        jsonPath("$.detail",  is("Invalid request content.")),
+                        jsonPath("$.errors[0].field",  is("password")),
+                        jsonPath("$.errors[0].detail",  is("size must be between 8 and 200")))
+                .andDo(print());
+    }
+
+    @Test
     void postNewTutor_DuplicateEmail_Return422() throws Exception {
         TutorForm form = new TutorForm("testName", "default@email.com", "testPass");
 
@@ -136,7 +179,7 @@ class TutorControllerTest {
     }
 
     @Test
-    void postNewTutor_InvalidPassword_Return422() throws Exception {
+    void postNewTutor_InvalidForm_Return422() throws Exception {
         TutorForm form = new TutorForm("testName", "test@email.com", null);
 
         mvc.perform(post(URL)
@@ -169,6 +212,18 @@ class TutorControllerTest {
     }
 
     @Test
+    void updateTutor_WrongId_Return404() throws Exception {
+        TutorForm form = new TutorForm("testPutName", "testPut@email.com", "testPutPass");
+
+        mvc.perform(put(URL + "/" + UUID.randomUUID())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(form.toString()))
+                .andExpect(
+                        status().isNotFound())
+                .andDo(print());
+    }
+
+    @Test
     void updateTutor_InvalidEmail_Return422() throws Exception {
         TutorForm form = new TutorForm("testPutName", "testPut", "testPutPass");
 
@@ -186,7 +241,7 @@ class TutorControllerTest {
 
     @Test
     void updateTutor_DuplicateEmail_Return422() throws Exception {
-        repository.save(new TutorEntity("testPatchName", "testPut@email.com", "testPatchPass"));
+        repository.save(new TutorEntity("testPutName", "testPut@email.com", "testPutPass"));
 
         TutorForm form = new TutorForm("testPutName", "testPut@email.com", "testPutPass");
         mvc.perform(put(URL + "/" + tutor.getId())
@@ -196,6 +251,23 @@ class TutorControllerTest {
                         status().isUnprocessableEntity(),
                         jsonPath("$.title",  is("Email already registered.")),
                         jsonPath("$.detail",  is("You tried to use an email that already is in use.")))
+                .andDo(print());
+    }
+
+    @Test
+    void updateTutor_InvalidName_Return422() throws Exception {
+        TutorForm form = new TutorForm("t", "testPut@email.com", "testPutPass");
+
+        mvc.perform(put(URL + "/" + tutor.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(form.toString()))
+                .andExpectAll(
+                        status().isUnprocessableEntity(),
+                        header().doesNotExist("Location"),
+                        jsonPath("$.title",  is("Unprocessable Entity")),
+                        jsonPath("$.detail",  is("Invalid request content.")),
+                        jsonPath("$.errors[0].field",  is("name")),
+                        jsonPath("$.errors[0].detail",  is("size must be between 3 and 30")))
                 .andDo(print());
     }
 
@@ -228,6 +300,18 @@ class TutorControllerTest {
                         jsonPath("$.id", is(tutor.getId().toString())),
                         jsonPath("$.name", is("default")),
                         jsonPath("$.email", is("testPatch@email.com")))
+                .andDo(print());
+    }
+
+    @Test
+    void patchTutor_WrongId_Return404() throws Exception {
+        TutorPatchForm form = new TutorPatchForm(null, "testPatch@email.com", null);
+
+        mvc.perform(patch(URL + "/" + UUID.randomUUID())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(form.toString()))
+                .andExpect(
+                        status().isNotFound())
                 .andDo(print());
     }
 
@@ -280,8 +364,8 @@ class TutorControllerTest {
     }
 
     @Test
-    void patchTutor_ValidPassword_Return200() throws Exception {
-        TutorPatchForm form = new TutorPatchForm(null, null, "passwordPatch");
+    void patchTutor_ValidName_Return200() throws Exception {
+        TutorPatchForm form = new TutorPatchForm("testPatchName", null, null);
 
         mvc.perform(patch(URL + "/" + tutor.getId())
                         .contentType(MediaType.APPLICATION_JSON)
@@ -290,7 +374,7 @@ class TutorControllerTest {
                         status().is2xxSuccessful(),
                         content().contentType(MediaType.APPLICATION_JSON),
                         jsonPath("$.id", is(tutor.getId().toString())),
-                        jsonPath("$.name", is("default")),
+                        jsonPath("$.name", is("testPatchName")),
                         jsonPath("$.email", is("default@email.com")))
                 .andDo(print());
     }
