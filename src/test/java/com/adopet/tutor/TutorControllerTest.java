@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.UUID;
 
+import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -104,45 +105,51 @@ class TutorControllerTest {
     }
 
     @Test
-    void postNewTutor_InvalidEmail_Return400() throws Exception {
+    void postNewTutor_InvalidEmail_Return422() throws Exception {
         TutorForm form = new TutorForm("testName", "testemail", "testPass");
 
         mvc.perform(post(URL)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(form.toString()))
-                .andExpect(
-                        status()
-                                .isBadRequest())
-                .andExpect(
-                        header()
-                                .doesNotExist("Location"));
+                .andExpectAll(
+                        status().isUnprocessableEntity(),
+                        header().doesNotExist("Location"),
+                        jsonPath("$.title",  is("Unprocessable Entity")),
+                        jsonPath("$.detail",  is("Invalid request content.")),
+                        jsonPath("$.errors[0].field",  is("email")),
+                        jsonPath("$.errors[0].detail",  is("must be a well-formed email address")))
+                .andDo(print());
     }
 
     @Test
-    void postNewTutor_DuplicateEmail_Return401() throws Exception {
+    void postNewTutor_DuplicateEmail_Return422() throws Exception {
         TutorForm form = new TutorForm("testName", "default@email.com", "testPass");
 
         mvc.perform(post(URL)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(form.toString()))
-                .andExpect(
-                        status()
-                                .isConflict());
+                .andExpectAll(
+                        status().isUnprocessableEntity(),
+                        jsonPath("$.title",  is("Email already registered.")),
+                        jsonPath("$.detail",  is("You tried to use an email that already is in use.")))
+                .andDo(print());
     }
 
     @Test
-    void postNewTutor_InvalidPassword_Return400() throws Exception {
+    void postNewTutor_InvalidPassword_Return422() throws Exception {
         TutorForm form = new TutorForm("testName", "test@email.com", null);
 
         mvc.perform(post(URL)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(form.toString()))
-                .andExpect(
-                        status()
-                                .isBadRequest())
-                .andExpect(
-                        header()
-                                .doesNotExist("Location"));
+                .andExpectAll(
+                        status().isUnprocessableEntity(),
+                        header().doesNotExist("Location"),
+                        jsonPath("$.title",  is("Unprocessable Entity")),
+                        jsonPath("$.detail",  is("Invalid request content.")),
+                        jsonPath("$.errors[0].field",  is("password")),
+                        jsonPath("$.errors[0].detail",  is("must not be null")))
+                .andDo(print());
     }
 
     @Test
@@ -161,40 +168,50 @@ class TutorControllerTest {
     }
 
     @Test
-    void updateTutor_InvalidEmail_Return400() throws Exception {
+    void updateTutor_InvalidEmail_Return422() throws Exception {
         TutorForm form = new TutorForm("testPutName", "testPut", "testPutPass");
 
         mvc.perform(put(URL + "/" + tutor.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(form.toString()))
-                .andExpect(
-                        status()
-                                .isBadRequest());
+                .andExpectAll(
+                        status().isUnprocessableEntity(),
+                        jsonPath("$.title",  is("Unprocessable Entity")),
+                        jsonPath("$.detail",  is("Invalid request content.")),
+                        jsonPath("$.errors[0].field",  is("email")),
+                        jsonPath("$.errors[0].detail",  is("must be a well-formed email address")))
+                .andDo(print());
     }
 
     @Test
-    void updateTutor_DuplicateEmail_Return400() throws Exception {
+    void updateTutor_DuplicateEmail_Return422() throws Exception {
         repository.save(new TutorEntity("testPatchName", "testPut@email.com", "testPatchPass"));
 
         TutorForm form = new TutorForm("testPutName", "testPut@email.com", "testPutPass");
         mvc.perform(put(URL + "/" + tutor.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(form.toString()))
-                .andExpect(
-                        status()
-                                .isConflict());
+                .andExpectAll(
+                        status().isUnprocessableEntity(),
+                        jsonPath("$.title",  is("Email already registered.")),
+                        jsonPath("$.detail",  is("You tried to use an email that already is in use.")))
+                .andDo(print());
     }
 
     @Test
-    void updateTutor_InvalidPassword_Return400() throws Exception {
-        TutorForm form = new TutorForm("testPutName", "testPut", "test");
+    void updateTutor_InvalidPassword_Return422() throws Exception {
+        TutorForm form = new TutorForm("testPutName", "testPut@email.com", "test");
 
         mvc.perform(put(URL + "/" + tutor.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(form.toString()))
-                .andExpect(
-                        status()
-                                .isBadRequest());
+                .andExpectAll(
+                        status().isUnprocessableEntity(),
+                        jsonPath("$.title",  is("Unprocessable Entity")),
+                        jsonPath("$.detail",  is("Invalid request content.")),
+                        jsonPath("$.errors[0].field",  is("password")),
+                        jsonPath("$.errors[0].detail",  is("size must be between 8 and 200")))
+                .andDo(print());
     }
 
     @Test
@@ -213,19 +230,23 @@ class TutorControllerTest {
     }
 
     @Test
-    void patchTutor_InvalidEmail_Return400() throws Exception {
+    void patchTutor_InvalidEmail_Return422() throws Exception {
         TutorPatchForm form = new TutorPatchForm("testPatchName", "testPatchEmail", null);
 
         mvc.perform(patch(URL + "/" + tutor.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(form.toString()))
-                .andExpect(
-                        status()
-                                .isBadRequest());
+                .andExpectAll(
+                        status().isUnprocessableEntity(),
+                        jsonPath("$.title",  is("Unprocessable Entity")),
+                        jsonPath("$.detail",  is("Invalid request content.")),
+                        jsonPath("$.errors[0].field",  is("email")),
+                        jsonPath("$.errors[0].detail",  is("must be a well-formed email address")))
+                .andDo(print());
     }
 
     @Test
-    void patchTutor_DuplicateEmail_Return400() throws Exception {
+    void patchTutor_DuplicateEmail_Return422() throws Exception {
         repository.save(new TutorEntity("testPatchName", "testPatch@email.com", "testPatchPass"));
 
         TutorPatchForm form = new TutorPatchForm(null, "testPatch@email.com", null);
@@ -233,21 +254,27 @@ class TutorControllerTest {
         mvc.perform(patch(URL + "/" + tutor.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(form.toString()))
-                .andExpect(
-                        status()
-                                .isConflict());
+                .andExpectAll(
+                        status().isUnprocessableEntity(),
+                        jsonPath("$.title",  is("Email already registered.")),
+                        jsonPath("$.detail",  is("You tried to use an email that already is in use.")))
+                .andDo(print());
     }
 
     @Test
-    void patchTutor_InvalidName_Return400() throws Exception {
+    void patchTutor_InvalidName_Return422() throws Exception {
         TutorPatchForm form = new TutorPatchForm("p", null, null);
 
         mvc.perform(patch(URL + "/" + tutor.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(form.toString()))
-                .andExpect(
-                        status()
-                                .isBadRequest());
+                .andExpectAll(
+                        status().isUnprocessableEntity(),
+                        jsonPath("$.title",  is("Unprocessable Entity")),
+                        jsonPath("$.detail",  is("Invalid request content.")),
+                        jsonPath("$.errors[0].field",  is("name")),
+                        jsonPath("$.errors[0].detail",  is("size must be between 3 and 30")))
+                .andDo(print());
     }
 
     @Test
@@ -263,15 +290,19 @@ class TutorControllerTest {
     }
 
     @Test
-    void patchTutor_InvalidPass_Return400() throws Exception {
+    void patchTutor_InvalidPassword_Return422() throws Exception {
         TutorPatchForm form = new TutorPatchForm(null, null, "pass");
 
         mvc.perform(patch(URL + "/" + tutor.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(form.toString()))
-                .andExpect(
-                        status()
-                                .isBadRequest());
+                .andExpectAll(
+                        status().isUnprocessableEntity(),
+                        jsonPath("$.title",  is("Unprocessable Entity")),
+                        jsonPath("$.detail",  is("Invalid request content.")),
+                        jsonPath("$.errors[0].field",  is("password")),
+                        jsonPath("$.errors[0].detail",  is("size must be between 8 and 200")))
+                .andDo(print());
     }
 
     @Test
@@ -289,9 +320,12 @@ class TutorControllerTest {
     }
 
     @Test
-    void deleteTutor_InvalidId_Return404() throws Exception {
+    void deleteTutor_InvalidId_Return400() throws Exception {
         mvc.perform(delete(URL + "/a"))
-                .andExpect(
-                        status().isBadRequest());
+                .andExpectAll(
+                        status().isBadRequest(),
+                        jsonPath("$.title",  is("Bad Request")),
+                        jsonPath("$.detail",  is("Method parameter 'id' is invalid.")))
+                .andDo(print());
     }
 }

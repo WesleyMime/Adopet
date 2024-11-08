@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.UUID;
 
+import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -107,33 +108,36 @@ class AbrigoControllerTest {
     }
 
     @Test
-    void postNewAbrigo_InvalidPhone_Return400() throws Exception {
+    void postNewAbrigo_InvalidPhone_Return422() throws Exception {
         AbrigoForm form = new AbrigoForm("testName", "1234567", "TestLand");
 
         mvc.perform(post(URL)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(form.toString()))
-                .andExpect(
-                        status()
-                                .isBadRequest())
-                .andExpect(
-                        header()
-                                .doesNotExist("Location"));
+                .andExpectAll(
+                        status().isUnprocessableEntity(),
+                        jsonPath("$.title",  is("Unprocessable Entity")),
+                        jsonPath("$.detail",  is("Invalid request content.")),
+                        jsonPath("$.errors[0].field",  is("phone")),
+                        jsonPath("$.errors[0].detail",  is("size must be between 8 and 20")))
+                .andDo(print());
     }
 
     @Test
-    void postNewAbrigo_InvalidForm_Return400() throws Exception {
+    void postNewAbrigo_InvalidForm_Return422() throws Exception {
         AbrigoForm form = new AbrigoForm("testName", null, "TestLand");
 
         mvc.perform(post(URL)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(form.toString()))
-                .andExpect(
-                        status()
-                                .isBadRequest())
-                .andExpect(
-                        header()
-                                .doesNotExist("Location"));
+                .andExpectAll(
+                        status().isUnprocessableEntity(),
+                        header().doesNotExist("Location"),
+                        jsonPath("$.title",  is("Unprocessable Entity")),
+                        jsonPath("$.detail",  is("Invalid request content.")),
+                        jsonPath("$.errors[0].field",  is("phone")),
+                        jsonPath("$.errors[0].detail",  is("must not be null")))
+                .andDo(print());
     }
 
     @Test
@@ -152,27 +156,35 @@ class AbrigoControllerTest {
     }
 
     @Test
-    void updateAbrigo_InvalidPhone_Return400() throws Exception {
+    void updateAbrigo_InvalidPhone_Return422() throws Exception {
         AbrigoForm form = new AbrigoForm("testPutName", "1234567", "TestLand");
 
         mvc.perform(put(URL + "/" + abrigo.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(form.toString()))
-                .andExpect(
-                        status()
-                                .isBadRequest());
+                .andExpectAll(
+                        status().isUnprocessableEntity(),
+                        jsonPath("$.title",  is("Unprocessable Entity")),
+                        jsonPath("$.detail",  is("Invalid request content.")),
+                        jsonPath("$.errors[0].field",  is("phone")),
+                        jsonPath("$.errors[0].detail",  is("size must be between 8 and 20")))
+                .andDo(print());
     }
 
     @Test
-    void updateAbrigo_InvalidForm_Return400() throws Exception {
+    void updateAbrigo_InvalidForm_Return422() throws Exception {
         AbrigoForm form = new AbrigoForm("testPutName", "0123456789", "");
 
         mvc.perform(put(URL + "/" + abrigo.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(form.toString()))
-                .andExpect(
-                        status()
-                                .isBadRequest());
+                .andExpectAll(
+                        status().isUnprocessableEntity(),
+                        jsonPath("$.title",  is("Unprocessable Entity")),
+                        jsonPath("$.detail",  is("Invalid request content.")),
+                        jsonPath("$.errors[0].field",  is("location")),
+                        jsonPath("$.errors[0].detail",  is("size must be between 8 and 50")))
+                .andDo(print());
     }
 
     @Test
@@ -191,27 +203,51 @@ class AbrigoControllerTest {
     }
 
     @Test
-    void patchAbrigo_InvalidPhone_Return400() throws Exception {
+    void patchAbrigo_InvalidPhone_Return422() throws Exception {
         AbrigoPatchForm form = new AbrigoPatchForm(null, "1234567", null);
 
         mvc.perform(patch(URL + "/" + abrigo.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(form.toString()))
-                .andExpect(
-                        status()
-                                .isBadRequest());
+                .andExpectAll(
+                        status().isUnprocessableEntity(),
+                        jsonPath("$.title",  is("Unprocessable Entity")),
+                        jsonPath("$.detail",  is("Invalid request content.")),
+                        jsonPath("$.errors[0].field",  is("phone")),
+                        jsonPath("$.errors[0].detail",  is("size must be between 8 and 20")))
+                .andDo(print());
     }
 
     @Test
-    void patchAbrigo_InvalidName_Return400() throws Exception {
+    void patchAbrigo_InvalidLocation_Return422() throws Exception {
+        AbrigoPatchForm form = new AbrigoPatchForm(null, null, "local");
+
+        mvc.perform(patch(URL + "/" + abrigo.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(form.toString()))
+                .andExpectAll(
+                        status().isUnprocessableEntity(),
+                        jsonPath("$.title",  is("Unprocessable Entity")),
+                        jsonPath("$.detail",  is("Invalid request content.")),
+                        jsonPath("$.errors[0].field",  is("location")),
+                        jsonPath("$.errors[0].detail",  is("size must be between 8 and 50")))
+                .andDo(print());
+    }
+
+    @Test
+    void patchAbrigo_InvalidName_Return422() throws Exception {
         AbrigoForm form = new AbrigoForm("t", null, null);
 
         mvc.perform(patch(URL + "/" + abrigo.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(form.toString()))
-                .andExpect(
-                        status()
-                                .isBadRequest());
+                .andExpectAll(
+                        status().isUnprocessableEntity(),
+                        jsonPath("$.title",  is("Unprocessable Entity")),
+                        jsonPath("$.detail",  is("Invalid request content.")),
+                        jsonPath("$.errors[0].field",  is("name")),
+                        jsonPath("$.errors[0].detail",  is("size must be between 3 and 100")))
+                .andDo(print());
     }
 
     @Test
@@ -229,9 +265,12 @@ class AbrigoControllerTest {
     }
 
     @Test
-    void deleteAbrigo_InvalidId_Return404() throws Exception {
+    void deleteAbrigo_InvalidId_Return400() throws Exception {
         mvc.perform(delete(URL + "/a"))
-                .andExpect(
-                        status().isBadRequest());
+                .andExpectAll(
+                        status().isBadRequest(),
+                        jsonPath("$.title",  is("Bad Request")),
+                        jsonPath("$.detail",  is("Method parameter 'id' is invalid.")))
+                .andDo(print());
     }
 }
