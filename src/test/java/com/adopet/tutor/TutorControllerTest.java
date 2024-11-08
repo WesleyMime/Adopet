@@ -17,6 +17,7 @@ import java.util.UUID;
 
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -46,15 +47,13 @@ class TutorControllerTest {
     @Test
     void getAllTutors_Exists_Return200() throws Exception {
         mvc.perform(get(URL))
-                .andExpect(
-                        status()
-                                .is2xxSuccessful())
-                .andExpect(
-                        content()
-                                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(
-                        content()
-                                .json("[{id:" + tutor.getId() + ", name:default, email:default@email.com}]"));
+                .andExpectAll(
+                        status().is2xxSuccessful(),
+                        content().contentType(MediaType.APPLICATION_JSON),
+                        jsonPath("$[0].id", is(tutor.getId().toString())),
+                        jsonPath("$[0].name", is("default")),
+                        jsonPath("$[0].email", is("default@email.com")))
+                .andDo(print());
     }
 
     @Test
@@ -64,26 +63,30 @@ class TutorControllerTest {
         mvc.perform(get(URL))
                 .andExpect(
                         status()
-                                .isNotFound());
+                                .isNotFound())
+                .andDo(print());
     }
 
     @Test
     void getTutorById_ValidId_Return200() throws Exception {
         mvc.perform(get(URL + "/" + tutor.getId()))
-                .andExpect(
-                        status()
-                                .isOk())
-                .andExpect(
-                        content()
-                                .json("{id:" + tutor.getId() + ", name:default, email:default@email.com}"));
+                .andExpectAll(
+                        status().is2xxSuccessful(),
+                        content().contentType(MediaType.APPLICATION_JSON),
+                        jsonPath("$.id", is(tutor.getId().toString())),
+                        jsonPath("$.name", is("default")),
+                        jsonPath("$.email", is("default@email.com")))
+                .andDo(print());
     }
 
     @Test
-    void getTutorById_InvalidId_Return404() throws Exception {
+    void getTutorById_WrongId_Return404() throws Exception {
         mvc.perform(get(URL + "/" + UUID.randomUUID()))
                 .andExpect(
                         status()
                                 .isNotFound());
+                                .isNotFound())
+                .andDo(print());
     }
 
     @Test
@@ -93,15 +96,12 @@ class TutorControllerTest {
         mvc.perform(post(URL)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(form.toString()))
-                .andExpect(
-                        status()
-                                .isCreated())
-                .andExpect(
-                        header()
-                                .exists("Location"))
-                .andExpect(
-                        content()
-                                .json("{name:testName, email:test@email.com}"));
+                .andExpectAll(
+                        status().isCreated(),
+                        header().exists("Location"),
+                        jsonPath("$.name", is("testName")),
+                        jsonPath("$.email", is("test@email.com")))
+                .andDo(print());
     }
 
     @Test
@@ -159,12 +159,13 @@ class TutorControllerTest {
         mvc.perform(put(URL + "/" + tutor.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(form.toString()))
-                .andExpect(
-                        status()
-                                .isOk())
-                .andExpect(
-                        content()
-                                .json("{name:testPutName, email:testPut@email.com}"));
+                .andExpectAll(
+                        status().is2xxSuccessful(),
+                        content().contentType(MediaType.APPLICATION_JSON),
+                        jsonPath("$.id", is(tutor.getId().toString())),
+                        jsonPath("$.name", is("testPutName")),
+                        jsonPath("$.email", is("testPut@email.com")))
+                .andDo(print());
     }
 
     @Test
@@ -216,17 +217,18 @@ class TutorControllerTest {
 
     @Test
     void patchTutor_ValidForm_Return200() throws Exception {
-        TutorPatchForm form = new TutorPatchForm(null, "testPut@email.com", null);
+        TutorPatchForm form = new TutorPatchForm(null, "testPatch@email.com", null);
 
         mvc.perform(patch(URL + "/" + tutor.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(form.toString()))
-                .andExpect(
-                        status()
-                                .isOk())
-                .andExpect(
-                        content()
-                                .json("{name:default, email:testPut@email.com}"));
+                .andExpectAll(
+                        status().is2xxSuccessful(),
+                        content().contentType(MediaType.APPLICATION_JSON),
+                        jsonPath("$.id", is(tutor.getId().toString())),
+                        jsonPath("$.name", is("default")),
+                        jsonPath("$.email", is("testPatch@email.com")))
+                .andDo(print());
     }
 
     @Test
@@ -278,15 +280,19 @@ class TutorControllerTest {
     }
 
     @Test
-    void patchTutor_ValidPass_Return200() throws Exception {
+    void patchTutor_ValidPassword_Return200() throws Exception {
         TutorPatchForm form = new TutorPatchForm(null, null, "passwordPatch");
 
         mvc.perform(patch(URL + "/" + tutor.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(form.toString()))
-                .andExpect(
-                        status()
-                                .isOk());
+                .andExpectAll(
+                        status().is2xxSuccessful(),
+                        content().contentType(MediaType.APPLICATION_JSON),
+                        jsonPath("$.id", is(tutor.getId().toString())),
+                        jsonPath("$.name", is("default")),
+                        jsonPath("$.email", is("default@email.com")))
+                .andDo(print());
     }
 
     @Test
@@ -309,14 +315,16 @@ class TutorControllerTest {
     void deleteTutor_ValidId_Return200() throws Exception {
         mvc.perform(delete(URL + "/" + tutor.getId()))
                 .andExpect(
-                        status().isOk());
+                        status().isOk())
+                .andDo(print());
     }
 
     @Test
     void deleteTutor_WrongId_Return404() throws Exception {
         mvc.perform(delete(URL + "/" + UUID.randomUUID()))
                 .andExpect(
-                        status().isNotFound());
+                        status().isNotFound())
+                .andDo(print());
     }
 
     @Test

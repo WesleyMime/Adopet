@@ -17,6 +17,7 @@ import java.util.UUID;
 
 import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
@@ -47,16 +48,14 @@ class AbrigoControllerTest {
     @Test
     void getAllAbrigos_Exists_Return200() throws Exception {
         mvc.perform(get(URL))
-                .andExpect(
-                        status()
-                                .is2xxSuccessful())
-                .andExpect(
-                        content()
-                                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(
-                        content()
-                                .json("[{id:" + abrigo.getId() +
-                                        ", name:default, phone:\"5511955556666\", \"location\":\"São Paulo\"}]"));
+                .andExpectAll(
+                        status().is2xxSuccessful(),
+                        content().contentType(MediaType.APPLICATION_JSON),
+                        jsonPath("$[0].id", is(abrigo.getId().toString())),
+                        jsonPath("$[0].name", is("default")),
+                        jsonPath("$[0].phone", is("5511955556666")),
+                        jsonPath("$[0].location", is("São Paulo")))
+                .andDo(print());
     }
 
     @Test
@@ -66,19 +65,21 @@ class AbrigoControllerTest {
         mvc.perform(get(URL))
                 .andExpect(
                         status()
-                                .isNotFound());
+                                .isNotFound())
+                .andDo(print());
     }
 
     @Test
     void getAbrigoById_ValidId_Return200() throws Exception {
         mvc.perform(get(URL + "/" + abrigo.getId()))
-                .andExpect(
-                        status()
-                                .isOk())
-                .andExpect(
-                        content()
-                                .json("{id:" + abrigo.getId() +
-                                        ", name:default, phone:\"5511955556666\", \"location\":\"São Paulo\"}"));
+                .andExpectAll(
+                        status().is2xxSuccessful(),
+                        content().contentType(MediaType.APPLICATION_JSON),
+                        jsonPath("$.id", is(abrigo.getId().toString())),
+                        jsonPath("$.name", is("default")),
+                        jsonPath("$.phone", is("5511955556666")),
+                        jsonPath("$.location", is("São Paulo")))
+                .andDo(print());
     }
 
     @Test
@@ -86,7 +87,8 @@ class AbrigoControllerTest {
         mvc.perform(get(URL + "/" + UUID.randomUUID()))
                 .andExpect(
                         status()
-                                .isNotFound());
+                                .isNotFound())
+                .andDo(print());
     }
 
     @Test
@@ -96,15 +98,13 @@ class AbrigoControllerTest {
         mvc.perform(post(URL)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(form.toString()))
-                .andExpect(
-                        status()
-                                .isCreated())
-                .andExpect(
-                        header()
-                                .exists("Location"))
-                .andExpect(
-                        content()
-                                .json("{name:testName, phone:\"123456789\", \"location\":\"TestLand\"}"));
+                .andExpectAll(
+                        status().isCreated(),
+                        header().exists("Location"),
+                        jsonPath("$.name", is("testName")),
+                        jsonPath("$.phone", is("123456789")),
+                        jsonPath("$.location", is("TestLand")))
+                .andDo(print());
     }
 
     @Test
@@ -147,12 +147,13 @@ class AbrigoControllerTest {
         mvc.perform(put(URL + "/" + abrigo.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(form.toString()))
-                .andExpect(
-                        status()
-                                .isOk())
-                .andExpect(
-                        content()
-                                .json("{name:testPutName, phone:\"0123456789\"}"));
+                .andExpectAll(
+                        status().isOk(),
+                        jsonPath("$.id", is(abrigo.getId().toString())),
+                        jsonPath("$.name", is("testPutName")),
+                        jsonPath("$.phone", is("0123456789")),
+                        jsonPath("$.location", is("TestLand")))
+                .andDo(print());
     }
 
     @Test
@@ -194,12 +195,13 @@ class AbrigoControllerTest {
         mvc.perform(patch(URL + "/" + abrigo.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(form.toString()))
-                .andExpect(
-                        status()
-                                .isOk())
-                .andExpect(
-                        content()
-                                .json("{name:PatchName, phone:\"5511955556666\"}"));
+                .andExpectAll(
+                        status().isOk(),
+                        jsonPath("$.id", is(abrigo.getId().toString())),
+                        jsonPath("$.name", is("PatchName")),
+                        jsonPath("$.phone", is("5511955556666")),
+                        jsonPath("$.location", is("São Paulo")))
+                .andDo(print());
     }
 
     @Test
@@ -254,14 +256,16 @@ class AbrigoControllerTest {
     void deleteAbrigo_ValidId_Return200() throws Exception {
         mvc.perform(delete(URL + "/" + abrigo.getId()))
                 .andExpect(
-                        status().isOk());
+                        status().isOk())
+                .andDo(print());
     }
 
     @Test
     void deleteAbrigo_WrongId_Return404() throws Exception {
         mvc.perform(delete(URL + "/" + UUID.randomUUID()))
                 .andExpect(
-                        status().isNotFound());
+                        status().isNotFound())
+                .andDo(print());
     }
 
     @Test
