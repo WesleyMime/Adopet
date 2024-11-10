@@ -4,11 +4,13 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.UUID;
 
 @Entity(name = "Tutor")
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class TutorEntity {
@@ -30,15 +32,5 @@ public class TutorEntity {
         this.name = name;
         this.email = email;
         this.password = password;
-    }
-
-    public TutorEntity update(String name, String email, String password) {
-        if (name != null)
-            this.name = name;
-        if (email != null)
-            this.email = email;
-        if (password != null)
-            this.password = password;
-        return this;
     }
 }

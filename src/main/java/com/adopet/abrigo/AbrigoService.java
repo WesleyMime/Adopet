@@ -1,10 +1,9 @@
 package com.adopet.abrigo;
 
+import com.adopet.MapStructMapper;
 import com.adopet.abrigo.dto.AbrigoDTO;
 import com.adopet.abrigo.dto.AbrigoForm;
 import com.adopet.abrigo.dto.AbrigoPatchForm;
-import com.adopet.abrigo.mapper.AbrigoEntityToAbrigoMapper;
-import com.adopet.abrigo.mapper.AbrigoFormToAbrigoEntityMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,24 +17,22 @@ public class AbrigoService {
 
     private final AbrigoRepository repository;
 
-    private final AbrigoEntityToAbrigoMapper entityToAbrigoMapper;
-
-    private final AbrigoFormToAbrigoEntityMapper formToAbrigoEntityMapper;
+    private final MapStructMapper mapper;
 
     public List<AbrigoDTO> getAllTutores() {
         List<AbrigoEntity> abrigoEntityList = repository.findAll();
-        return abrigoEntityList.stream().map(entityToAbrigoMapper::map).toList();
+        return abrigoEntityList.stream().map(mapper::abrigoEntityToAbrigoDto).toList();
     }
 
     public AbrigoDTO getTutorById(UUID id) {
         Optional<AbrigoEntity> abrigoEntityOptional = repository.findById(id);
-        return abrigoEntityOptional.map(entityToAbrigoMapper::map).orElse(null);
+        return abrigoEntityOptional.map(mapper::abrigoEntityToAbrigoDto).orElse(null);
     }
 
     public AbrigoDTO insertNewTutor(AbrigoForm AbrigoForm) {
-        AbrigoEntity abrigoEntity = formToAbrigoEntityMapper.map(AbrigoForm);
+        AbrigoEntity abrigoEntity = mapper.abrigoFormToAbrigoEntity(AbrigoForm);
         AbrigoEntity saved = repository.save(abrigoEntity);
-        return entityToAbrigoMapper.map(saved);
+        return mapper.abrigoEntityToAbrigoDto(saved);
     }
 
     public AbrigoDTO updateTutor(UUID id, AbrigoForm AbrigoForm) {
@@ -44,8 +41,8 @@ public class AbrigoService {
             return null;
 
         AbrigoEntity old = optionalAbrigoEntity.get();
-        AbrigoEntity updated = old.update(AbrigoForm.name(), AbrigoForm.phone(), AbrigoForm.location());
-        return entityToAbrigoMapper.map(repository.save(updated));
+        AbrigoEntity updated = mapper.updateAbrigoEntityFromForm(AbrigoForm, old);
+        return mapper.abrigoEntityToAbrigoDto(repository.save(updated));
     }
 
     public AbrigoDTO patchTutor(UUID id, AbrigoPatchForm AbrigoForm) {
@@ -53,10 +50,9 @@ public class AbrigoService {
         if (optionalAbrigoEntity.isEmpty())
             return null;
 
-        AbrigoEntity abrigoEntity = optionalAbrigoEntity.get();
-        AbrigoEntity updated = abrigoEntity.update(AbrigoForm.name(), AbrigoForm.phone(), AbrigoForm.location());
-
-        return entityToAbrigoMapper.map(repository.save(updated));
+        AbrigoEntity old = optionalAbrigoEntity.get();
+        AbrigoEntity updated = mapper.updateAbrigoEntityFromPatchForm(AbrigoForm, old);
+        return mapper.abrigoEntityToAbrigoDto(repository.save(updated));
     }
 
     public Optional<AbrigoDTO> deleteTutor(UUID id) {
@@ -64,7 +60,7 @@ public class AbrigoService {
         if (optionalAbrigoEntity.isEmpty())
             return Optional.empty();
         repository.deleteById(id);
-        AbrigoDTO abrigo = entityToAbrigoMapper.map(optionalAbrigoEntity.get());
+        AbrigoDTO abrigo = mapper.abrigoEntityToAbrigoDto(optionalAbrigoEntity.get());
         return Optional.of(abrigo);
     }
 }

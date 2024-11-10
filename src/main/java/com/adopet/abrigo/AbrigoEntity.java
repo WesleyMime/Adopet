@@ -4,11 +4,13 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.UUID;
 
 @Entity(name = "Abrigo")
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class AbrigoEntity {
@@ -30,18 +32,5 @@ public class AbrigoEntity {
         this.name = name;
         this.phone = phone;
         this.location = location;
-    }
-
-    public AbrigoEntity update(String name, String phone, String location) {
-        if (name != null) {
-            this.name = name;
-        }
-        if (phone != null) {
-            this.phone = phone;
-        }
-        if (location != null) {
-            this.location = location;
-        }
-        return  this;
     }
 }

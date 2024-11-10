@@ -1,16 +1,16 @@
 package com.adopet.pet;
 
+import com.adopet.MapStructMapper;
 import com.adopet.abrigo.AbrigoEntity;
 import com.adopet.abrigo.AbrigoRepository;
 import com.adopet.pet.dto.PetDTO;
 import com.adopet.pet.dto.PetForm;
 import com.adopet.pet.dto.PetPatchForm;
-import com.adopet.pet.mapper.PetEntityToPetMapper;
-import com.adopet.pet.mapper.PetFormToPetEntityMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -22,25 +22,25 @@ public class PetService {
 
     private final AbrigoRepository abrigoRepository;
 
-
-    private final PetEntityToPetMapper entityToPetMapper;
-
-    private final PetFormToPetEntityMapper formToPetEntityMapper;
+    private final MapStructMapper mapper;
 
     public List<PetDTO> getAllPets() {
         List<PetEntity> petEntityList = repository.findAll();
-        return petEntityList.stream().map(entityToPetMapper::map).toList();
+        return petEntityList.stream().map(mapper::petEntityToPetDto).toList();
     }
 
     public PetDTO getPetById(UUID id) {
         Optional<PetEntity> PetEntityOptional = repository.findById(id);
-        return PetEntityOptional.map(entityToPetMapper::map).orElse(null);
+        return PetEntityOptional.map(mapper::petEntityToPetDto).orElse(null);
     }
 
     public PetDTO insertNewPet(PetForm petForm) {
-        PetEntity petEntity = formToPetEntityMapper.map(petForm);
-        PetEntity saved = repository.save(petEntity);
-        return entityToPetMapper.map(saved);
+        Optional<AbrigoEntity> optionalAbrigoEntity = abrigoRepository.findById(petForm.abrigo());
+        if (optionalAbrigoEntity.isEmpty())
+            throw new NoSuchElementException();
+
+        PetEntity petEntity = mapper.petFormToPetEntity(petForm, optionalAbrigoEntity.get());
+        return mapper.petEntityToPetDto(repository.save(petEntity));
     }
 
     public PetDTO updatePet(UUID id, PetForm petForm) {
@@ -54,8 +54,8 @@ public class PetService {
 
         PetEntity petEntity = optionalPetEntity.get();
         AbrigoEntity abrigoEntity = optionalAbrigoEntity.get();
-        PetEntity updated = petEntity.update(abrigoEntity, petForm.name(), petForm.description(), petForm.age(), petForm.address(), petForm.image());
-        return entityToPetMapper.map(repository.save(updated));
+        PetEntity updated = mapper.updatePetEntityFromForm(petForm, abrigoEntity,petEntity);
+        return mapper.petEntityToPetDto(repository.save(updated));
     }
 
     public PetDTO patchPet(UUID id, PetPatchForm petForm) {
@@ -71,9 +71,8 @@ public class PetService {
             abrigoEntity = optionalAbrigoEntity.get();
         }
         PetEntity petEntity = optionalPetEntity.get();
-        PetEntity updated = petEntity.update(abrigoEntity, petForm.name(), petForm.description(), petForm.age(), petForm.address(), petForm.image());
-
-        return entityToPetMapper.map(repository.save(updated));
+        PetEntity updated = mapper.updatePetEntityFromPatchForm(petForm, abrigoEntity, petEntity);
+        return mapper.petEntityToPetDto(repository.save(updated));
     }
 
     public Optional<PetDTO> deletePet(UUID id) {
@@ -81,7 +80,7 @@ public class PetService {
         if (optionalPetEntity.isEmpty())
             return Optional.empty();
         repository.deleteById(id);
-        PetDTO Pet = entityToPetMapper.map(optionalPetEntity.get());
+        PetDTO Pet = mapper.petEntityToPetDto(optionalPetEntity.get());
         return Optional.of(Pet);
     }
 }

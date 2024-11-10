@@ -5,11 +5,13 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.UUID;
 
 @Entity(name = "pet")
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class PetEntity {
@@ -26,7 +28,7 @@ public class PetEntity {
 
     private String description;
 
-    private Boolean adopted;
+    private Boolean adopted = false;
 
     @Column(nullable = false, length = 20)
     private String age;
@@ -44,28 +46,5 @@ public class PetEntity {
         this.age = age;
         this.address = address;
         this.image = image;
-    }
-
-    public PetEntity update(AbrigoEntity abrigo, String name, String description, String age,
-                            String address, String image) {
-        if (abrigo != null) {
-            this.abrigo = abrigo;
-        }
-        if (name != null) {
-            this.name = name;
-        }
-        if (description != null) {
-            this.description = description;
-        }
-        if (age != null) {
-            this.age = age;
-        }
-        if (address != null) {
-            this.address = address;
-        }
-        if (image != null) {
-            this.image = image;
-        }
-        return  this;
     }
 }
