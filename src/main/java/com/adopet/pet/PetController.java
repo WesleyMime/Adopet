@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -49,7 +48,7 @@ public class PetController implements CrudController<PetDTO, PetForm, PetPatchFo
     }
 
     public ResponseEntity<PetDTO> delete(UUID id) {
-        Optional<PetDTO> pet = service.deletePet(id);
-        return ResponseEntity.of(pet);
+        PetDTO pet = service.deletePet(id);
+        return ResponseEntity.ofNullable(pet);
     }
 }

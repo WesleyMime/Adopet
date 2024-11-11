@@ -75,12 +75,11 @@ public class PetService {
         return mapper.petEntityToPetDto(repository.save(updated));
     }
 
-    public Optional<PetDTO> deletePet(UUID id) {
+    public PetDTO deletePet(UUID id) {
         Optional<PetEntity> optionalPetEntity = repository.findById(id);
         if (optionalPetEntity.isEmpty())
-            return Optional.empty();
+            return null;
         repository.deleteById(id);
-        PetDTO Pet = mapper.petEntityToPetDto(optionalPetEntity.get());
-        return Optional.of(Pet);
+        return mapper.toPetDto(optionalPetEntity.get());
     }
 }

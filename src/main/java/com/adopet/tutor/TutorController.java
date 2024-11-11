@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -49,7 +48,7 @@ public class TutorController implements CrudController<TutorDTO, TutorForm, Tuto
     }
 
     public ResponseEntity<TutorDTO> delete(UUID id) {
-        Optional<TutorDTO> tutor = service.deleteTutor(id);
-        return ResponseEntity.of(tutor);
+        TutorDTO tutor = service.deleteTutor(id);
+        return ResponseEntity.ofNullable(tutor);
     }
 }

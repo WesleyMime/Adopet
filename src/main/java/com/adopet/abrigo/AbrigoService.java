@@ -55,12 +55,11 @@ public class AbrigoService {
         return mapper.abrigoEntityToAbrigoDto(repository.save(updated));
     }
 
-    public Optional<AbrigoDTO> deleteTutor(UUID id) {
+    public AbrigoDTO deleteTutor(UUID id) {
         Optional<AbrigoEntity> optionalAbrigoEntity = repository.findById(id);
         if (optionalAbrigoEntity.isEmpty())
-            return Optional.empty();
+            return null;
         repository.deleteById(id);
-        AbrigoDTO abrigo = mapper.abrigoEntityToAbrigoDto(optionalAbrigoEntity.get());
-        return Optional.of(abrigo);
+        return mapper.toAbrigoDto(optionalAbrigoEntity.get());
     }
 }

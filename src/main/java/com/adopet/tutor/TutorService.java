@@ -56,12 +56,11 @@ public class TutorService {
     }
 
 
-    public Optional<TutorDTO> deleteTutor(UUID id) {
+    public TutorDTO deleteTutor(UUID id) {
         Optional<TutorEntity> optionalTutorEntity = repository.findById(id);
         if (optionalTutorEntity.isEmpty())
-            return Optional.empty();
+            return null;
         repository.deleteById(id);
-        TutorDTO tutor = mapper.tutorEntityToTutorDto(optionalTutorEntity.get());
-        return Optional.of(tutor);
+        return mapper.toTutorDto(optionalTutorEntity.get());
     }
 }

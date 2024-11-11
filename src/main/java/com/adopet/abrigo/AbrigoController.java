@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -49,7 +48,7 @@ public class AbrigoController implements CrudController<AbrigoDTO, AbrigoForm, A
     }
 
     public ResponseEntity<AbrigoDTO> delete(UUID id) {
-        Optional<AbrigoDTO> abrigo = service.deleteTutor(id);
-        return ResponseEntity.of(abrigo);
+        AbrigoDTO abrigo = service.deleteTutor(id);
+        return ResponseEntity.ofNullable(abrigo);
     }
 }
