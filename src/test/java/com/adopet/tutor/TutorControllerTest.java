@@ -1,7 +1,6 @@
 package com.adopet.tutor;
 
 import com.adopet.tutor.dto.TutorForm;
-import com.adopet.tutor.dto.TutorPatchForm;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -289,7 +288,7 @@ class TutorControllerTest {
 
     @Test
     void patchTutor_ValidForm_Return200() throws Exception {
-        TutorPatchForm form = new TutorPatchForm(null, "testPatch@email.com", null);
+        TutorForm form = new TutorForm(null, "testPatch@email.com", null);
 
         mvc.perform(patch(URL + "/" + tutor.getId())
                         .contentType(MediaType.APPLICATION_JSON)
@@ -305,7 +304,7 @@ class TutorControllerTest {
 
     @Test
     void patchTutor_WrongId_Return404() throws Exception {
-        TutorPatchForm form = new TutorPatchForm(null, "testPatch@email.com", null);
+        TutorForm form = new TutorForm(null, "testPatch@email.com", null);
 
         mvc.perform(patch(URL + "/" + UUID.randomUUID())
                         .contentType(MediaType.APPLICATION_JSON)
@@ -317,7 +316,7 @@ class TutorControllerTest {
 
     @Test
     void patchTutor_InvalidEmail_Return422() throws Exception {
-        TutorPatchForm form = new TutorPatchForm("testPatchName", "testPatchEmail", null);
+        TutorForm form = new TutorForm("testPatchName", "testPatchEmail", null);
 
         mvc.perform(patch(URL + "/" + tutor.getId())
                         .contentType(MediaType.APPLICATION_JSON)
@@ -335,7 +334,7 @@ class TutorControllerTest {
     void patchTutor_DuplicateEmail_Return422() throws Exception {
         repository.save(new TutorEntity("testPatchName", "testPatch@email.com", "testPatchPass"));
 
-        TutorPatchForm form = new TutorPatchForm(null, "testPatch@email.com", null);
+        TutorForm form = new TutorForm(null, "testPatch@email.com", null);
 
         mvc.perform(patch(URL + "/" + tutor.getId())
                         .contentType(MediaType.APPLICATION_JSON)
@@ -349,7 +348,7 @@ class TutorControllerTest {
 
     @Test
     void patchTutor_InvalidName_Return422() throws Exception {
-        TutorPatchForm form = new TutorPatchForm("p", null, null);
+        TutorForm form = new TutorForm("p", null, null);
 
         mvc.perform(patch(URL + "/" + tutor.getId())
                         .contentType(MediaType.APPLICATION_JSON)
@@ -365,7 +364,7 @@ class TutorControllerTest {
 
     @Test
     void patchTutor_ValidName_Return200() throws Exception {
-        TutorPatchForm form = new TutorPatchForm("testPatchName", null, null);
+        TutorForm form = new TutorForm("testPatchName", null, null);
 
         mvc.perform(patch(URL + "/" + tutor.getId())
                         .contentType(MediaType.APPLICATION_JSON)
@@ -381,7 +380,7 @@ class TutorControllerTest {
 
     @Test
     void patchTutor_InvalidPassword_Return422() throws Exception {
-        TutorPatchForm form = new TutorPatchForm(null, null, "pass");
+        TutorForm form = new TutorForm(null, null, "pass");
 
         mvc.perform(patch(URL + "/" + tutor.getId())
                         .contentType(MediaType.APPLICATION_JSON)

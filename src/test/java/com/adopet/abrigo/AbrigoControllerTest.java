@@ -1,7 +1,6 @@
 package com.adopet.abrigo;
 
 import com.adopet.abrigo.dto.AbrigoForm;
-import com.adopet.abrigo.dto.AbrigoPatchForm;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -59,7 +58,7 @@ class AbrigoControllerTest {
     }
 
     @Test
-    void getAllAbrigos_Empty_Return200() throws Exception {
+    void getAllAbrigos_Empty_Return404() throws Exception {
         repository.deleteAll();
 
         mvc.perform(get(URL))
@@ -276,7 +275,7 @@ class AbrigoControllerTest {
 
     @Test
     void patchAbrigo_ValidForm_Return200() throws Exception {
-        AbrigoPatchForm form = new AbrigoPatchForm("PatchName", null, null);
+        AbrigoForm form = new AbrigoForm("PatchName", null, null);
 
         mvc.perform(patch(URL + "/" + abrigo.getId())
                         .contentType(MediaType.APPLICATION_JSON)
@@ -292,7 +291,7 @@ class AbrigoControllerTest {
 
     @Test
     void patchAbrigo_WrongId_Return404() throws Exception {
-        AbrigoPatchForm form = new AbrigoPatchForm("PatchName", null, null);
+        AbrigoForm form = new AbrigoForm("PatchName", null, null);
 
         mvc.perform(patch(URL + "/" + UUID.randomUUID())
                         .contentType(MediaType.APPLICATION_JSON)
@@ -304,7 +303,7 @@ class AbrigoControllerTest {
 
     @Test
     void patchAbrigo_InvalidPhone_Return422() throws Exception {
-        AbrigoPatchForm form = new AbrigoPatchForm(null, "1234567", null);
+        AbrigoForm form = new AbrigoForm(null, "1234567", null);
 
         mvc.perform(patch(URL + "/" + abrigo.getId())
                         .contentType(MediaType.APPLICATION_JSON)
@@ -320,7 +319,7 @@ class AbrigoControllerTest {
 
     @Test
     void patchAbrigo_InvalidLocation_Return422() throws Exception {
-        AbrigoPatchForm form = new AbrigoPatchForm(null, null, "local");
+        AbrigoForm form = new AbrigoForm(null, null, "local");
 
         mvc.perform(patch(URL + "/" + abrigo.getId())
                         .contentType(MediaType.APPLICATION_JSON)

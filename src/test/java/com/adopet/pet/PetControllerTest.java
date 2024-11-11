@@ -3,7 +3,6 @@ package com.adopet.pet;
 import com.adopet.abrigo.AbrigoEntity;
 import com.adopet.abrigo.AbrigoRepository;
 import com.adopet.pet.dto.PetForm;
-import com.adopet.pet.dto.PetPatchForm;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -318,7 +317,7 @@ class PetControllerTest {
 
     @Test
     void patchPet_ValidForm_Return200() throws Exception {
-        PetPatchForm form = new PetPatchForm(null, null, null, abrigo.getId(),
+        PetForm form = new PetForm(null, null, null, abrigo.getId(),
                 "Description 2", "https://cs50.ai/static/img/duck_7.jpg");
 
         mvc.perform(patch(URL + "/" + pet.getId())
@@ -337,7 +336,7 @@ class PetControllerTest {
 
     @Test
     void patchPet_WrongId_Return404() throws Exception {
-        PetPatchForm form = new PetPatchForm("DDB50", "2 Months", "New Address", abrigo.getId(),
+        PetForm form = new PetForm("DDB50", "2 Months", "New Address", abrigo.getId(),
                 "Description 2", "https://cs50.ai/static/img/duck_7.jpg");
 
         mvc.perform(patch(URL + "/" + UUID.randomUUID())
@@ -350,7 +349,7 @@ class PetControllerTest {
 
     @Test
     void patchPet_InvalidAbrigo_Return422() throws Exception {
-        PetPatchForm form = new PetPatchForm("DDB50", "2 Months", "New Address", UUID.randomUUID(),
+        PetForm form = new PetForm("DDB50", "2 Months", "New Address", UUID.randomUUID(),
                 "Description 2", "https://cs50.ai/static/img/duck_7.jpg");
 
         mvc.perform(patch(URL + "/" + pet.getId())
@@ -363,7 +362,7 @@ class PetControllerTest {
 
     @Test
     void patchPet_InvalidAge_Return422() throws Exception {
-        PetPatchForm form = new PetPatchForm("DDB50", "2", "New Address", abrigo.getId(),
+        PetForm form = new PetForm("DDB50", "2", "New Address", abrigo.getId(),
                 "Description 2", "https://cs50.ai/static/img/duck_7.jpg");
 
         mvc.perform(patch(URL + "/" + pet.getId())
@@ -397,7 +396,7 @@ class PetControllerTest {
 
     @Test
     void patchPet_InvalidName_Return422() throws Exception {
-        PetPatchForm form = new PetPatchForm("t", "2 Months", "New Address", abrigo.getId(),
+        PetForm form = new PetForm("t", "2 Months", "New Address", abrigo.getId(),
                 "Description 2", "https://cs50.ai/static/img/duck_7.jpg");
 
         mvc.perform(patch(URL + "/" + pet.getId())
