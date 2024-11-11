@@ -1,7 +1,7 @@
 package com.adopet.tutor;
 
 import com.adopet.CrudController;
-import com.adopet.tutor.dto.TutorDTO;
+import com.adopet.tutor.dto.TutorDto;
 import com.adopet.tutor.dto.TutorForm;
 import com.adopet.tutor.dto.TutorPatchForm;
 import lombok.AllArgsConstructor;
@@ -16,39 +16,39 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/tutores")
 @AllArgsConstructor
-public class TutorController implements CrudController<TutorDTO, TutorForm, TutorPatchForm> {
+public class TutorController implements CrudController<TutorDto, TutorForm, TutorPatchForm> {
 
     private final TutorService service;
 
-    public ResponseEntity<List<TutorDTO>> getAll() {
-        List<TutorDTO> all = service.getAllTutores();
+    public ResponseEntity<List<TutorDto>> getAll() {
+        List<TutorDto> all = service.getAllTutores();
         if (all.isEmpty())
             return ResponseEntity.notFound().build();
         return ResponseEntity.ok(all);
     }
 
-    public ResponseEntity<TutorDTO> getById(UUID id) {
-        TutorDTO tutorById = service.getTutorById(id);
+    public ResponseEntity<TutorDto> getById(UUID id) {
+        TutorDto tutorById = service.getTutorById(id);
         return ResponseEntity.ofNullable(tutorById);
     }
 
-    public ResponseEntity<TutorDTO> insertNew(TutorForm tutorForm) {
-        TutorDTO tutor = service.insertNewTutor(tutorForm);
+    public ResponseEntity<TutorDto> insertNew(TutorForm tutorForm) {
+        TutorDto tutor = service.insertNewTutor(tutorForm);
         return ResponseEntity.created(URI.create("/tutores/" + tutor.id().toString())).body(tutor);
     }
 
-    public ResponseEntity<TutorDTO> update(UUID id, TutorForm tutorForm) {
-        TutorDTO updatedTutor= service.updateTutor(id, tutorForm);
+    public ResponseEntity<TutorDto> update(UUID id, TutorForm tutorForm) {
+        TutorDto updatedTutor= service.updateTutor(id, tutorForm);
         return ResponseEntity.ofNullable(updatedTutor);
     }
 
-    public ResponseEntity<TutorDTO> patch(UUID id, TutorPatchForm tutorForm) {
-        TutorDTO patchedTutor= service.patchTutor(id, tutorForm);
+    public ResponseEntity<TutorDto> patch(UUID id, TutorPatchForm tutorForm) {
+        TutorDto patchedTutor= service.patchTutor(id, tutorForm);
         return ResponseEntity.ofNullable(patchedTutor);
     }
 
-    public ResponseEntity<TutorDTO> delete(UUID id) {
-        TutorDTO tutor = service.deleteTutor(id);
+    public ResponseEntity<TutorDto> delete(UUID id) {
+        TutorDto tutor = service.deleteTutor(id);
         return ResponseEntity.ofNullable(tutor);
     }
 }

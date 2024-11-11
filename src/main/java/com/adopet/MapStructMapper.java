@@ -1,15 +1,15 @@
 package com.adopet;
 
 import com.adopet.abrigo.AbrigoEntity;
-import com.adopet.abrigo.dto.AbrigoDTO;
+import com.adopet.abrigo.dto.AbrigoDto;
 import com.adopet.abrigo.dto.AbrigoForm;
 import com.adopet.abrigo.dto.AbrigoPatchForm;
 import com.adopet.pet.PetEntity;
-import com.adopet.pet.dto.PetDTO;
+import com.adopet.pet.dto.PetDto;
 import com.adopet.pet.dto.PetForm;
 import com.adopet.pet.dto.PetPatchForm;
 import com.adopet.tutor.TutorEntity;
-import com.adopet.tutor.dto.TutorDTO;
+import com.adopet.tutor.dto.TutorDto;
 import com.adopet.tutor.dto.TutorForm;
 import com.adopet.tutor.dto.TutorPatchForm;
 import org.mapstruct.Mapper;
@@ -23,9 +23,9 @@ import java.util.UUID;
 public interface MapStructMapper {
 
     // Tutor
-    TutorDTO tutorEntityToTutorDto(TutorEntity tutorEntity);
+    TutorDto toTutorDto(TutorEntity tutorEntity);
 
-    TutorEntity tutorFormToTutorEntity(TutorForm tutorForm);
+    TutorEntity toTutorEntity(TutorForm tutorForm);
 
     TutorEntity updateTutorEntityFromForm(
             TutorForm tutorForm, @MappingTarget TutorEntity tutorEntity);
@@ -34,9 +34,9 @@ public interface MapStructMapper {
             TutorPatchForm tutorPatchForm, @MappingTarget TutorEntity tutorEntity);
 
     // Abrigo
-    AbrigoDTO abrigoEntityToAbrigoDto(AbrigoEntity abrigoEntity);
+    AbrigoDto toAbrigoDto(AbrigoEntity abrigoEntity);
 
-    AbrigoEntity abrigoFormToAbrigoEntity(AbrigoForm abrigoForm);
+    AbrigoEntity toAbrigoEntity(AbrigoForm abrigoForm);
 
     AbrigoEntity updateAbrigoEntityFromForm(
             AbrigoForm abrigoForm, @MappingTarget AbrigoEntity abrigoEntity);
@@ -49,12 +49,12 @@ public interface MapStructMapper {
     }
 
     // Pet
-    PetDTO petEntityToPetDto(PetEntity petEntity);
+    PetDto toPetDto(PetEntity petEntity);
 
     @Mapping(target = "name", source = "petForm.name")
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "abrigo", source = "abrigoEntity")
-    PetEntity petFormToPetEntity(PetForm petForm, AbrigoEntity abrigoEntity);
+    PetEntity toPetEntity(PetForm petForm, AbrigoEntity abrigoEntity);
 
     @Mapping(target = "name", source = "petForm.name")
     @Mapping(target = "id", ignore = true)

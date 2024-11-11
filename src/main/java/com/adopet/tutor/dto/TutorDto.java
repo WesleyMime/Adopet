@@ -2,7 +2,7 @@ package com.adopet.tutor.dto;
 
 import java.util.UUID;
 
-public record TutorDTO(UUID id, String name, String email) {
+public record TutorDto(UUID id, String name, String email) {
 
     @Override
     public String toString() {

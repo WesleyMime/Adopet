@@ -1,7 +1,7 @@
 package com.adopet.tutor;
 
 import com.adopet.MapStructMapper;
-import com.adopet.tutor.dto.TutorDTO;
+import com.adopet.tutor.dto.TutorDto;
 import com.adopet.tutor.dto.TutorForm;
 import com.adopet.tutor.dto.TutorPatchForm;
 import lombok.AllArgsConstructor;
@@ -19,44 +19,44 @@ public class TutorService {
 
     private final MapStructMapper mapper;
 
-    public List<TutorDTO> getAllTutores() {
+    public List<TutorDto> getAllTutores() {
         List<TutorEntity> tutorEntityList = repository.findAll();
-        return tutorEntityList.stream().map(mapper::tutorEntityToTutorDto).toList();
+        return tutorEntityList.stream().map(mapper::toTutorDto).toList();
     }
 
-    public TutorDTO getTutorById(UUID id) {
+    public TutorDto getTutorById(UUID id) {
         Optional<TutorEntity> tutorEntityOptional = repository.findById(id);
-        return tutorEntityOptional.map(mapper::tutorEntityToTutorDto).orElse(null);
+        return tutorEntityOptional.map(mapper::toTutorDto).orElse(null);
     }
 
-    public TutorDTO insertNewTutor(TutorForm tutorForm) {
-        TutorEntity tutorEntity = mapper.tutorFormToTutorEntity(tutorForm);
+    public TutorDto insertNewTutor(TutorForm tutorForm) {
+        TutorEntity tutorEntity = mapper.toTutorEntity(tutorForm);
         TutorEntity saved = repository.save(tutorEntity);
-        return mapper.tutorEntityToTutorDto(saved);
+        return mapper.toTutorDto(saved);
     }
 
-    public TutorDTO updateTutor(UUID id, TutorForm tutorForm) {
+    public TutorDto updateTutor(UUID id, TutorForm tutorForm) {
         Optional<TutorEntity> optionalTutorEntity = repository.findById(id);
         if (optionalTutorEntity.isEmpty())
             return null;
 
         TutorEntity old = optionalTutorEntity.get();
         TutorEntity updated = mapper.updateTutorEntityFromForm(tutorForm, old);
-        return mapper.tutorEntityToTutorDto(repository.save(updated));
+        return mapper.toTutorDto(repository.save(updated));
     }
 
-    public TutorDTO patchTutor(UUID id, TutorPatchForm tutorForm) {
+    public TutorDto patchTutor(UUID id, TutorPatchForm tutorForm) {
         Optional<TutorEntity> optionalTutorEntity = repository.findById(id);
         if (optionalTutorEntity.isEmpty())
             return null;
 
         TutorEntity old = optionalTutorEntity.get();
         TutorEntity updated = mapper.updateTutorEntityFromPatchForm(tutorForm, old);
-        return mapper.tutorEntityToTutorDto(repository.save(updated));
+        return mapper.toTutorDto(repository.save(updated));
     }
 
 
-    public TutorDTO deleteTutor(UUID id) {
+    public TutorDto deleteTutor(UUID id) {
         Optional<TutorEntity> optionalTutorEntity = repository.findById(id);
         if (optionalTutorEntity.isEmpty())
             return null;
