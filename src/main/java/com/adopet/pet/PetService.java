@@ -3,6 +3,7 @@ package com.adopet.pet;
 import com.adopet.MapStructMapper;
 import com.adopet.abrigo.AbrigoEntity;
 import com.adopet.abrigo.AbrigoRepository;
+import com.adopet.exceptions.InvalidAbrigoException;
 import com.adopet.pet.dto.PetDto;
 import com.adopet.pet.dto.PetForm;
 import com.adopet.pet.dto.PetPatchForm;
@@ -10,7 +11,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -37,7 +37,7 @@ public class PetService {
     public PetDto insertNewPet(PetForm petForm) {
         Optional<AbrigoEntity> optionalAbrigoEntity = abrigoRepository.findById(petForm.abrigo());
         if (optionalAbrigoEntity.isEmpty())
-            throw new NoSuchElementException();
+            throw new InvalidAbrigoException();
 
         PetEntity petEntity = mapper.toPetEntity(petForm, optionalAbrigoEntity.get());
         return mapper.toPetDto(repository.save(petEntity));
@@ -50,7 +50,7 @@ public class PetService {
 
         Optional<AbrigoEntity> optionalAbrigoEntity = abrigoRepository.findById(petForm.abrigo());
         if (optionalAbrigoEntity.isEmpty())
-            return null;
+            throw new InvalidAbrigoException();
 
         PetEntity petEntity = optionalPetEntity.get();
         AbrigoEntity abrigoEntity = optionalAbrigoEntity.get();
@@ -67,7 +67,7 @@ public class PetService {
         if (petForm.abrigo() != null) {
             Optional<AbrigoEntity> optionalAbrigoEntity = abrigoRepository.findById(petForm.abrigo());
             if (optionalAbrigoEntity.isEmpty())
-                return null;
+                throw new InvalidAbrigoException();
             abrigoEntity = optionalAbrigoEntity.get();
         }
         PetEntity petEntity = optionalPetEntity.get();

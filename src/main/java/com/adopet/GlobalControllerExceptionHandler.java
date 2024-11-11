@@ -1,10 +1,11 @@
 package com.adopet;
 
+import com.adopet.exceptions.EmailAlreadyExistsException;
+import com.adopet.exceptions.InvalidAbrigoException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
@@ -22,13 +23,20 @@ public class GlobalControllerExceptionHandler {
 
     Logger logger = LoggerFactory.getLogger(GlobalControllerExceptionHandler.class);
 
-    // Unique index or primary key violation
-    @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<ProblemDetail> dataIntegrityViolationExceptionHandler(DataIntegrityViolationException e) {
-        ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.UNPROCESSABLE_ENTITY);
-        problemDetail.setTitle("Email already registered.");
-        problemDetail.setDetail("You tried to use an email that already is in use.");
-        return ResponseEntity.status(problemDetail.getStatus()).body(problemDetail);
+    // Invalid abrigo UUID
+    @ExceptionHandler(InvalidAbrigoException.class)
+    public ResponseEntity<ProblemDetail> runtimeExceptionHandler(InvalidAbrigoException e) {
+        e.setTitle("Abrigo not found");
+        e.setDetail("There is no abrigo with this id.");
+        return ResponseEntity.status(e.getStatusCode()).body(e.getBody());
+    }
+
+    // Email already registered
+    @ExceptionHandler(EmailAlreadyExistsException.class)
+    public ResponseEntity<ProblemDetail> runtimeExceptionHandler(EmailAlreadyExistsException e) {
+        e.setTitle("Email already registered");
+        e.setDetail("You tried to use an email that already is in use.");
+        return ResponseEntity.status(e.getStatusCode()).body(e.getBody());
     }
 
     // Parameter type different from expected. e.g. (String instead of UUID)

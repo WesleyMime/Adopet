@@ -134,6 +134,21 @@ class PetControllerTest {
     }
 
     @Test
+    void postNewPet_InvalidAbrigo_Return422() throws Exception {
+        PetForm form = new PetForm("DDB50", "2 Months", "New Address", UUID.randomUUID(),
+                "Description 2", "https://cs50.ai/static/img/duck_7.jpg");
+
+        mvc.perform(put(URL + "/" + pet.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(form.toString()))
+                .andExpectAll(
+                        status().isUnprocessableEntity(),
+                        jsonPath("$.title",  is("Abrigo not found")),
+                        jsonPath("$.detail",  is("There is no abrigo with this id.")))
+                .andDo(print());
+    }
+
+    @Test
     void postNewPet_InvalidAge_Return422() throws Exception {
         PetForm form = new PetForm("DDB50", "2", "New Address", abrigo.getId(),
                 "Description 2", "https://cs50.ai/static/img/duck_7.jpg");
@@ -242,8 +257,10 @@ class PetControllerTest {
         mvc.perform(put(URL + "/" + pet.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(form.toString()))
-                .andExpect(
-                        status().isNotFound())
+                .andExpectAll(
+                        status().isUnprocessableEntity(),
+                        jsonPath("$.title",  is("Abrigo not found")),
+                        jsonPath("$.detail",  is("There is no abrigo with this id.")))
                 .andDo(print());
     }
 
@@ -355,8 +372,10 @@ class PetControllerTest {
         mvc.perform(patch(URL + "/" + pet.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(form.toString()))
-                .andExpect(
-                        status().isNotFound())
+                .andExpectAll(
+                        status().isUnprocessableEntity(),
+                        jsonPath("$.title",  is("Abrigo not found")),
+                        jsonPath("$.detail",  is("There is no abrigo with this id.")))
                 .andDo(print());
     }
 

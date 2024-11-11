@@ -172,7 +172,7 @@ class TutorControllerTest {
                         .content(form.toString()))
                 .andExpectAll(
                         status().isUnprocessableEntity(),
-                        jsonPath("$.title",  is("Email already registered.")),
+                        jsonPath("$.title",  is("Email already registered")),
                         jsonPath("$.detail",  is("You tried to use an email that already is in use.")))
                 .andDo(print());
     }
@@ -248,7 +248,7 @@ class TutorControllerTest {
                         .content(form.toString()))
                 .andExpectAll(
                         status().isUnprocessableEntity(),
-                        jsonPath("$.title",  is("Email already registered.")),
+                        jsonPath("$.title",  is("Email already registered")),
                         jsonPath("$.detail",  is("You tried to use an email that already is in use.")))
                 .andDo(print());
     }
@@ -341,7 +341,7 @@ class TutorControllerTest {
                         .content(form.toString()))
                 .andExpectAll(
                         status().isUnprocessableEntity(),
-                        jsonPath("$.title",  is("Email already registered.")),
+                        jsonPath("$.title",  is("Email already registered")),
                         jsonPath("$.detail",  is("You tried to use an email that already is in use.")))
                 .andDo(print());
     }

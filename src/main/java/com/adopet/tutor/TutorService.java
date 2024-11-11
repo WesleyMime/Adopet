@@ -1,6 +1,7 @@
 package com.adopet.tutor;
 
 import com.adopet.MapStructMapper;
+import com.adopet.exceptions.EmailAlreadyExistsException;
 import com.adopet.tutor.dto.TutorDto;
 import com.adopet.tutor.dto.TutorForm;
 import com.adopet.tutor.dto.TutorPatchForm;
@@ -30,6 +31,7 @@ public class TutorService {
     }
 
     public TutorDto insertNewTutor(TutorForm tutorForm) {
+        checkEmail(tutorForm.email());
         TutorEntity tutorEntity = mapper.toTutorEntity(tutorForm);
         TutorEntity saved = repository.save(tutorEntity);
         return mapper.toTutorDto(saved);
@@ -40,6 +42,7 @@ public class TutorService {
         if (optionalTutorEntity.isEmpty())
             return null;
 
+        checkEmail(tutorForm.email());
         TutorEntity old = optionalTutorEntity.get();
         TutorEntity updated = mapper.updateTutorEntityFromForm(tutorForm, old);
         return mapper.toTutorDto(repository.save(updated));
@@ -50,6 +53,7 @@ public class TutorService {
         if (optionalTutorEntity.isEmpty())
             return null;
 
+        checkEmail(tutorForm.email());
         TutorEntity old = optionalTutorEntity.get();
         TutorEntity updated = mapper.updateTutorEntityFromPatchForm(tutorForm, old);
         return mapper.toTutorDto(repository.save(updated));
@@ -62,5 +66,9 @@ public class TutorService {
             return null;
         repository.deleteById(id);
         return mapper.toTutorDto(optionalTutorEntity.get());
+    }
+
+    private void checkEmail(String email) {
+        if (repository.existsByEmail(email)) throw new EmailAlreadyExistsException();
     }
 }
