@@ -26,6 +26,7 @@ public class PetEntity {
     @Column(nullable = false, length = 30)
     private String name;
 
+    @Column(nullable = false)
     private String description;
 
     private Boolean adopted = false;
@@ -36,6 +37,7 @@ public class PetEntity {
     @Column(nullable = false, length = 50)
     private String address;
 
+    @Column(nullable = false)
     private String image;
 
     public PetEntity(AbrigoEntity abrigo, String name, String description, String age, String address, String image) {

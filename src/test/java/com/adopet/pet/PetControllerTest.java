@@ -200,6 +200,40 @@ class PetControllerTest {
     }
 
     @Test
+    void postNewPet_InvalidDescription_Return422() throws Exception {
+        PetForm form = new PetForm("DDB50", "2 Months", "New Address", abrigo.getId(),
+                null, "https://cs50.ai/static/img/duck_7.jpg");
+
+        mvc.perform(post(URL)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(form.toString()))
+                .andExpectAll(
+                        status().isUnprocessableEntity(),
+                        jsonPath("$.title",  is("Unprocessable Entity")),
+                        jsonPath("$.detail",  is("Invalid request content.")),
+                        jsonPath("$.errors[0].field",  is("description")),
+                        jsonPath("$.errors[0].detail",  is("must not be null")))
+                .andDo(print());
+    }
+
+    @Test
+    void postNewPet_InvalidImage_Return422() throws Exception {
+        PetForm form = new PetForm("DDB50", "2 Months", "New Address", abrigo.getId(),
+                "Description 2", "duck.jpg");
+
+        mvc.perform(post(URL)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(form.toString()))
+                .andExpectAll(
+                        status().isUnprocessableEntity(),
+                        jsonPath("$.title",  is("Unprocessable Entity")),
+                        jsonPath("$.detail",  is("Invalid request content.")),
+                        jsonPath("$.errors[0].field",  is("image")),
+                        jsonPath("$.errors[0].detail",  is("must be a valid URL")))
+                .andDo(print());
+    }
+
+    @Test
     void postNewPet_InvalidForm_Return422() throws Exception {
         PetForm form = new PetForm("DDB50", "2 Months", "New Address", null,
                 "Description 2", "https://cs50.ai/static/img/duck_7.jpg");
@@ -316,6 +350,40 @@ class PetControllerTest {
     }
 
     @Test
+    void updateNewPet_InvalidDescription_Return422() throws Exception {
+        PetForm form = new PetForm("DDB50", "2 Months", "New Address", abrigo.getId(),
+                null, "https://cs50.ai/static/img/duck_7.jpg");
+
+        mvc.perform(put(URL + "/" + pet.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(form.toString()))
+                .andExpectAll(
+                        status().isUnprocessableEntity(),
+                        jsonPath("$.title",  is("Unprocessable Entity")),
+                        jsonPath("$.detail",  is("Invalid request content.")),
+                        jsonPath("$.errors[0].field",  is("description")),
+                        jsonPath("$.errors[0].detail",  is("must not be null")))
+                .andDo(print());
+    }
+
+    @Test
+    void updateNewPet_InvalidImage_Return422() throws Exception {
+        PetForm form = new PetForm("DDB50", "2 Months", "New Address", abrigo.getId(),
+                "Description 2", "duck_7.jpg");
+
+        mvc.perform(put(URL + "/" + pet.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(form.toString()))
+                .andExpectAll(
+                        status().isUnprocessableEntity(),
+                        jsonPath("$.title",  is("Unprocessable Entity")),
+                        jsonPath("$.detail",  is("Invalid request content.")),
+                        jsonPath("$.errors[0].field",  is("image")),
+                        jsonPath("$.errors[0].detail",  is("must be a valid URL")))
+                .andDo(print());
+    }
+
+    @Test
     void updatePet_InvalidForm_Return422() throws Exception {
         PetForm form = new PetForm("DDB50", "2 Months", "New Address", null,
                 "Description 2", "https://cs50.ai/static/img/duck_7.jpg");
@@ -427,6 +495,40 @@ class PetControllerTest {
                         jsonPath("$.detail",  is("Invalid request content.")),
                         jsonPath("$.errors[0].field",  is("name")),
                         jsonPath("$.errors[0].detail",  is("size must be between 3 and 30")))
+                .andDo(print());
+    }
+
+    @Test
+    void patchNewPet_InvalidDescription_Return422() throws Exception {
+        PetForm form = new PetForm(null, null, null, null,
+                "t", null);
+
+        mvc.perform(patch(URL + "/" + pet.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(form.toString()))
+                .andExpectAll(
+                        status().isUnprocessableEntity(),
+                        jsonPath("$.title",  is("Unprocessable Entity")),
+                        jsonPath("$.detail",  is("Invalid request content.")),
+                        jsonPath("$.errors[0].field",  is("description")),
+                        jsonPath("$.errors[0].detail",  is("size must be between 10 and 255")))
+                .andDo(print());
+    }
+
+    @Test
+    void patchNewPet_InvalidImage_Return422() throws Exception {
+        PetForm form = new PetForm(null, null, null, null,
+                null, "duck.jpg");
+
+        mvc.perform(patch(URL + "/" + pet.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(form.toString()))
+                .andExpectAll(
+                        status().isUnprocessableEntity(),
+                        jsonPath("$.title",  is("Unprocessable Entity")),
+                        jsonPath("$.detail",  is("Invalid request content.")),
+                        jsonPath("$.errors[0].field",  is("image")),
+                        jsonPath("$.errors[0].detail",  is("must be a valid URL")))
                 .andDo(print());
     }
 
