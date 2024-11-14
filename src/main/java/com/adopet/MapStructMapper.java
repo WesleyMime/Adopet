@@ -4,6 +4,8 @@ import com.adopet.abrigo.AbrigoEntity;
 import com.adopet.abrigo.dto.AbrigoDto;
 import com.adopet.abrigo.dto.AbrigoForm;
 import com.adopet.abrigo.dto.AbrigoPatchForm;
+import com.adopet.adocao.AdocaoEntity;
+import com.adopet.adocao.dto.AdocaoDto;
 import com.adopet.pet.PetEntity;
 import com.adopet.pet.dto.PetDto;
 import com.adopet.pet.dto.PetForm;
@@ -65,4 +67,15 @@ public interface MapStructMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "abrigo", source = "abrigoEntity")
     PetEntity updatePetEntityFromPatchForm(PetPatchForm petForm, AbrigoEntity abrigoEntity, @MappingTarget PetEntity petEntity);
+
+    // Adocao
+    @Mapping(target = "pet", source = "pet.id")
+    @Mapping(target = "tutor", source = "tutor.id")
+    AdocaoDto toAdocaoDto(AdocaoEntity adocaoEntity);
+
+    @Mapping(target = "pet", source = "petEntity")
+    @Mapping(target = "tutor", source = "tutorEntity")
+    @Mapping(target = "date", ignore = true)
+    @Mapping(target = "id", ignore = true)
+    AdocaoEntity toAdocaoEntity(TutorEntity tutorEntity, PetEntity petEntity);
 }

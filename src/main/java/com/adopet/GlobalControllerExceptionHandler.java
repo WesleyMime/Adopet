@@ -1,7 +1,6 @@
 package com.adopet;
 
-import com.adopet.exceptions.EmailAlreadyExistsException;
-import com.adopet.exceptions.InvalidAbrigoException;
+import com.adopet.exceptions.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.slf4j.Logger;
@@ -25,15 +24,39 @@ public class GlobalControllerExceptionHandler {
 
     // Invalid abrigo UUID
     @ExceptionHandler(InvalidAbrigoException.class)
-    public ResponseEntity<ProblemDetail> runtimeExceptionHandler(InvalidAbrigoException e) {
+    public ResponseEntity<ProblemDetail> invalidAbrigoExceptionHandler(InvalidAbrigoException e) {
         e.setTitle("Abrigo not found");
         e.setDetail("There is no abrigo with this id.");
         return ResponseEntity.status(e.getStatusCode()).body(e.getBody());
     }
 
+    // Invalid pet UUID
+    @ExceptionHandler(InvalidPetException.class)
+    public ResponseEntity<ProblemDetail> invalidPetExceptionHandler(InvalidPetException e) {
+        e.setTitle("Pet not found");
+        e.setDetail("There is no pet with this id.");
+        return ResponseEntity.status(e.getStatusCode()).body(e.getBody());
+    }
+
+    // Pet already adopted
+    @ExceptionHandler(PetAlreadyAdoptedException.class)
+    public ResponseEntity<ProblemDetail> petAlreadyAdoptedExceptionHandler(PetAlreadyAdoptedException e) {
+        e.setTitle("Pet already adopted");
+        e.setDetail("This pet was already adopted.");
+        return ResponseEntity.status(e.getStatusCode()).body(e.getBody());
+    }
+
+    // Invalid tutor UUID
+    @ExceptionHandler(InvalidTutorException.class)
+    public ResponseEntity<ProblemDetail> invalidTutorExceptionHandler(InvalidTutorException e) {
+        e.setTitle("Tutor not found");
+        e.setDetail("There is no tutor with this id.");
+        return ResponseEntity.status(e.getStatusCode()).body(e.getBody());
+    }
+
     // Email already registered
     @ExceptionHandler(EmailAlreadyExistsException.class)
-    public ResponseEntity<ProblemDetail> runtimeExceptionHandler(EmailAlreadyExistsException e) {
+    public ResponseEntity<ProblemDetail> emailAlreadyExistsExceptionHandler(EmailAlreadyExistsException e) {
         e.setTitle("Email already registered");
         e.setDetail("You tried to use an email that already is in use.");
         return ResponseEntity.status(e.getStatusCode()).body(e.getBody());
