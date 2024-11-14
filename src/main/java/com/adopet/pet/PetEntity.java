@@ -20,7 +20,7 @@ public class PetEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private AbrigoEntity abrigo;
 
     @Column(nullable = false, length = 30)

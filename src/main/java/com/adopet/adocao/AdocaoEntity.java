@@ -22,10 +22,10 @@ public class AdocaoEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     private PetEntity pet;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private TutorEntity tutor;
 
     @Column(nullable = false)
