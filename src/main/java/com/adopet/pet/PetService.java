@@ -29,6 +29,11 @@ public class PetService {
         return petEntityList.stream().map(mapper::toPetDto).toList();
     }
 
+    public List<PetDto> getNotAdopted() {
+        List<PetEntity> petEntityList = repository.findByAdoptedFalse();
+        return petEntityList.stream().map(mapper::toPetDto).toList();
+    }
+
     public PetDto getPetById(UUID id) {
         Optional<PetEntity> PetEntityOptional = repository.findById(id);
         return PetEntityOptional.map(mapper::toPetDto).orElse(null);

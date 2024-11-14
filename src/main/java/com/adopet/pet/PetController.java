@@ -6,6 +6,7 @@ import com.adopet.pet.dto.PetForm;
 import com.adopet.pet.dto.PetPatchForm;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,6 +26,14 @@ public class PetController implements CrudController<PetDto, PetForm, PetPatchFo
         if (all.isEmpty())
             return ResponseEntity.notFound().build();
         return ResponseEntity.ok(all);
+    }
+
+    @GetMapping("/adopt")
+    public ResponseEntity<List<PetDto>> getNotAdopted() {
+        List<PetDto> list = service.getNotAdopted();
+        if (list.isEmpty())
+            return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(list);
     }
 
     public ResponseEntity<PetDto> getById(UUID id) {
