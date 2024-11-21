@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: Adopet
+  datasource:
+    url: jdbc:postgresql://db:5432/adopet
+    username: postgres
+    password: password_adopet
+  jpa:
+    hibernate:
+      ddl-auto: update
+  output:
+    ansi:
+      enabled: ALWAYS

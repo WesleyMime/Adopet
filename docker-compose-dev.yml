@@ -1,13 +1,5 @@
 services:
 
-  api:
-#   ./gradlew bootBuildImage
-    image: adopet:0.0.1-SNAPSHOT
-    environment:
-      SPRING_PROFILES_ACTIVE: prod
-    ports:
-      - 8080:8080
-
   db:
     image: postgres
     restart: always
