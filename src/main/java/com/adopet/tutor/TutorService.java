@@ -6,9 +6,11 @@ import com.adopet.tutor.dto.TutorDto;
 import com.adopet.tutor.dto.TutorForm;
 import com.adopet.tutor.dto.TutorPatchForm;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedModel;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -20,9 +22,10 @@ public class TutorService {
 
     private final MapStructMapper mapper;
 
-    public List<TutorDto> getAllTutores() {
-        List<TutorEntity> tutorEntityList = repository.findAll();
-        return tutorEntityList.stream().map(mapper::toTutorDto).toList();
+    public PagedModel<TutorDto> getAllTutores(Integer page) {
+        Page<TutorEntity> tutorEntityPage = repository.findAll(
+                Pageable.ofSize(10).withPage(page));
+        return new PagedModel<>(tutorEntityPage.map(mapper::toTutorDto));
     }
 
     public TutorDto getTutorById(UUID id) {

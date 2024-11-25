@@ -50,10 +50,23 @@ class AbrigoControllerTest {
                 .andExpectAll(
                         status().is2xxSuccessful(),
                         content().contentType(MediaType.APPLICATION_JSON),
-                        jsonPath("$[0].id", is(abrigo.getId().toString())),
-                        jsonPath("$[0].name", is("default")),
-                        jsonPath("$[0].phone", is("5511955556666")),
-                        jsonPath("$[0].location", is("São Paulo")))
+                        jsonPath("$.content[0].id", is(abrigo.getId().toString())),
+                        jsonPath("$.content[0].name", is("default")),
+                        jsonPath("$.content[0].phone", is("5511955556666")),
+                        jsonPath("$.content[0].location", is("São Paulo")),
+                        jsonPath("$.page.size", is(10)),
+                        jsonPath("$.page.number", is(0)),
+                        jsonPath("$.page.totalElements", is(1)),
+                        jsonPath("$.page.totalPages", is(1)))
+                .andDo(print());
+    }
+
+    @Test
+    void getAllAbrigosWrongPage_Empty_Return404() throws Exception {
+        mvc.perform(get(URL).param("page", "1"))
+                .andExpect(
+                        status()
+                                .isNotFound())
                 .andDo(print());
     }
 

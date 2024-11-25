@@ -1,16 +1,16 @@
 package com.adopet;
 
 import jakarta.validation.Valid;
+import org.springframework.data.web.PagedModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.UUID;
 
 public interface CrudController<DTO, Form, PatchForm> {
 
     @GetMapping
-    ResponseEntity<List<DTO>> getAll();
+    ResponseEntity<PagedModel<DTO>> getAll(@RequestParam(name = "page", required = false) Integer page);
 
     @GetMapping("/{id}")
     ResponseEntity<DTO> getById(@PathVariable(name = "id") UUID id);

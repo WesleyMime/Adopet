@@ -5,9 +5,11 @@ import com.adopet.abrigo.dto.AbrigoDto;
 import com.adopet.abrigo.dto.AbrigoForm;
 import com.adopet.abrigo.dto.AbrigoPatchForm;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedModel;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -19,9 +21,10 @@ public class AbrigoService {
 
     private final MapStructMapper mapper;
 
-    public List<AbrigoDto> getAllTutores() {
-        List<AbrigoEntity> abrigoEntityList = repository.findAll();
-        return abrigoEntityList.stream().map(mapper::toAbrigoDto).toList();
+    public PagedModel<AbrigoDto> getAllTutores(Integer page) {
+        Page<AbrigoEntity> abrigoEntityPage = repository.findAll(
+                Pageable.ofSize(10).withPage(page));
+        return new PagedModel<>(abrigoEntityPage.map(mapper::toAbrigoDto));
     }
 
     public AbrigoDto getTutorById(UUID id) {

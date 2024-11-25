@@ -5,13 +5,14 @@ import com.adopet.pet.dto.PetDto;
 import com.adopet.pet.dto.PetForm;
 import com.adopet.pet.dto.PetPatchForm;
 import lombok.AllArgsConstructor;
+import org.springframework.data.web.PagedModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -21,19 +22,21 @@ public class PetController implements CrudController<PetDto, PetForm, PetPatchFo
 
     private final PetService service;
 
-    public ResponseEntity<List<PetDto>> getAll() {
-        List<PetDto> all = service.getAllPets();
-        if (all.isEmpty())
+    public ResponseEntity<PagedModel<PetDto>> getAll(Integer page) {
+        page = page == null ? 0 : page;
+        PagedModel<PetDto> petPagedModel = service.getAllPets(page);
+        if (petPagedModel.getContent().isEmpty())
             return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(all);
+        return ResponseEntity.ok(petPagedModel);
     }
 
     @GetMapping("/adopt")
-    public ResponseEntity<List<PetDto>> getNotAdopted() {
-        List<PetDto> list = service.getNotAdopted();
-        if (list.isEmpty())
+    public ResponseEntity<PagedModel<PetDto>> getNotAdopted(@RequestParam(name = "page", required = false) Integer page) {
+        page = page == null ? 0 : page;
+        PagedModel<PetDto> petPagedModel = service.getNotAdopted(page);
+        if (petPagedModel.getContent().isEmpty())
             return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(list);
+        return ResponseEntity.ok(petPagedModel);
     }
 
     public ResponseEntity<PetDto> getById(UUID id) {

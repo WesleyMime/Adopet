@@ -58,12 +58,25 @@ class PetControllerTest {
         mvc.perform(get(URL))
                 .andExpectAll(
                         status().isOk(),
-                        jsonPath("$[0].name", is("Duck")),
-                        jsonPath("$[0].age", is("1 Month")),
-                        jsonPath("$[0].address", is("Address")),
-                        jsonPath("$[0].abrigo", is(abrigo.getId().toString())),
-                        jsonPath("$[0].description", is("Description")),
-                        jsonPath("$[0].image", is("https://cs50.ai/static/img/duck_6.jpg")))
+                        jsonPath("$.content[0].name", is("Duck")),
+                        jsonPath("$.content[0].age", is("1 Month")),
+                        jsonPath("$.content[0].address", is("Address")),
+                        jsonPath("$.content[0].abrigo", is(abrigo.getId().toString())),
+                        jsonPath("$.content[0].description", is("Description")),
+                        jsonPath("$.content[0].image", is("https://cs50.ai/static/img/duck_6.jpg")),
+                        jsonPath("$.page.size", is(10)),
+                        jsonPath("$.page.number", is(0)),
+                        jsonPath("$.page.totalElements", is(1)),
+                        jsonPath("$.page.totalPages", is(1)))
+                .andDo(print());
+    }
+
+    @Test
+    void getAllPetsWrongPage_Empty_Return404() throws Exception {
+        mvc.perform(get(URL).param("page", "1"))
+                .andExpect(
+                        status()
+                                .isNotFound())
                 .andDo(print());
     }
 

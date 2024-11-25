@@ -49,9 +49,22 @@ class TutorControllerTest {
                 .andExpectAll(
                         status().is2xxSuccessful(),
                         content().contentType(MediaType.APPLICATION_JSON),
-                        jsonPath("$[0].id", is(tutor.getId().toString())),
-                        jsonPath("$[0].name", is("default")),
-                        jsonPath("$[0].email", is("default@email.com")))
+                        jsonPath("$.content[0].id", is(tutor.getId().toString())),
+                        jsonPath("$.content[0].name", is("default")),
+                        jsonPath("$.content[0].email", is("default@email.com")),
+                        jsonPath("$.page.size", is(10)),
+                        jsonPath("$.page.number", is(0)),
+                        jsonPath("$.page.totalElements", is(1)),
+                        jsonPath("$.page.totalPages", is(1)))
+                .andDo(print());
+    }
+
+    @Test
+    void getAllTutorsWrongPage_Empty_Return404() throws Exception {
+        mvc.perform(get(URL).param("page", "1"))
+                .andExpect(
+                        status()
+                                .isNotFound())
                 .andDo(print());
     }
 

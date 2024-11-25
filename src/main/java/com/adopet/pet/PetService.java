@@ -8,9 +8,11 @@ import com.adopet.pet.dto.PetDto;
 import com.adopet.pet.dto.PetForm;
 import com.adopet.pet.dto.PetPatchForm;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedModel;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -24,14 +26,16 @@ public class PetService {
 
     private final MapStructMapper mapper;
 
-    public List<PetDto> getAllPets() {
-        List<PetEntity> petEntityList = repository.findAll();
-        return petEntityList.stream().map(mapper::toPetDto).toList();
+    public PagedModel<PetDto> getAllPets(Integer page) {
+        Page<PetEntity> petEntityPage = repository.findAll(
+                Pageable.ofSize(10).withPage(page));
+        return new PagedModel<>(petEntityPage.map(mapper::toPetDto));
     }
 
-    public List<PetDto> getNotAdopted() {
-        List<PetEntity> petEntityList = repository.findByAdoptedFalse();
-        return petEntityList.stream().map(mapper::toPetDto).toList();
+    public PagedModel<PetDto> getNotAdopted(Integer page) {
+        Page<PetEntity> petEntityPage = repository.findByAdoptedFalse(
+                Pageable.ofSize(10).withPage(page));
+        return new PagedModel<>(petEntityPage.map(mapper::toPetDto));
     }
 
     public PetDto getPetById(UUID id) {

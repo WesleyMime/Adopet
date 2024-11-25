@@ -5,12 +5,12 @@ import com.adopet.tutor.dto.TutorDto;
 import com.adopet.tutor.dto.TutorForm;
 import com.adopet.tutor.dto.TutorPatchForm;
 import lombok.AllArgsConstructor;
+import org.springframework.data.web.PagedModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -20,11 +20,13 @@ public class TutorController implements CrudController<TutorDto, TutorForm, Tuto
 
     private final TutorService service;
 
-    public ResponseEntity<List<TutorDto>> getAll() {
-        List<TutorDto> all = service.getAllTutores();
-        if (all.isEmpty())
+
+    public ResponseEntity<PagedModel<TutorDto>> getAll(Integer page) {
+        page = page == null ? 0 : page;
+        PagedModel<TutorDto> tutorPagedModel = service.getAllTutores(page);
+        if (tutorPagedModel.getContent().isEmpty())
             return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(all);
+        return ResponseEntity.ok(tutorPagedModel);
     }
 
     public ResponseEntity<TutorDto> getById(UUID id) {
