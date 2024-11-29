@@ -1,0 +1,15 @@
+<div class="home">
+    <p>Olá! <br /> Veja os amigos disponíveis para adoção!</p>
+    <div class="cards">
+        <div class="card" *ngFor="let pet of petsPage.content">
+            <h4>{{ pet.name }}</h4>
+            <ul>
+                <li>{{ pet.age }}</li>
+                <li>{{ pet.size }}</li>
+                <li><textarea disabled="true">{{ pet.description }}</textarea></li>
+            </ul>
+            <p class="card__city">{{ pet.address }}</p>
+            <img [src]="pet.image" style="max-width: 90%;" [alt]="pet.name">
+        </div>
+    </div>
+</div>

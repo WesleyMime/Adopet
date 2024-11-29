@@ -501,7 +501,7 @@ div.card {
     display: grid;
     justify-content: center;
     align-items: center;
-    grid-template-columns: 10.25rem auto;
+    grid-template-columns: 14rem;
     grid-template-areas:
         'photo name'
         'photo list'
@@ -515,7 +515,11 @@ div.card {
 
 .card img {
     grid-area: photo;
-    margin-right: 1rem;
+}
+
+.card textarea {
+    resize: none;
+    max-width: 150px;  
 }
 
 .card h4,
