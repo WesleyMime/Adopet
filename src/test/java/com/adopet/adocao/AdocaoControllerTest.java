@@ -58,7 +58,7 @@ public class AdocaoControllerTest {
         AbrigoEntity abrigo = new AbrigoEntity("Default", "5511955556666", "São Paulo");
         abrigo = abrigoRepository.save(abrigo);
 
-        pet = new PetEntity(abrigo, "Duck", "Description", "1 Month",
+        pet = new PetEntity(abrigo, "Duck", "Small size", "Description", "1 Month",
                 "Address", "https://cs50.ai/static/img/duck_6.jpg");
         pet = petRepository.save(pet);
 
@@ -67,7 +67,7 @@ public class AdocaoControllerTest {
     }
 
     @AfterEach
-    void afterEach() throws Exception {
+    void afterEach() {
         repository.deleteAll();
         petRepository.deleteAll();
         abrigoRepository.deleteAll();

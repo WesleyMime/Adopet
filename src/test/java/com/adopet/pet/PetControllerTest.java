@@ -43,7 +43,7 @@ class PetControllerTest {
     void beforeEach() {
         abrigo = abrigoRepository.save(new AbrigoEntity("default", "5511955556666", "São Paulo"));
 
-        pet = repository.save(new PetEntity(abrigo, "Duck", "Description", "1 Month",
+        pet = repository.save(new PetEntity(abrigo, "Duck", "Small size", "Description", "1 Month",
                 "Address", "https://cs50.ai/static/img/duck_6.jpg"));
     }
 
@@ -62,6 +62,7 @@ class PetControllerTest {
                         jsonPath("$.content[0].age", is("1 Month")),
                         jsonPath("$.content[0].address", is("Address")),
                         jsonPath("$.content[0].abrigo", is(abrigo.getId().toString())),
+                        jsonPath("$.content[0].size", is("Small size")),
                         jsonPath("$.content[0].description", is("Description")),
                         jsonPath("$.content[0].image", is("https://cs50.ai/static/img/duck_6.jpg")),
                         jsonPath("$.page.size", is(10)),
@@ -101,6 +102,7 @@ class PetControllerTest {
                         jsonPath("$.address", is("Address")),
                         jsonPath("$.adopted", is(false)),
                         jsonPath("$.abrigo", is(abrigo.getId().toString())),
+                        jsonPath("$.size", is("Small size")),
                         jsonPath("$.description", is("Description")),
                         jsonPath("$.image", is("https://cs50.ai/static/img/duck_6.jpg")))
                 .andDo(print());
@@ -118,7 +120,7 @@ class PetControllerTest {
     @Test
     void postNewPet_ValidForm_Return201() throws Exception {
         PetForm form = new PetForm("DDB50", "2 Months", "New Address", abrigo.getId(),
-                "Description 2", "https://cs50.ai/static/img/duck_7.jpg");
+                "Small size", "Description 2", "https://cs50.ai/static/img/duck_7.jpg");
 
         mvc.perform(post(URL)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -131,6 +133,7 @@ class PetControllerTest {
                         jsonPath("$.address", is("New Address")),
                         jsonPath("$.adopted", is(false)),
                         jsonPath("$.abrigo", is(abrigo.getId().toString())),
+                        jsonPath("$.size", is("Small size")),
                         jsonPath("$.description", is("Description 2")),
                         jsonPath("$.image", is("https://cs50.ai/static/img/duck_7.jpg")))
                 .andDo(print());
@@ -149,7 +152,7 @@ class PetControllerTest {
     @Test
     void postNewPet_InvalidAbrigo_Return422() throws Exception {
         PetForm form = new PetForm("DDB50", "2 Months", "New Address", UUID.randomUUID(),
-                "Description 2", "https://cs50.ai/static/img/duck_7.jpg");
+                "Small size", "Description 2", "https://cs50.ai/static/img/duck_7.jpg");
 
         mvc.perform(put(URL + "/" + pet.getId())
                         .contentType(MediaType.APPLICATION_JSON)
@@ -163,7 +166,7 @@ class PetControllerTest {
 
     @Test
     void postNewPet_InvalidAge_Return422() throws Exception {
-        PetForm form = new PetForm("DDB50", "2", "New Address", abrigo.getId(),
+        PetForm form = new PetForm("DDB50", "2", "New Address", abrigo.getId(), "Small size",
                 "Description 2", "https://cs50.ai/static/img/duck_7.jpg");
 
         mvc.perform(post(URL)
@@ -180,7 +183,7 @@ class PetControllerTest {
 
     @Test
     void postNewPet_InvalidName_Return422() throws Exception {
-        PetForm form = new PetForm("t", "2 Months", "New Address", abrigo.getId(),
+        PetForm form = new PetForm("t", "2 Months", "New Address", abrigo.getId(), "Small size",
                 "Description 2", "https://cs50.ai/static/img/duck_7.jpg");
 
         mvc.perform(post(URL)
@@ -197,7 +200,7 @@ class PetControllerTest {
 
     @Test
     void postNewPet_InvalidAddress_Return422() throws Exception {
-        PetForm form = new PetForm("DDB50", "2 Months", "t", abrigo.getId(),
+        PetForm form = new PetForm("DDB50", "2 Months", "t", abrigo.getId(), "Small size",
                 "Description 2", "https://cs50.ai/static/img/duck_7.jpg");
 
         mvc.perform(post(URL)
@@ -215,7 +218,7 @@ class PetControllerTest {
     @Test
     void postNewPet_InvalidDescription_Return422() throws Exception {
         PetForm form = new PetForm("DDB50", "2 Months", "New Address", abrigo.getId(),
-                null, "https://cs50.ai/static/img/duck_7.jpg");
+                "Porte Pequeno", null, "https://cs50.ai/static/img/duck_7.jpg");
 
         mvc.perform(post(URL)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -232,7 +235,7 @@ class PetControllerTest {
     @Test
     void postNewPet_InvalidImage_Return422() throws Exception {
         PetForm form = new PetForm("DDB50", "2 Months", "New Address", abrigo.getId(),
-                "Description 2", "duck.jpg");
+                "Small size", "Description 2", "duck.jpg");
 
         mvc.perform(post(URL)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -248,7 +251,7 @@ class PetControllerTest {
 
     @Test
     void postNewPet_InvalidForm_Return422() throws Exception {
-        PetForm form = new PetForm("DDB50", "2 Months", "New Address", null,
+        PetForm form = new PetForm("DDB50", "2 Months", "New Address", null, "Small size",
                 "Description 2", "https://cs50.ai/static/img/duck_7.jpg");
 
         mvc.perform(post(URL)
@@ -267,7 +270,7 @@ class PetControllerTest {
     @Test
     void updatePet_ValidForm_Return200() throws Exception {
         PetForm form = new PetForm("DDB50", "2 Months", "New Address", abrigo.getId(),
-                "Description 2", "https://cs50.ai/static/img/duck_7.jpg");
+                "Medium size", "Description 2", "https://cs50.ai/static/img/duck_7.jpg");
 
         mvc.perform(put(URL + "/" + pet.getId())
                         .contentType(MediaType.APPLICATION_JSON)
@@ -278,6 +281,7 @@ class PetControllerTest {
                         jsonPath("$.age", is("2 Months")),
                         jsonPath("$.address", is("New Address")),
                         jsonPath("$.abrigo", is(abrigo.getId().toString())),
+                        jsonPath("$.size", is("Medium size")),
                         jsonPath("$.description", is("Description 2")),
                         jsonPath("$.image", is("https://cs50.ai/static/img/duck_7.jpg")))
                 .andDo(print());
@@ -286,7 +290,7 @@ class PetControllerTest {
     @Test
     void updatePet_WrongId_Return404() throws Exception {
         PetForm form = new PetForm("DDB50", "2 Months", "New Address", abrigo.getId(),
-                "Description 2", "https://cs50.ai/static/img/duck_7.jpg");
+                "Small size", "Description 2", "https://cs50.ai/static/img/duck_7.jpg");
 
         mvc.perform(put(URL + "/" + UUID.randomUUID())
                     .contentType(MediaType.APPLICATION_JSON)
@@ -299,7 +303,7 @@ class PetControllerTest {
     @Test
     void updatePet_InvalidAbrigo_Return422() throws Exception {
         PetForm form = new PetForm("DDB50", "2 Months", "New Address", UUID.randomUUID(),
-                "Description 2", "https://cs50.ai/static/img/duck_7.jpg");
+                "Small size", "Description 2", "https://cs50.ai/static/img/duck_7.jpg");
 
         mvc.perform(put(URL + "/" + pet.getId())
                         .contentType(MediaType.APPLICATION_JSON)
@@ -313,7 +317,7 @@ class PetControllerTest {
 
     @Test
     void updatePet_InvalidAge_Return422() throws Exception {
-        PetForm form = new PetForm("DDB50", "2", "New Address", abrigo.getId(),
+        PetForm form = new PetForm("DDB50", "2", "New Address", abrigo.getId(), "Small size",
                 "Description 2", "https://cs50.ai/static/img/duck_7.jpg");
 
         mvc.perform(put(URL + "/" + pet.getId())
@@ -330,7 +334,7 @@ class PetControllerTest {
 
     @Test
     void updatePet_InvalidName_Return422() throws Exception {
-        PetForm form = new PetForm("t", "2 Months", "New Address", abrigo.getId(),
+        PetForm form = new PetForm("t", "2 Months", "New Address", abrigo.getId(), "Small size",
                 "Description 2", "https://cs50.ai/static/img/duck_7.jpg");
 
         mvc.perform(put(URL + "/" + pet.getId())
@@ -347,7 +351,7 @@ class PetControllerTest {
 
     @Test
     void updatePet_InvalidAddress_Return422() throws Exception {
-        PetForm form = new PetForm("DDB50", "2 Months", "t", abrigo.getId(),
+        PetForm form = new PetForm("DDB50", "2 Months", "t", abrigo.getId(), "Small size",
                 "Description 2", "https://cs50.ai/static/img/duck_7.jpg");
 
         mvc.perform(put(URL + "/" + pet.getId())
@@ -364,7 +368,7 @@ class PetControllerTest {
 
     @Test
     void updateNewPet_InvalidDescription_Return422() throws Exception {
-        PetForm form = new PetForm("DDB50", "2 Months", "New Address", abrigo.getId(),
+        PetForm form = new PetForm("DDB50", "2 Months", "New Address", abrigo.getId(), "Small size",
                 null, "https://cs50.ai/static/img/duck_7.jpg");
 
         mvc.perform(put(URL + "/" + pet.getId())
@@ -382,7 +386,7 @@ class PetControllerTest {
     @Test
     void updateNewPet_InvalidImage_Return422() throws Exception {
         PetForm form = new PetForm("DDB50", "2 Months", "New Address", abrigo.getId(),
-                "Description 2", "duck_7.jpg");
+                "Small size", "Description 2", "duck_7.jpg");
 
         mvc.perform(put(URL + "/" + pet.getId())
                         .contentType(MediaType.APPLICATION_JSON)
@@ -398,7 +402,7 @@ class PetControllerTest {
 
     @Test
     void updatePet_InvalidForm_Return422() throws Exception {
-        PetForm form = new PetForm("DDB50", "2 Months", "New Address", null,
+        PetForm form = new PetForm("DDB50", "2 Months", "New Address", null, "Small size",
                 "Description 2", "https://cs50.ai/static/img/duck_7.jpg");
 
         mvc.perform(put(URL + "/" + pet.getId())
@@ -415,7 +419,7 @@ class PetControllerTest {
 
     @Test
     void patchPet_ValidForm_Return200() throws Exception {
-        PetForm form = new PetForm(null, null, null, abrigo.getId(),
+        PetForm form = new PetForm(null, null, null, abrigo.getId(), "Medium size",
                 "Description 2", "https://cs50.ai/static/img/duck_7.jpg");
 
         mvc.perform(patch(URL + "/" + pet.getId())
@@ -427,6 +431,7 @@ class PetControllerTest {
                         jsonPath("$.age", is("1 Month")),
                         jsonPath("$.address", is("Address")),
                         jsonPath("$.abrigo", is(abrigo.getId().toString())),
+                        jsonPath("$.size", is("Medium size")),
                         jsonPath("$.description", is("Description 2")),
                         jsonPath("$.image", is("https://cs50.ai/static/img/duck_7.jpg")))
                 .andDo(print());
@@ -435,7 +440,7 @@ class PetControllerTest {
     @Test
     void patchPet_WrongId_Return404() throws Exception {
         PetForm form = new PetForm("DDB50", "2 Months", "New Address", abrigo.getId(),
-                "Description 2", "https://cs50.ai/static/img/duck_7.jpg");
+                "Small size", "Description 2", "https://cs50.ai/static/img/duck_7.jpg");
 
         mvc.perform(patch(URL + "/" + UUID.randomUUID())
                         .contentType(MediaType.APPLICATION_JSON)
@@ -448,7 +453,7 @@ class PetControllerTest {
     @Test
     void patchPet_InvalidAbrigo_Return422() throws Exception {
         PetForm form = new PetForm("DDB50", "2 Months", "New Address", UUID.randomUUID(),
-                "Description 2", "https://cs50.ai/static/img/duck_7.jpg");
+                "Small size", "Description 2", "https://cs50.ai/static/img/duck_7.jpg");
 
         mvc.perform(patch(URL + "/" + pet.getId())
                         .contentType(MediaType.APPLICATION_JSON)
@@ -462,7 +467,7 @@ class PetControllerTest {
 
     @Test
     void patchPet_InvalidAge_Return422() throws Exception {
-        PetForm form = new PetForm("DDB50", "2", "New Address", abrigo.getId(),
+        PetForm form = new PetForm("DDB50", "2", "New Address", abrigo.getId(), "Small size",
                 "Description 2", "https://cs50.ai/static/img/duck_7.jpg");
 
         mvc.perform(patch(URL + "/" + pet.getId())
@@ -479,7 +484,7 @@ class PetControllerTest {
 
     @Test
     void patchPet_InvalidAddress_Return422() throws Exception {
-        PetForm form = new PetForm("DDB50", "2 Months", "t", abrigo.getId(),
+        PetForm form = new PetForm("DDB50", "2 Months", "t", abrigo.getId(), "Small size",
                 "Description 2", "https://cs50.ai/static/img/duck_7.jpg");
 
         mvc.perform(patch(URL + "/" + pet.getId())
@@ -496,7 +501,7 @@ class PetControllerTest {
 
     @Test
     void patchPet_InvalidName_Return422() throws Exception {
-        PetForm form = new PetForm("t", "2 Months", "New Address", abrigo.getId(),
+        PetForm form = new PetForm("t", "2 Months", "New Address", abrigo.getId(), "Small size",
                 "Description 2", "https://cs50.ai/static/img/duck_7.jpg");
 
         mvc.perform(patch(URL + "/" + pet.getId())
@@ -513,7 +518,7 @@ class PetControllerTest {
 
     @Test
     void patchNewPet_InvalidDescription_Return422() throws Exception {
-        PetForm form = new PetForm(null, null, null, null,
+        PetForm form = new PetForm(null, null, null, null, null,
                 "t", null);
 
         mvc.perform(patch(URL + "/" + pet.getId())
@@ -530,7 +535,7 @@ class PetControllerTest {
 
     @Test
     void patchNewPet_InvalidImage_Return422() throws Exception {
-        PetForm form = new PetForm(null, null, null, null,
+        PetForm form = new PetForm(null, null, null, null, null,
                 null, "duck.jpg");
 
         mvc.perform(patch(URL + "/" + pet.getId())

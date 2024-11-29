@@ -26,6 +26,9 @@ public class PetEntity {
     @Column(nullable = false, length = 30)
     private String name;
 
+    @Column(nullable = false, length = 20)
+    private String size;
+
     @Column(nullable = false)
     private String description;
 
@@ -40,9 +43,10 @@ public class PetEntity {
     @Column(nullable = false)
     private String image;
 
-    public PetEntity(AbrigoEntity abrigo, String name, String description, String age, String address, String image) {
+    public PetEntity(AbrigoEntity abrigo, String name, String size, String description, String age, String address, String image) {
         this.abrigo = abrigo;
         this.name = name;
+        this.size = size;
         this.description = description;
         this.adopted = false;
         this.age = age;

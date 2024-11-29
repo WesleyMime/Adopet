@@ -12,6 +12,7 @@ public record PetForm(@NotNull @Size(min = 3, max = 30) String name,
                       @NotNull @Size(min = 4, max = 20) String age,
                       @NotNull @Size(min = 8, max = 50) String address,
                       @NotNull UUID abrigo,
+                      @NotNull @Size(min = 8, max = 20) String size,
                       @NotNull @Size(min = 10, max = 255) String description,
                       @NotNull @URL String image) {
     @Override
