@@ -2,12 +2,12 @@ import { Component, inject, Inject } from '@angular/core';
 import { PetsService } from '../pets.service';
 import { NgFor } from '@angular/common';
 import { PetsPage } from '../pet-page';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-home',
-  imports: [NgFor],
-  templateUrl: './home.component.html',
-  styleUrl: './home.component.css'
+  imports: [NgFor, RouterModule],
+  templateUrl: './home.component.html'
 })
 export class HomeComponent {
   petsService: PetsService = inject(PetsService);

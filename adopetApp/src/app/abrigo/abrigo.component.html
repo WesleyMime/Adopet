@@ -1,0 +1,14 @@
+<div class="message">
+    <p>Envie uma mensagem para a pessoa ou instituição que está cuidado do animal:</p>
+
+    <form onSubmit={handleSubmit(onSubmit)}>
+        <label htmlFor="name">Nome</label>
+        <input disabled="true" id='name' value="{{abrigo.name }}">
+
+        <label htmlFor="phone">Telefone</label>
+        <input disabled="true" id="phone" value="{{ abrigo.phone }}">
+
+        <label htmlFor="location">Localização</label>
+        <input disabled="true" id='location' value="{{ abrigo.location }}">
+    </form>
+</div>

@@ -10,6 +10,7 @@
             </ul>
             <p class="card__city">{{ pet.address }}</p>
             <img [src]="pet.image" style="max-width: 90%;" [alt]="pet.name">
+            <a [routerLink]="['/pet', pet.abrigo]" aria-label='Falar com responsável' class="card__contact">Falar com responsável</a>
         </div>
     </div>
 </div>
