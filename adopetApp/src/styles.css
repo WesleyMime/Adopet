@@ -42,7 +42,7 @@ textarea {
 body,
 #root,
 main {
-    min-height: 100vh;
+    min-height: 55.5vh;
 }
 
 html {
@@ -222,10 +222,10 @@ button:focus,
 /* #region ----------------- FOOTER COMPONENT */
 .footer {
     display: flex;
-    flex: 0 1 auto;
     align-items: center;
     justify-content: center;
     padding: 2.5rem 0;
+    margin-bottom: -1.5rem;
     background: var(--green);
     color: var(--white);
     font-size: 1rem;
@@ -234,7 +234,7 @@ button:focus,
 
 .footer__img {
     display: block;
-    margin: 1.5rem auto -1.125rem;
+    margin: auto auto -1.125rem;
 }
 
 .footer a {
@@ -260,6 +260,7 @@ button:focus,
 
 .initial img {
     height: 2.875rem;
+    margin-bottom: 2.5rem;
 }
 
 .initial h3 {
@@ -660,8 +661,8 @@ legend {
     }
 
     .footer__img {
+        margin: auto auto -2.5rem;
         width: 21rem;
-        margin: 2.5rem auto -2.5rem;
     }
 
     .initial,
@@ -672,7 +673,6 @@ legend {
     .initial img,
     .register img {
         height: 3.875rem;
-        margin-bottom: 2.5rem;
     }
 
     .initial p {
