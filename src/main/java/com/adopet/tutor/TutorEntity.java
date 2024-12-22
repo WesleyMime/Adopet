@@ -1,36 +1,28 @@
 package com.adopet.tutor;
 
-import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
+import com.adopet.user.Roles;
+import com.adopet.user.UserEntity;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.UUID;
+import java.util.List;
 
 @Entity(name = "Tutor")
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
-public class TutorEntity {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+public class TutorEntity extends UserEntity {
 
     @Column(nullable = false, length = 100)
     private String name;
 
-    @Column(nullable = false , unique = true)
-    private String email;
-
-    @Column(nullable = false)
-    private String password;
+    public TutorEntity() {
+        this.setAuthorities(List.of(Roles.TUTOR));
+    }
 
     public TutorEntity(String name, String email, String password) {
+        super(email, password, List.of(Roles.TUTOR));
         this.name = name;
-        this.email = email;
-        this.password = password;
     }
 }

@@ -12,3 +12,6 @@ spring:
   output:
     ansi:
       enabled: ALWAYS
+adopet:
+  jwt:
+    secret: +XhULg9H+Ht8dN6rd/ubsgLtSUMMMCYV+/+X1mGXtKlLYDVCbkiGpISi8/OQBgtFUB7GZCOUC8D6mMmeGukdhQ==

@@ -7,5 +7,4 @@ import java.util.UUID;
 
 @Repository
 public interface TutorRepository extends JpaRepository<TutorEntity, UUID> {
-    Boolean existsByEmail(String email);
 }

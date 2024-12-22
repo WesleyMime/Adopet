@@ -2,6 +2,7 @@ package com.adopet.adocao;
 
 import com.adopet.pet.PetEntity;
 import com.adopet.tutor.TutorEntity;
+import com.adopet.user.UserEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,8 +26,8 @@ public class AdocaoEntity {
     @OneToOne(fetch = FetchType.LAZY)
     private PetEntity pet;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private TutorEntity tutor;
+    @ManyToOne(fetch = FetchType.LAZY, targetEntity = UserEntity.class)
+    private UserEntity tutor;
 
     @Column(nullable = false)
     private LocalDate date = LocalDate.now();

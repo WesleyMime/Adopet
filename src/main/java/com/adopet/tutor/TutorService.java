@@ -5,10 +5,12 @@ import com.adopet.exceptions.EmailAlreadyExistsException;
 import com.adopet.tutor.dto.TutorDto;
 import com.adopet.tutor.dto.TutorForm;
 import com.adopet.tutor.dto.TutorPatchForm;
+import com.adopet.user.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedModel;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -20,7 +22,11 @@ public class TutorService {
 
     private final TutorRepository repository;
 
+    private final UserRepository userRepository;
+
     private final MapStructMapper mapper;
+
+    private final PasswordEncoder passwordEncoder;
 
     public PagedModel<TutorDto> getAllTutores(Integer page) {
         Page<TutorEntity> tutorEntityPage = repository.findAll(
@@ -72,6 +78,6 @@ public class TutorService {
     }
 
     private void checkEmail(String email) {
-        if (repository.existsByEmail(email)) throw new EmailAlreadyExistsException();
+        if (userRepository.existsByEmail(email)) throw new EmailAlreadyExistsException();
     }
 }

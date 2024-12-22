@@ -14,14 +14,17 @@ import com.adopet.tutor.TutorEntity;
 import com.adopet.tutor.dto.TutorDto;
 import com.adopet.tutor.dto.TutorForm;
 import com.adopet.tutor.dto.TutorPatchForm;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.*;
+import org.springframework.context.annotation.Primary;
 
 import java.util.UUID;
 
-@Mapper(componentModel = "spring", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+@Mapper(componentModel = "spring",
+        nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
+        unmappedTargetPolicy = ReportingPolicy.IGNORE
+)
+@DecoratedWith(EncodeDecorator.class)
+@Primary
 public interface MapStructMapper {
 
     // Tutor
