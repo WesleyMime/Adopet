@@ -12,6 +12,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.UUID;
@@ -41,7 +42,8 @@ class PetControllerTest {
 
     @BeforeEach
     void beforeEach() {
-        abrigo = abrigoRepository.save(new AbrigoEntity("default", "5511955556666", "São Paulo"));
+        abrigo = abrigoRepository.save(new AbrigoEntity("default@email.com", "defaultPass",
+                "default", "5511955556666", "São Paulo"));
 
         pet = repository.save(new PetEntity(abrigo, "Duck", "Small size", "Description", "1 Month",
                 "Address", "https://cs50.ai/static/img/duck_6.jpg"));
@@ -54,6 +56,7 @@ class PetControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ABRIGO")
     void getAllPets_Exists_Return200() throws Exception {
         mvc.perform(get(URL))
                 .andExpectAll(
@@ -73,6 +76,7 @@ class PetControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ABRIGO")
     void getAllPetsWrongPage_Empty_Return404() throws Exception {
         mvc.perform(get(URL).param("page", "1"))
                 .andExpect(
@@ -82,6 +86,7 @@ class PetControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ABRIGO")
     void getAllPets_Empty_Return200() throws Exception {
         repository.deleteAll();
 
@@ -93,6 +98,7 @@ class PetControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ABRIGO")
     void getPetById_ValidId_Return200() throws Exception {
         mvc.perform(get(URL + "/" + pet.getId()))
                 .andExpectAll(
@@ -109,6 +115,7 @@ class PetControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ABRIGO")
     void getPetById_WrongId_Return404() throws Exception {
         mvc.perform(get(URL + "/" + UUID.randomUUID()))
                 .andExpect(
@@ -118,6 +125,7 @@ class PetControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ABRIGO")
     void postNewPet_ValidForm_Return201() throws Exception {
         PetForm form = new PetForm("DDB50", "2 Months", "New Address", abrigo.getId(),
                 "Small size", "Description 2", "https://cs50.ai/static/img/duck_7.jpg");
@@ -140,6 +148,7 @@ class PetControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ABRIGO")
     void postNewPet_NoForm_Return422() throws Exception {
         mvc.perform(post(URL))
                 .andExpectAll(
@@ -150,6 +159,7 @@ class PetControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ABRIGO")
     void postNewPet_InvalidAbrigo_Return422() throws Exception {
         PetForm form = new PetForm("DDB50", "2 Months", "New Address", UUID.randomUUID(),
                 "Small size", "Description 2", "https://cs50.ai/static/img/duck_7.jpg");
@@ -165,6 +175,7 @@ class PetControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ABRIGO")
     void postNewPet_InvalidAge_Return422() throws Exception {
         PetForm form = new PetForm("DDB50", "2", "New Address", abrigo.getId(), "Small size",
                 "Description 2", "https://cs50.ai/static/img/duck_7.jpg");
@@ -182,6 +193,7 @@ class PetControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ABRIGO")
     void postNewPet_InvalidName_Return422() throws Exception {
         PetForm form = new PetForm("t", "2 Months", "New Address", abrigo.getId(), "Small size",
                 "Description 2", "https://cs50.ai/static/img/duck_7.jpg");
@@ -199,6 +211,7 @@ class PetControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ABRIGO")
     void postNewPet_InvalidAddress_Return422() throws Exception {
         PetForm form = new PetForm("DDB50", "2 Months", "t", abrigo.getId(), "Small size",
                 "Description 2", "https://cs50.ai/static/img/duck_7.jpg");
@@ -216,6 +229,7 @@ class PetControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ABRIGO")
     void postNewPet_InvalidDescription_Return422() throws Exception {
         PetForm form = new PetForm("DDB50", "2 Months", "New Address", abrigo.getId(),
                 "Porte Pequeno", null, "https://cs50.ai/static/img/duck_7.jpg");
@@ -233,6 +247,7 @@ class PetControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ABRIGO")
     void postNewPet_InvalidImage_Return422() throws Exception {
         PetForm form = new PetForm("DDB50", "2 Months", "New Address", abrigo.getId(),
                 "Small size", "Description 2", "duck.jpg");
@@ -250,6 +265,7 @@ class PetControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ABRIGO")
     void postNewPet_InvalidForm_Return422() throws Exception {
         PetForm form = new PetForm("DDB50", "2 Months", "New Address", null, "Small size",
                 "Description 2", "https://cs50.ai/static/img/duck_7.jpg");
@@ -268,6 +284,7 @@ class PetControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ABRIGO")
     void updatePet_ValidForm_Return200() throws Exception {
         PetForm form = new PetForm("DDB50", "2 Months", "New Address", abrigo.getId(),
                 "Medium size", "Description 2", "https://cs50.ai/static/img/duck_7.jpg");
@@ -288,6 +305,7 @@ class PetControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ABRIGO")
     void updatePet_WrongId_Return404() throws Exception {
         PetForm form = new PetForm("DDB50", "2 Months", "New Address", abrigo.getId(),
                 "Small size", "Description 2", "https://cs50.ai/static/img/duck_7.jpg");
@@ -301,6 +319,7 @@ class PetControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ABRIGO")
     void updatePet_InvalidAbrigo_Return422() throws Exception {
         PetForm form = new PetForm("DDB50", "2 Months", "New Address", UUID.randomUUID(),
                 "Small size", "Description 2", "https://cs50.ai/static/img/duck_7.jpg");
@@ -316,6 +335,7 @@ class PetControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ABRIGO")
     void updatePet_InvalidAge_Return422() throws Exception {
         PetForm form = new PetForm("DDB50", "2", "New Address", abrigo.getId(), "Small size",
                 "Description 2", "https://cs50.ai/static/img/duck_7.jpg");
@@ -333,6 +353,7 @@ class PetControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ABRIGO")
     void updatePet_InvalidName_Return422() throws Exception {
         PetForm form = new PetForm("t", "2 Months", "New Address", abrigo.getId(), "Small size",
                 "Description 2", "https://cs50.ai/static/img/duck_7.jpg");
@@ -350,6 +371,7 @@ class PetControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ABRIGO")
     void updatePet_InvalidAddress_Return422() throws Exception {
         PetForm form = new PetForm("DDB50", "2 Months", "t", abrigo.getId(), "Small size",
                 "Description 2", "https://cs50.ai/static/img/duck_7.jpg");
@@ -367,6 +389,7 @@ class PetControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ABRIGO")
     void updateNewPet_InvalidDescription_Return422() throws Exception {
         PetForm form = new PetForm("DDB50", "2 Months", "New Address", abrigo.getId(), "Small size",
                 null, "https://cs50.ai/static/img/duck_7.jpg");
@@ -384,6 +407,7 @@ class PetControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ABRIGO")
     void updateNewPet_InvalidImage_Return422() throws Exception {
         PetForm form = new PetForm("DDB50", "2 Months", "New Address", abrigo.getId(),
                 "Small size", "Description 2", "duck_7.jpg");
@@ -401,6 +425,7 @@ class PetControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ABRIGO")
     void updatePet_InvalidForm_Return422() throws Exception {
         PetForm form = new PetForm("DDB50", "2 Months", "New Address", null, "Small size",
                 "Description 2", "https://cs50.ai/static/img/duck_7.jpg");
@@ -418,6 +443,7 @@ class PetControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ABRIGO")
     void patchPet_ValidForm_Return200() throws Exception {
         PetForm form = new PetForm(null, null, null, abrigo.getId(), "Medium size",
                 "Description 2", "https://cs50.ai/static/img/duck_7.jpg");
@@ -438,6 +464,7 @@ class PetControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ABRIGO")
     void patchPet_WrongId_Return404() throws Exception {
         PetForm form = new PetForm("DDB50", "2 Months", "New Address", abrigo.getId(),
                 "Small size", "Description 2", "https://cs50.ai/static/img/duck_7.jpg");
@@ -451,6 +478,7 @@ class PetControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ABRIGO")
     void patchPet_InvalidAbrigo_Return422() throws Exception {
         PetForm form = new PetForm("DDB50", "2 Months", "New Address", UUID.randomUUID(),
                 "Small size", "Description 2", "https://cs50.ai/static/img/duck_7.jpg");
@@ -466,6 +494,7 @@ class PetControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ABRIGO")
     void patchPet_InvalidAge_Return422() throws Exception {
         PetForm form = new PetForm("DDB50", "2", "New Address", abrigo.getId(), "Small size",
                 "Description 2", "https://cs50.ai/static/img/duck_7.jpg");
@@ -483,6 +512,7 @@ class PetControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ABRIGO")
     void patchPet_InvalidAddress_Return422() throws Exception {
         PetForm form = new PetForm("DDB50", "2 Months", "t", abrigo.getId(), "Small size",
                 "Description 2", "https://cs50.ai/static/img/duck_7.jpg");
@@ -500,6 +530,7 @@ class PetControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ABRIGO")
     void patchPet_InvalidName_Return422() throws Exception {
         PetForm form = new PetForm("t", "2 Months", "New Address", abrigo.getId(), "Small size",
                 "Description 2", "https://cs50.ai/static/img/duck_7.jpg");
@@ -517,6 +548,7 @@ class PetControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ABRIGO")
     void patchNewPet_InvalidDescription_Return422() throws Exception {
         PetForm form = new PetForm(null, null, null, null, null,
                 "t", null);
@@ -534,6 +566,7 @@ class PetControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ABRIGO")
     void patchNewPet_InvalidImage_Return422() throws Exception {
         PetForm form = new PetForm(null, null, null, null, null,
                 null, "duck.jpg");
@@ -551,6 +584,7 @@ class PetControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ABRIGO")
     void deletePet_ValidId_Return200() throws Exception {
         mvc.perform(delete(URL + "/" + pet.getId()))
                 .andExpect(
@@ -559,6 +593,7 @@ class PetControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ABRIGO")
     void deletePet_WrongId_Return404() throws Exception {
         mvc.perform(delete(URL + "/" + UUID.randomUUID()))
                 .andExpect(
@@ -567,6 +602,7 @@ class PetControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ABRIGO")
     void deletePet_InvalidId_Return400() throws Exception {
         mvc.perform(delete(URL + "/a"))
                 .andExpectAll(

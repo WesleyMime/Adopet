@@ -10,6 +10,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.UUID;
@@ -44,6 +45,7 @@ class TutorControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "TUTOR")
     void getAllTutors_Exists_Return200() throws Exception {
         mvc.perform(get(URL))
                 .andExpectAll(
@@ -60,6 +62,7 @@ class TutorControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "TUTOR")
     void getAllTutorsWrongPage_Empty_Return404() throws Exception {
         mvc.perform(get(URL).param("page", "1"))
                 .andExpect(
@@ -69,6 +72,7 @@ class TutorControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "TUTOR")
     void getAllTutors_Empty_Return200() throws Exception {
         repository.deleteAll();
 
@@ -80,6 +84,7 @@ class TutorControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "TUTOR")
     void getTutorById_ValidId_Return200() throws Exception {
         mvc.perform(get(URL + "/" + tutor.getId()))
                 .andExpectAll(
@@ -92,6 +97,7 @@ class TutorControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "TUTOR")
     void getTutorById_WrongId_Return404() throws Exception {
         mvc.perform(get(URL + "/" + UUID.randomUUID()))
                 .andExpect(
@@ -208,6 +214,7 @@ class TutorControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "TUTOR")
     void updateTutor_ValidForm_Return200() throws Exception {
         TutorForm form = new TutorForm("testPutName", "testPut@email.com", "testPutPass");
 
@@ -224,6 +231,7 @@ class TutorControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "TUTOR")
     void updateTutor_WrongId_Return404() throws Exception {
         TutorForm form = new TutorForm("testPutName", "testPut@email.com", "testPutPass");
 
@@ -236,6 +244,7 @@ class TutorControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "TUTOR")
     void updateTutor_InvalidEmail_Return422() throws Exception {
         TutorForm form = new TutorForm("testPutName", "testPut", "testPutPass");
 
@@ -252,6 +261,7 @@ class TutorControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "TUTOR")
     void updateTutor_DuplicateEmail_Return422() throws Exception {
         repository.save(new TutorEntity("testPutName", "testPut@email.com", "testPutPass"));
 
@@ -267,6 +277,7 @@ class TutorControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "TUTOR")
     void updateTutor_InvalidName_Return422() throws Exception {
         TutorForm form = new TutorForm("t", "testPut@email.com", "testPutPass");
 
@@ -284,6 +295,7 @@ class TutorControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "TUTOR")
     void updateTutor_InvalidPassword_Return422() throws Exception {
         TutorForm form = new TutorForm("testPutName", "testPut@email.com", "test");
 
@@ -300,6 +312,7 @@ class TutorControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "TUTOR")
     void patchTutor_ValidForm_Return200() throws Exception {
         TutorForm form = new TutorForm(null, "testPatch@email.com", null);
 
@@ -316,6 +329,7 @@ class TutorControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "TUTOR")
     void patchTutor_WrongId_Return404() throws Exception {
         TutorForm form = new TutorForm(null, "testPatch@email.com", null);
 
@@ -328,6 +342,7 @@ class TutorControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "TUTOR")
     void patchTutor_InvalidEmail_Return422() throws Exception {
         TutorForm form = new TutorForm("testPatchName", "testPatchEmail", null);
 
@@ -344,6 +359,7 @@ class TutorControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "TUTOR")
     void patchTutor_DuplicateEmail_Return422() throws Exception {
         repository.save(new TutorEntity("testPatchName", "testPatch@email.com", "testPatchPass"));
 
@@ -360,6 +376,7 @@ class TutorControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "TUTOR")
     void patchTutor_InvalidName_Return422() throws Exception {
         TutorForm form = new TutorForm("p", null, null);
 
@@ -376,6 +393,7 @@ class TutorControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "TUTOR")
     void patchTutor_ValidName_Return200() throws Exception {
         TutorForm form = new TutorForm("testPatchName", null, null);
 
@@ -392,6 +410,7 @@ class TutorControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "TUTOR")
     void patchTutor_InvalidPassword_Return422() throws Exception {
         TutorForm form = new TutorForm(null, null, "pass");
 
@@ -408,6 +427,7 @@ class TutorControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "TUTOR")
     void deleteTutor_ValidId_Return200() throws Exception {
         mvc.perform(delete(URL + "/" + tutor.getId()))
                 .andExpect(
@@ -416,6 +436,7 @@ class TutorControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "TUTOR")
     void deleteTutor_WrongId_Return404() throws Exception {
         mvc.perform(delete(URL + "/" + UUID.randomUUID()))
                 .andExpect(
@@ -424,6 +445,7 @@ class TutorControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "TUTOR")
     void deleteTutor_InvalidId_Return400() throws Exception {
         mvc.perform(delete(URL + "/a"))
                 .andExpectAll(

@@ -16,6 +16,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.LocalDate;
@@ -55,14 +56,15 @@ public class AdocaoControllerTest {
 
     @BeforeEach
     void beforeEach() {
-        AbrigoEntity abrigo = new AbrigoEntity("Default", "5511955556666", "São Paulo");
+        AbrigoEntity abrigo = new AbrigoEntity("defaultAbrigo@email.com", "defaultPass", "Default",
+                "5511955556666", "São Paulo");
         abrigo = abrigoRepository.save(abrigo);
 
         pet = new PetEntity(abrigo, "Duck", "Small size", "Description", "1 Month",
                 "Address", "https://cs50.ai/static/img/duck_6.jpg");
         pet = petRepository.save(pet);
 
-        tutor = new TutorEntity("default", "default@email.com", "defaultPass");
+        tutor = new TutorEntity("default", "defaultTutor@email.com", "defaultPass");
         tutor = tutorRepository.save(tutor);
     }
 
@@ -75,6 +77,7 @@ public class AdocaoControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ABRIGO")
     void postNewAdocao_ValidForm_Return201() throws Exception {
         AdocaoForm adocaoForm = new AdocaoForm(pet.getId(), tutor.getId());
 
@@ -91,6 +94,7 @@ public class AdocaoControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ABRIGO")
     void postNewAdocao_AlreadyAdopted_Return422() throws Exception {
         AdocaoForm adocaoForm = new AdocaoForm(pet.getId(), tutor.getId());
 
@@ -109,6 +113,7 @@ public class AdocaoControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ABRIGO")
     void postNewAdocao_NoForm_Return422() throws Exception {
         mvc.perform(post(URL))
                 .andExpectAll(
@@ -119,6 +124,7 @@ public class AdocaoControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ABRIGO")
     void postNewAdocao_InvalidPet_Return422() throws Exception {
         AdocaoForm form = new AdocaoForm(null, tutor.getId());
 
@@ -135,6 +141,7 @@ public class AdocaoControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ABRIGO")
     void postNewAdocao_InvalidTutor_Return422() throws Exception {
         AdocaoForm form = new AdocaoForm(pet.getId(), null);
 
@@ -151,6 +158,7 @@ public class AdocaoControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ABRIGO")
     void postNewAdocao_WrongPet_Return422() throws Exception {
         AdocaoForm form = new AdocaoForm(UUID.randomUUID(), tutor.getId());
 
@@ -165,6 +173,7 @@ public class AdocaoControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ABRIGO")
     void postNewAdocao_WrongTutor_Return422() throws Exception {
         AdocaoForm form = new AdocaoForm(pet.getId(), UUID.randomUUID());
 
@@ -178,6 +187,7 @@ public class AdocaoControllerTest {
                 .andDo(print());
     }
     @Test
+    @WithMockUser(roles = "ABRIGO")
     void deleteAdocao_ValidId_Return200() throws Exception {
         AdocaoEntity adocao = repository.save(new AdocaoEntity(pet, tutor));
 
@@ -188,6 +198,7 @@ public class AdocaoControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ABRIGO")
     void deleteAdocao_WrongId_Return404() throws Exception {
         mvc.perform(delete(URL + "/" + UUID.randomUUID()))
                 .andExpect(
@@ -196,6 +207,7 @@ public class AdocaoControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ABRIGO")
     void deleteAdocao_InvalidId_Return400() throws Exception {
         mvc.perform(delete(URL + "/a"))
                 .andExpectAll(
