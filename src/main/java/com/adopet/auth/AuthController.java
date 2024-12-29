@@ -26,7 +26,7 @@ public class AuthController {
     private TutorService service;
 
     @PostMapping("/login")
-    public String authenticate(@RequestBody @Valid LoginForm form) {
+    public TokenDto authenticate(@RequestBody @Valid LoginForm form) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(form.email(), form.password()));
         if (authentication.isAuthenticated())

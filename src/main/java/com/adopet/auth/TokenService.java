@@ -18,18 +18,18 @@ public class TokenService {
     @Value("${adopet.jwt.secret}")
     private String secret;
 
-    public String generateToken(Authentication authentication) {
+    public TokenDto generateToken(Authentication authentication) {
         User user = (User) authentication.getPrincipal();
         Date today = new Date();
         Date dateExpiration = new Date(today.getTime() + (1000 * 60 * 60));
 
-        return "Bearer " + Jwts.builder()
+        return new TokenDto(Jwts.builder()
                 .issuer("Adopet")
                 .subject(user.getUsername())
                 .issuedAt(today)
                 .expiration(dateExpiration)
                 .signWith(getKey())
-                .compact();
+                .compact(), dateExpiration.getTime());
     }
 
     public boolean isValid(String token) {

@@ -1,4 +1,4 @@
 package com.adopet.auth;
 
-public record TokenDto(String token, String type) {
+public record TokenDto(String token, Long expiresAt) {
 }
