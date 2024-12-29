@@ -1,0 +1,60 @@
+<div class="register">
+    <img alt="Adopet" src="/assets/logo-blue.svg" />
+    <p>
+        Ainda não tem cadastro? <br /> Então, antes de buscar seu melhor amigo,
+        precisamos de alguns dados:
+    </p>
+    <form (ngSubmit)="cadastrar()">
+        <label htmlFor="name">Nome</label>
+        <input #name="ngModel" [(ngModel)]="tutor.name" id="name" maxlength="30"
+            minlength="3" name="name" placeholder="Digite seu nome completo" required type="text"/>
+        <div *ngIf="name.invalid && name.dirty" class="error">
+            <div *ngIf="name.hasError('required')">
+                Digite um nome.
+            </div>
+            <div *ngIf="name.hasError('minlength')">
+                Nome deve ter pelo menos 4 caracteres.
+            </div>
+        </div>
+
+        <label htmlFor="email">E-mail</label>
+        <input #email="ngModel" [(ngModel)]="tutor.email" email id="email"
+            name="email" placeholder="Digite seu E-mail" required type="email"/>
+        <div *ngIf="email.invalid && email.dirty" class="error">
+            <div *ngIf="email.hasError('required')">
+                Digite seu E-mail.
+            </div>
+            <div *ngIf="email.hasError('email')">
+                E-mail inválido.
+            </div>
+        </div>
+
+        <label htmlFor="pass-create">Senha</label>
+        <span>
+            <input #password="ngModel" [(ngModel)]="tutor.password" id="pass-create" minlength="8"
+                name="password" placeholder="Crie uma senha" required type="password"/>
+                <div *ngIf="password.invalid && password.dirty" class="error">
+                    <div *ngIf="password.hasError('required')">
+                        Digite uma senha.
+                    </div>
+                    <div *ngIf="password.hasError('minlength')">
+                        Senha deve ter pelo menos 8 caracteres.
+                    </div>
+                </div>
+        </span>
+
+        <label htmlFor="pass-confirm">Confirme sua senha</label>
+        <span>
+            <input #confirm="ngModel" [(ngModel)]="tutor.confirm" id="pass-confirm" name="confirm"
+                placeholder="Repita a senha criada acima" required type="password"/>
+            <div *ngIf="confirm.invalid && confirm.dirty" class="error">
+                Confirme a senha.
+            </div>
+            <div *ngIf="confirm.value != password.value" class="error">
+                As senhas não coincidem.
+            </div>
+        </span>
+
+        <button type="submit">Cadastrar</button>
+    </form>
+</div>
