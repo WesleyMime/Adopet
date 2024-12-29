@@ -1,0 +1,80 @@
+<div class="register">
+    <img alt="Adopet" src="/assets/logo-blue.svg" />
+    <p>
+        Ainda não cadastrou seu abrigo? <br /> Precisamos de alguns dados:
+    </p>
+    <form (ngSubmit)="cadastrar()">
+        <label htmlFor="name">Nome</label>
+        <input #name="ngModel" [(ngModel)]="abrigo.name" id="name" maxlength="100"
+            minlength="3" name="name" placeholder="Digite o nome do abrigo" required type="text"/>
+        <div *ngIf="name.invalid && name.dirty" class="error">
+            <div *ngIf="name.hasError('required')">
+                Digite um nome.
+            </div>
+            <div *ngIf="name.hasError('minlength')">
+                Nome deve ter pelo menos 3 caracteres.
+            </div>
+        </div>
+
+        <label htmlFor="email">E-mail</label>
+        <input #email="ngModel" [(ngModel)]="abrigo.email" email id="email"
+            name="email" placeholder="Digite o E-mail do abrigo" required type="email"/>
+        <div *ngIf="email.invalid && email.dirty" class="error">
+            <div *ngIf="email.hasError('required')">
+                Digite o E-mail.
+            </div>
+            <div *ngIf="email.hasError('email')">
+                E-mail inválido.
+            </div>
+        </div>
+
+        <label htmlFor="pass-create">Senha</label>
+        <span>
+            <input #password="ngModel" [(ngModel)]="abrigo.password" id="pass-create" minlength="8"
+                name="password" placeholder="Crie uma senha" required type="password"/>
+                <div *ngIf="password.invalid && password.dirty" class="error">
+                    <div *ngIf="password.hasError('required')">
+                        Digite uma senha.
+                    </div>
+                    <div *ngIf="password.hasError('minlength')">
+                        Senha deve ter pelo menos 8 caracteres.
+                    </div>
+                </div>
+        </span>
+
+        <label htmlFor="pass-confirm">Confirme sua senha</label>
+        <span>
+            <input #confirm="ngModel" [(ngModel)]="abrigo.confirm" id="pass-confirm" name="confirm"
+                placeholder="Repita a senha criada acima" required type="password"/>
+            <div *ngIf="confirm.invalid && confirm.dirty" class="error">
+                Confirme a senha.
+            </div>
+            <div *ngIf="confirm.value != password.value" class="error">
+                As senhas não coincidem.
+            </div>
+        </span>
+
+        <label htmlFor="phone">Telefone</label>
+        <input #phone="ngModel" [(ngModel)]="abrigo.phone" id="phone"
+            name="phone" placeholder="Digite o telefone do abrigo" required type="number"/>
+        <div *ngIf="phone.invalid && phone.dirty" class="error">
+            <div *ngIf="phone.hasError('required')">
+                Digite um número de telefone.
+            </div>
+        </div>
+
+        <label htmlFor="location">Localização</label>
+        <input #location="ngModel" [(ngModel)]="abrigo.location" id="location" maxlength="50"
+            minlength="8" name="location" placeholder="São Paulo (SP)" required type="text"/>
+        <div *ngIf="location.invalid && location.dirty" class="error">
+            <div *ngIf="location.hasError('required')">
+                Digite a localização.
+            </div>
+            <div *ngIf="location.hasError('minlength')">
+                Localização deve ter pelo menos 8 caracteres.
+            </div>
+        </div>
+
+        <button type="submit">Cadastrar</button>
+    </form>
+</div>

@@ -1,15 +1,16 @@
 import { Component, inject } from '@angular/core';
-import { RegisterService } from './register.service';
+import { RegisterService } from '../register.service';
 import { FormsModule } from '@angular/forms';
 import { Tutor } from './tutor';
 import { NgIf } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-register',
-  imports: [FormsModule, NgIf],
-  templateUrl: './register.component.html'
+  imports: [FormsModule, NgIf, RouterLink],
+  templateUrl: './register-tutor.component.html'
 })
-export class RegisterComponent {
+export class RegisterTutorComponent {
   registerService: RegisterService = inject(RegisterService);
   tutor = new Tutor("", "", "", "");
 
@@ -18,7 +19,5 @@ export class RegisterComponent {
     this.registerService.postNewTutor(this.tutor);
   }
 
-  constructor() {
-  }
-
+  constructor() {}
 }

@@ -2,8 +2,9 @@ import { Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { AbrigoComponent } from './abrigo/abrigo.component';
 import { InitialComponent } from './initial/initial.component';
-import { RegisterComponent } from './register-tutor/register.component';
+import { RegisterTutorComponent } from './register/register-tutor/register-tutor.component';
 import { LoginComponent } from './login/login.component';
+import { RegisterAbrigoComponent } from './register/register-abrigo/register-abrigo.component';
 
 export const routes: Routes = [
     {
@@ -22,7 +23,12 @@ export const routes: Routes = [
     },
     {
         path: 'cadastro',
-        component: RegisterComponent,
+        component: RegisterTutorComponent,
+        title: 'Adopet'
+    },
+    {
+        path: 'cadastro-abrigo',
+        component: RegisterAbrigoComponent,
         title: 'Adopet'
     },
     {

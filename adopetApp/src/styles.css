@@ -453,6 +453,7 @@ button:focus,
 
 .register__forgot,
 .register__newUser,
+.register__newAbrigo,
 .message a {
     color: var(--coral);
     text-align: center;
