@@ -32,7 +32,6 @@ export class LoginService {
   public isLoggedIn(): boolean {
     var expiration = localStorage.getItem("expiresAt");
     if (expiration == null) return false;
-    return Date.now() < Number.parseInt(expiration);
     if (Date.now() > Number.parseInt(expiration)) {
       this.logout;
       return false;

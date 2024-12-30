@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
 import { PetsPage } from './pet-page';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { map, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -7,10 +10,9 @@ import { PetsPage } from './pet-page';
 export class PetsService {
   url = 'http://localhost:8080/pets/adopt'
 
-  async getAllPets(): Promise<PetsPage> {
-    const data = (await fetch(this.url));
-    return await data.json() ?? {};
+  getAllPets(): Observable<PetsPage> {
+    return this.http.get<PetsPage>(this.url);
   }
 
-  constructor() { }
+  constructor(private http: HttpClient, private router: Router) { }
 }

@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Abrigo } from '../abrigo/abrigo';
+import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -9,10 +11,9 @@ export class AbrigosService {
 
   url = 'http://localhost:8080/abrigos/'
 
-  async getAbrigoById(id: String): Promise<Abrigo> {
-    const data = (await fetch(this.url + id));
-    return await data.json() ?? {};
+  getAbrigoById(id: String): Observable<Abrigo> {
+    return this.http.get<Abrigo>(this.url + id);
   }
 
-  constructor() { }
+  constructor(private http: HttpClient) { }
 }

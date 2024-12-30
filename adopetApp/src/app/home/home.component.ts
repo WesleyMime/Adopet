@@ -14,8 +14,7 @@ export class HomeComponent {
   petsPage!: PetsPage;
 
   constructor() {
-    this.petsService.getAllPets().then((petsPage: PetsPage) => {
-      this.petsPage = petsPage;
-    });
+    this.petsService.getAllPets()
+    .subscribe(pets => this.petsPage = pets);
   }
 }

@@ -17,8 +17,7 @@ export class AbrigoComponent {
   constructor() {
     this.abrigoId = this.route.snapshot.params['id'];
 
-    this.abrigoService.getAbrigoById(this.abrigoId).then((abrigo: Abrigo) => {
-      this.abrigo = abrigo;
-    })
+    this.abrigoService.getAbrigoById(this.abrigoId)
+    .subscribe(abrigo => this.abrigo = abrigo);
   }
 }
