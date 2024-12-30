@@ -31,7 +31,7 @@ export class LoginService {
     localStorage.setItem("token", authResponse.token);
     localStorage.setItem("expiresAt", authResponse.expiresAt);
     localStorage.setItem("role", authResponse.role);
-    localStorage.setItem("email", authResponse.username);
+    localStorage.setItem("id", authResponse.id);
   }
 
   public isLoggedIn(): boolean {
@@ -60,6 +60,7 @@ export class LoginService {
     localStorage.removeItem("token");
     localStorage.removeItem("expiresAt");
     localStorage.removeItem("role");
+    localStorage.removeItem("id");
   }
 
   constructor(private http: HttpClient, private router: Router) { }

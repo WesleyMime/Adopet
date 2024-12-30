@@ -2,11 +2,11 @@ import { Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { AbrigoComponent } from './abrigo/abrigo.component';
 import { InitialComponent } from './initial/initial.component';
-import { RegisterTutorComponent } from './register/register-tutor/register-tutor.component';
-import { LoginComponent } from './login/login.component';
-import { RegisterAbrigoComponent } from './register/register-abrigo/register-abrigo.component';
-import { AbrigoAuthGuard } from './login/abrigo-auth.guard';
-import { TutorAuthGuard } from './login/tutor-auth.guard';
+import { RegisterTutorComponent } from './auth/register/register-tutor/register-tutor.component';
+import { LoginComponent } from './auth/login/login.component';
+import { RegisterAbrigoComponent } from './auth/register/register-abrigo/register-abrigo.component';
+import { AbrigoAuthGuard } from './auth/abrigo-auth.guard';
+import { TutorAuthGuard } from './auth/tutor-auth.guard';
 import { PetComponent } from './pet/pet.component';
 
 export const routes: Routes = [

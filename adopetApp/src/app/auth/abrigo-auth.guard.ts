@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, CanActivateChild, Router } from '@angular/router';
-import { LoginService } from './login.service';
+import { LoginService } from './login/login.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +13,7 @@ export class AbrigoAuthGuard implements CanActivate{
     if (this.loginService.isLoggedIn() && this.loginService.isAbrigo()) {
       return true;
     } else {
-      alert("Unauthorized")
+      alert("Faça login para acessar.")
       this.router.navigate(['/']);
       return false;
     }
