@@ -451,9 +451,7 @@ button:focus,
     background: url('/assets/eye-hover.svg');
 }
 
-.register__forgot,
-.register__newUser,
-.register__newAbrigo,
+.register__button,
 .message a {
     color: var(--coral);
     text-align: center;
@@ -521,7 +519,7 @@ div.card {
 
 .card textarea {
     resize: none;
-    max-width: 150px;  
+    max-width: 150px;
 }
 
 .card h4,
@@ -610,6 +608,15 @@ a.card__contact:focus::before {
 .message form > button {
     display: block;
     margin: 0 auto;
+}
+
+.message a {
+    text-decoration-line: none;
+}
+
+.copy_id img {
+    width: 18px;
+    height: 18px;
 }
 
 /* #endregion */

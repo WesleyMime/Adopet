@@ -1,11 +1,23 @@
-export interface Pet {
+export class Pet {
+    id: any;
+    abrigo: any;
+    name: any;
+    age: any;
+    size: any;
+    adopted: any;
+    address: any;
+    image: any;
+    description: any;
+
+    constructor (
     id: string,
-    abrigo: string,
+    abrigo: string | null,
     name: string,
-    size: "Porte médio";
+    size: string,
     description: string,
     adopted: boolean,
     age: string,
     address: string,
     image: string
+    ) {}
 }

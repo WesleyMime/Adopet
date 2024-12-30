@@ -33,8 +33,8 @@ public class PetService {
         return new PagedModel<>(petEntityPage.map(mapper::toPetDto));
     }
 
-    public PagedModel<PetWithoutAbrigoDto> getAllPetsByAbrigo(String abrigoEmail, Integer page) {
-        Page<PetWithoutAbrigoDto> petEntityPage = repository.findByAbrigoEmail(abrigoEmail,
+    public PagedModel<PetWithoutAbrigoDto> getAllPetsByAbrigoId(UUID id, Integer page) {
+        Page<PetWithoutAbrigoDto> petEntityPage = repository.findByAbrigoId(id,
                 Pageable.ofSize(10).withPage(page));
         return new PagedModel<>(petEntityPage);
     }

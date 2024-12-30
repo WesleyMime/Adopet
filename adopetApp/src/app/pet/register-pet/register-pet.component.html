@@ -1,0 +1,80 @@
+<div class="register">
+    <p>
+        Cadastre um novo pet para adoção:
+    </p>
+    <form (ngSubmit)="register()">
+        <label htmlFor="name">Nome</label>
+        <input #name="ngModel" [(ngModel)]="pet.name" id="name" maxlength="30"
+            minlength="3" name="name" placeholder="Nome" required type="text"/>
+        <div *ngIf="name.invalid && name.dirty" class="error">
+            <div *ngIf="name.hasError('required')">
+                Digite um nome.
+            </div>
+            <div *ngIf="name.hasError('minlength')">
+                Nome deve ter pelo menos 3 caracteres.
+            </div>
+        </div>
+
+        <label htmlFor="age">Idade</label>
+        <input #age="ngModel" [(ngModel)]="pet.age" id="age" maxlength="20"
+            minlength="4" name="age" placeholder="1 Mês" required type="text"/>
+        <div *ngIf="age.invalid && age.dirty" class="error">
+            <div *ngIf="age.hasError('required')">
+                Digite uma idade.
+            </div>
+            <div *ngIf="age.hasError('minlength')">
+                Idade deve ter pelo menos 4 caracteres.
+            </div>
+        </div>
+
+        <label htmlFor="address">Endereço</label>
+        <input #address="ngModel" [(ngModel)]="pet.address" id="address" maxlength="50"
+            minlength="8" name="address" placeholder="São Paulo (SP)" required type="text"/>
+        <div *ngIf="address.invalid && address.dirty" class="error">
+            <div *ngIf="address.hasError('required')">
+                Digite um endereço.
+            </div>
+            <div *ngIf="address.hasError('minlength')">
+                Endereço deve ter pelo menos 4 caracteres.
+            </div>
+        </div>
+
+        <label htmlFor="size">Tamanho</label>
+        <input #size="ngModel" [(ngModel)]="pet.size" id="size" maxlength="20"
+            minlength="8" name="size" placeholder="Porte médio" required type="text"/>
+        <div *ngIf="size.invalid && size.dirty" class="error">
+            <div *ngIf="size.hasError('required')">
+                Digite o tamanho.
+            </div>
+            <div *ngIf="size.hasError('minlength')">
+                Tamanho deve ter pelo menos 8 caracteres.
+            </div>
+        </div>
+
+        <label htmlFor="description">Descrição</label>
+        <input #description="ngModel" [(ngModel)]="pet.description" id="description" maxlength="255"
+            minlength="10" name="description" placeholder="Descrição do pet" required type="text"/>
+        <div *ngIf="description.invalid && description.dirty" class="error">
+            <div *ngIf="description.hasError('required')">
+                Digite a descrição.
+            </div>
+            <div *ngIf="description.hasError('minlength')">
+                Descrição deve ter pelo menos 10 caracteres.
+            </div>
+        </div>
+
+        <label htmlFor="image">Imagem</label>
+        <input #image="ngModel" [(ngModel)]="pet.image" id="image" name="image" placeholder="https://cs50.ai/static/img/duck_31.jpg"
+            required type="url" url/>
+        <div *ngIf="image.invalid && image.dirty" class="error">
+            <div *ngIf="image.hasError('required')">
+                Digite a URL da imagem.
+            </div>
+            <div *ngIf="image.hasError('url')">
+                Imagem deve ser uma URL válida.
+            </div>
+        </div>
+
+        <button type="submit">Cadastrar Pet</button>
+    </form>
+</div>

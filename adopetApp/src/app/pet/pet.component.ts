@@ -2,10 +2,11 @@ import { Component, inject } from '@angular/core';
 import { PetsService } from './pets.service';
 import { PetsPage } from './pet-page';
 import { NgFor, NgIf } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-pet',
-  imports: [NgFor],
+  imports: [NgFor, RouterLink, NgIf],
   templateUrl: './pet.component.html'
 })
 export class PetComponent {
@@ -14,8 +15,8 @@ export class PetComponent {
 
   constructor(
   ) {
-    var email = localStorage.getItem("email");
-    this.petsService.getAllPetsFromAbrigo(email)
+    var id = localStorage.getItem("id");
+    this.petsService.getAllPetsFromAbrigoId(id)
     .subscribe(petsPage => this.petsPage = petsPage);
   }
 }

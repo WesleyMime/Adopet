@@ -1,5 +1,7 @@
 <div class="home">
     <p>Olá! <br /> Veja os pets registrados no abrigo:</p>
+    <a class="register__button" routerLink="cadastro-pet"><button>Cadastrar pet</button></a>
+    <br>
     <div class="cards">
         <div *ngFor="let pet of petsPage.content" class="card">
             <h4>{{ pet.name }}</h4>

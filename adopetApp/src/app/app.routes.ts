@@ -8,6 +8,8 @@ import { RegisterAbrigoComponent } from './auth/register/register-abrigo/registe
 import { AbrigoAuthGuard } from './auth/abrigo-auth.guard';
 import { TutorAuthGuard } from './auth/tutor-auth.guard';
 import { PetComponent } from './pet/pet.component';
+import { RegisterPetComponent } from './pet/register-pet/register-pet.component';
+import { AdocaoPetComponent } from './pet/adocao-pet/adocao-pet.component';
 
 export const routes: Routes = [
     {
@@ -26,7 +28,25 @@ export const routes: Routes = [
         canActivate: [AbrigoAuthGuard]
     },
     {
-        path: 'pet/:id',
+        path: 'pets/cadastro-pet',
+        component: RegisterPetComponent,
+        title: 'Adopet',
+        canActivate: [AbrigoAuthGuard]
+    },
+    {
+        path: 'pets/adocao/:id',
+        component: AdocaoPetComponent,
+        title: 'Adopet',
+        canActivate: [AbrigoAuthGuard]
+    },
+    {
+        path: 'pets/:id',
+        component: AbrigoComponent,
+        title: 'Adopet',
+        canActivate: [TutorAuthGuard]
+    },
+    {
+        path: 'abrigo/:id',
         component: AbrigoComponent,
         title: 'Adopet',
         canActivate: [TutorAuthGuard]

@@ -1,7 +1,6 @@
 package com.adopet.pet;
 
 import com.adopet.CrudController;
-import com.adopet.abrigo.dto.AbrigoForm;
 import com.adopet.pet.dto.PetDto;
 import com.adopet.pet.dto.PetForm;
 import com.adopet.pet.dto.PetPatchForm;
@@ -29,10 +28,10 @@ public class PetController implements CrudController<PetDto, PetForm, PetPatchFo
         return ResponseEntity.ok(petPagedModel);
     }
 
-    @PostMapping("/abrigo")
-    public ResponseEntity<PagedModel<PetWithoutAbrigoDto>> getAllByAbrigo(@RequestBody AbrigoForm abrigoForm, Integer page) {
+    @GetMapping("/abrigo/{id}")
+    public ResponseEntity<PagedModel<PetWithoutAbrigoDto>> getAllByAbrigoId(@PathVariable("id") UUID id, Integer page) {
         page = page == null ? 0 : page;
-        PagedModel<PetWithoutAbrigoDto> petPagedModel = service.getAllPetsByAbrigo(abrigoForm.email(), page);
+        PagedModel<PetWithoutAbrigoDto> petPagedModel = service.getAllPetsByAbrigoId(id, page);
         if (petPagedModel.getContent().isEmpty())
             return ResponseEntity.notFound().build();
         return ResponseEntity.ok(petPagedModel);

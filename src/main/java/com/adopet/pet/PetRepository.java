@@ -12,5 +12,5 @@ import java.util.UUID;
 public interface PetRepository extends JpaRepository<PetEntity, UUID> {
     Page<PetEntity> findByAdoptedFalse(Pageable pageable);
 
-    Page<PetWithoutAbrigoDto> findByAbrigoEmail(String abrigoEmail, Pageable pageable);
+    Page<PetWithoutAbrigoDto> findByAbrigoId(UUID id, Pageable pageable);
 }
