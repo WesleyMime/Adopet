@@ -1,16 +1,15 @@
 package com.adopet.pet;
 
 import com.adopet.CrudController;
+import com.adopet.abrigo.dto.AbrigoForm;
 import com.adopet.pet.dto.PetDto;
 import com.adopet.pet.dto.PetForm;
 import com.adopet.pet.dto.PetPatchForm;
+import com.adopet.pet.dto.PetWithoutAbrigoDto;
 import lombok.AllArgsConstructor;
 import org.springframework.data.web.PagedModel;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.UUID;
@@ -25,6 +24,15 @@ public class PetController implements CrudController<PetDto, PetForm, PetPatchFo
     public ResponseEntity<PagedModel<PetDto>> getAll(Integer page) {
         page = page == null ? 0 : page;
         PagedModel<PetDto> petPagedModel = service.getAllPets(page);
+        if (petPagedModel.getContent().isEmpty())
+            return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(petPagedModel);
+    }
+
+    @PostMapping("/abrigo")
+    public ResponseEntity<PagedModel<PetWithoutAbrigoDto>> getAllByAbrigo(@RequestBody AbrigoForm abrigoForm, Integer page) {
+        page = page == null ? 0 : page;
+        PagedModel<PetWithoutAbrigoDto> petPagedModel = service.getAllPetsByAbrigo(abrigoForm.email(), page);
         if (petPagedModel.getContent().isEmpty())
             return ResponseEntity.notFound().build();
         return ResponseEntity.ok(petPagedModel);

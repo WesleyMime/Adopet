@@ -7,6 +7,7 @@ import com.adopet.exceptions.InvalidAbrigoException;
 import com.adopet.pet.dto.PetDto;
 import com.adopet.pet.dto.PetForm;
 import com.adopet.pet.dto.PetPatchForm;
+import com.adopet.pet.dto.PetWithoutAbrigoDto;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -30,6 +31,12 @@ public class PetService {
         Page<PetEntity> petEntityPage = repository.findAll(
                 Pageable.ofSize(10).withPage(page));
         return new PagedModel<>(petEntityPage.map(mapper::toPetDto));
+    }
+
+    public PagedModel<PetWithoutAbrigoDto> getAllPetsByAbrigo(String abrigoEmail, Integer page) {
+        Page<PetWithoutAbrigoDto> petEntityPage = repository.findByAbrigoEmail(abrigoEmail,
+                Pageable.ofSize(10).withPage(page));
+        return new PagedModel<>(petEntityPage);
     }
 
     public PagedModel<PetDto> getNotAdopted(Integer page) {
