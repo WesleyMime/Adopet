@@ -3,7 +3,15 @@
     <nav>
         <div>
         <img class="header__logo" src="/assets/logo-clear.svg" alt="" aria-hidden="true" />
-        <a aria-label="Tela inicial" class="header__home" routerLink="" ></a>
+        
+        <div *ngIf="role == '[ABRIGO]'; then thenBlock else elseBlock"></div>
+        <ng-template #thenBlock>
+            <a aria-label="Tela inicial" class="header__home" routerLink="/pets" ></a>
+        </ng-template>
+        <ng-template #elseBlock>
+            <a aria-label="Tela inicial" class="header__home" routerLink="/home" ></a>
+        </ng-template>
+
         <link class="header__message" to="/mensagem" aria-label="Ir para Mensagens">
         </div>
     </nav>

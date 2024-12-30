@@ -7,6 +7,7 @@ import { LoginComponent } from './login/login.component';
 import { RegisterAbrigoComponent } from './register/register-abrigo/register-abrigo.component';
 import { AbrigoAuthGuard } from './login/abrigo-auth.guard';
 import { TutorAuthGuard } from './login/tutor-auth.guard';
+import { PetComponent } from './pet/pet.component';
 
 export const routes: Routes = [
     {
@@ -17,6 +18,12 @@ export const routes: Routes = [
         path: 'home',
         component: HomeComponent,
         title: 'Adopet'
+    },
+    {
+        path: 'pets',
+        component: PetComponent,
+        title: 'Adopet',
+        canActivate: [AbrigoAuthGuard]
     },
     {
         path: 'pet/:id',

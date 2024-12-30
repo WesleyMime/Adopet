@@ -1,7 +1,7 @@
 import { Component, inject, Inject } from '@angular/core';
-import { PetsService } from './pets.service';
+import { PetsService } from '../pet/pets.service';
 import { NgFor } from '@angular/common';
-import { PetsPage } from './pet-page';
+import { PetsPage } from '../pet/pet-page';
 import { RouterModule } from '@angular/router';
 
 @Component({

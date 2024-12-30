@@ -8,10 +8,14 @@ import { map, Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class PetsService {
-  url = 'http://localhost:8080/pets/adopt'
+  url = 'http://localhost:8080/pets'
 
   getAllPets(): Observable<PetsPage> {
-    return this.http.get<PetsPage>(this.url);
+    return this.http.get<PetsPage>(this.url + "/adopt");
+  }
+
+  getAllPetsFromAbrigo(email: string | null): Observable<PetsPage> {
+    return this.http.post<PetsPage>(this.url + "/abrigo", {email: email});
   }
 
   constructor(private http: HttpClient, private router: Router) { }

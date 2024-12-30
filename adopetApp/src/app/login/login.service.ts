@@ -14,7 +14,11 @@ export class LoginService {
     .subscribe({
       next: (v) => {
         this.setSession(v)
-        this.router.navigate(["/home"])
+        if (this.isAbrigo()) {
+            this.router.navigate(["/pets"])
+        } else {
+          this.router.navigate(["/home"])
+        }
       },
       error: (e: HttpErrorResponse) => {
         alert("Erro ao entrar, verifique formulário. " + e.status)

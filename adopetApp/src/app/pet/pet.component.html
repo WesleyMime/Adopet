@@ -1,0 +1,15 @@
+<div class="home">
+    <p>Olá! <br /> Veja os pets registrados no abrigo:</p>
+    <div class="cards">
+        <div *ngFor="let pet of petsPage.content" class="card">
+            <h4>{{ pet.name }}</h4>
+            <ul>
+                <li>{{ pet.age }}</li>
+                <li>{{ pet.size }}</li>
+                <li>Adotado: {{ pet.adopted }}</li>
+            </ul>
+            <p class="card__city">{{ pet.address }}</p>
+            <img [alt]="pet.name" [src]="pet.image" style="max-width: 90%;">
+        </div>
+    </div>
+</div>
