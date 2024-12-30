@@ -21,24 +21,24 @@ public class AbrigoService {
 
     private final MapStructMapper mapper;
 
-    public PagedModel<AbrigoDto> getAllTutores(Integer page) {
+    public PagedModel<AbrigoDto> getAllAbrigos(Integer page) {
         Page<AbrigoEntity> abrigoEntityPage = repository.findAll(
                 Pageable.ofSize(10).withPage(page));
         return new PagedModel<>(abrigoEntityPage.map(mapper::toAbrigoDto));
     }
 
-    public AbrigoDto getTutorById(UUID id) {
+    public AbrigoDto getAbrigoById(UUID id) {
         Optional<AbrigoEntity> abrigoEntityOptional = repository.findById(id);
         return abrigoEntityOptional.map(mapper::toAbrigoDto).orElse(null);
     }
 
-    public AbrigoDto insertNewTutor(AbrigoForm AbrigoForm) {
+    public AbrigoDto insertNewAbrigo(AbrigoForm AbrigoForm) {
         AbrigoEntity abrigoEntity = mapper.toAbrigoEntity(AbrigoForm);
         AbrigoEntity saved = repository.save(abrigoEntity);
         return mapper.toAbrigoDto(saved);
     }
 
-    public AbrigoDto updateTutor(UUID id, AbrigoForm AbrigoForm) {
+    public AbrigoDto updateAbrigo(UUID id, AbrigoForm AbrigoForm) {
         Optional<AbrigoEntity> optionalAbrigoEntity = repository.findById(id);
         if (optionalAbrigoEntity.isEmpty())
             return null;
@@ -48,7 +48,7 @@ public class AbrigoService {
         return mapper.toAbrigoDto(repository.save(updated));
     }
 
-    public AbrigoDto patchTutor(UUID id, AbrigoPatchForm AbrigoForm) {
+    public AbrigoDto patchAbrigo(UUID id, AbrigoPatchForm AbrigoForm) {
         Optional<AbrigoEntity> optionalAbrigoEntity = repository.findById(id);
         if (optionalAbrigoEntity.isEmpty())
             return null;
@@ -58,7 +58,7 @@ public class AbrigoService {
         return mapper.toAbrigoDto(repository.save(updated));
     }
 
-    public AbrigoDto deleteTutor(UUID id) {
+    public AbrigoDto deleteAbrigo(UUID id) {
         Optional<AbrigoEntity> optionalAbrigoEntity = repository.findById(id);
         if (optionalAbrigoEntity.isEmpty())
             return null;

@@ -22,34 +22,34 @@ public class AbrigoController implements CrudController<AbrigoDto, AbrigoForm, A
 
     public ResponseEntity<PagedModel<AbrigoDto>> getAll(Integer page) {
         page = page == null ? 0 : page;
-        PagedModel<AbrigoDto> abrigoPagedModel = service.getAllTutores(page);
+        PagedModel<AbrigoDto> abrigoPagedModel = service.getAllAbrigos(page);
         if (abrigoPagedModel.getContent().isEmpty())
             return ResponseEntity.notFound().build();
         return ResponseEntity.ok(abrigoPagedModel);
     }
 
     public ResponseEntity<AbrigoDto> getById(UUID id) {
-        AbrigoDto abrigoById = service.getTutorById(id);
+        AbrigoDto abrigoById = service.getAbrigoById(id);
         return ResponseEntity.ofNullable(abrigoById);
     }
 
     public ResponseEntity<AbrigoDto> insertNew(AbrigoForm AbrigoForm) {
-        AbrigoDto abrigo = service.insertNewTutor(AbrigoForm);
+        AbrigoDto abrigo = service.insertNewAbrigo(AbrigoForm);
         return ResponseEntity.created(URI.create("/abrigos/" + abrigo.id().toString())).body(abrigo);
     }
 
     public ResponseEntity<AbrigoDto> update(UUID id, AbrigoForm AbrigoForm) {
-        AbrigoDto updatedTutor= service.updateTutor(id, AbrigoForm);
+        AbrigoDto updatedTutor= service.updateAbrigo(id, AbrigoForm);
         return ResponseEntity.ofNullable(updatedTutor);
     }
 
     public ResponseEntity<AbrigoDto> patch(UUID id, AbrigoPatchForm AbrigoForm) {
-        AbrigoDto patchedTutor= service.patchTutor(id, AbrigoForm);
+        AbrigoDto patchedTutor= service.patchAbrigo(id, AbrigoForm);
         return ResponseEntity.ofNullable(patchedTutor);
     }
 
     public ResponseEntity<AbrigoDto> delete(UUID id) {
-        AbrigoDto abrigo = service.deleteTutor(id);
+        AbrigoDto abrigo = service.deleteAbrigo(id);
         return ResponseEntity.ofNullable(abrigo);
     }
 }

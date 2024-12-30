@@ -15,8 +15,8 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Optional<UserDto> user = repository.findByEmail(username);
-        UserDto userEntity = user.orElseThrow();
-        return new User(userEntity.email(), userEntity.password(), userEntity.authorities());
+        Optional<UserEntity> user = repository.findByEmail(username);
+        UserEntity userEntity = user.orElseThrow();
+        return new User(userEntity.getEmail(), userEntity.getPassword(), userEntity.getAuthorities());
     }
 }
