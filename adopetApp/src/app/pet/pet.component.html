@@ -8,10 +8,13 @@
             <ul>
                 <li>{{ pet.age }}</li>
                 <li>{{ pet.size }}</li>
-                <li>Adotado: {{ pet.adopted }}</li>
             </ul>
             <p class="card__city">{{ pet.address }}</p>
             <img [alt]="pet.name" [src]="pet.image" style="max-width: 90%;">
+            <div *ngIf="!pet.adopted">
+                <a [routerLink]="['adocao', pet.id]" style="color: var(--blue);">Iniciar adoção</a>
+            </div>
+            <div *ngIf="pet.adopted" style="color: var(--blue);">Adotado</div>
         </div>
     </div>
 </div>

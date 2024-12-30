@@ -1,0 +1,24 @@
+<div class="register">
+    <p>
+        Cadastre uma nova adoção:
+    </p>
+    <form (ngSubmit)="cadastrar()">
+        <label htmlFor="pet">Id do Pet</label>
+        <input [placeholder]="[(adoptedPet)]" disabled
+            id="pet" name="pet" type="text"/>
+
+        <label htmlFor="tutor">Id do Tutor</label>
+        <input #tutor="ngModel" [(ngModel)]="adocao.tutor" id="tutor" maxlength="36"
+            minlength="36" name="tutor" required type="text"/>
+        <div *ngIf="tutor.invalid && tutor.dirty" class="error">
+            <div *ngIf="tutor.hasError('required')">
+                Digite o id do tutor.
+            </div>
+            <div *ngIf="tutor.hasError('minlength')">
+                O id precisa ter 36 caracteres.
+            </div>
+        </div>
+
+        <button type="submit">Cadastrar Adoção</button>
+    </form>
+</div>
