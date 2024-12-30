@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { LoginForm } from './LoginForm';
-import { HttpClient, HttpErrorResponse, HttpInterceptorFn } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -26,7 +26,8 @@ export class LoginService {
   setSession(authResponse: any) {
     localStorage.setItem("token", authResponse.token);
     localStorage.setItem("expiresAt", authResponse.expiresAt);
-
+    localStorage.setItem("role", authResponse.role);
+    localStorage.setItem("email", authResponse.username);
   }
 
   public isLoggedIn(): boolean {
@@ -39,9 +40,22 @@ export class LoginService {
     return true;
   }
 
+  public isAbrigo(): boolean {
+    var role = localStorage.getItem("role");
+    if (role == "[ABRIGO]") return true;
+    return false;
+  }
+
+  public isTutor(): boolean {
+    var role = localStorage.getItem("role");
+    if (role == "[TUTOR]") return true;
+    return false;
+  }
+
   logout() {
     localStorage.removeItem("token");
     localStorage.removeItem("expiresAt");
+    localStorage.removeItem("role");
   }
 
   constructor(private http: HttpClient, private router: Router) { }

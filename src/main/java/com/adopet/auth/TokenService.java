@@ -29,7 +29,10 @@ public class TokenService {
                 .issuedAt(today)
                 .expiration(dateExpiration)
                 .signWith(getKey())
-                .compact(), dateExpiration.getTime());
+                .compact(),
+                dateExpiration.getTime(),
+                user.getAuthorities().toString(),
+                user.getUsername()); // TODO get from the jwt directly
     }
 
     public boolean isValid(String token) {

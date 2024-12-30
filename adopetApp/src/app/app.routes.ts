@@ -5,6 +5,8 @@ import { InitialComponent } from './initial/initial.component';
 import { RegisterTutorComponent } from './register/register-tutor/register-tutor.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterAbrigoComponent } from './register/register-abrigo/register-abrigo.component';
+import { AbrigoAuthGuard } from './login/abrigo-auth.guard';
+import { TutorAuthGuard } from './login/tutor-auth.guard';
 
 export const routes: Routes = [
     {
@@ -19,7 +21,8 @@ export const routes: Routes = [
     {
         path: 'pet/:id',
         component: AbrigoComponent,
-        title: 'Adopet'
+        title: 'Adopet',
+        canActivate: [TutorAuthGuard]
     },
     {
         path: 'cadastro',
