@@ -186,7 +186,7 @@ class AbrigoControllerTest {
     }
     @Test
     void postNewAbrigo_InvalidEmail_Return422() throws Exception {
-        AbrigoForm form = new AbrigoForm("testName","testemail.com", "testPass", "123456789", "t");
+        AbrigoForm form = new AbrigoForm("testName","testemail.com", "testPass", "123456789", "TestLand");
 
         mvc.perform(post(URL)
                         .contentType(MediaType.APPLICATION_JSON)

@@ -14,7 +14,7 @@ export class TutorAuthGuard implements CanActivate{
       return true;
     } else {
       alert("Faça login para acessar.")
-      this.router.navigate(['/']);
+      this.router.navigate(['/login']);
       return false;
     }
   }

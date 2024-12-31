@@ -48,10 +48,16 @@ public class SecurityConfig {
                             "/pets/adopt")
                             .permitAll();
                     requests.requestMatchers(
-                            "/abrigos/*", "/adocao", "/pets", "/pets/*")
+                            "/adocao", "/pets", "/pets/*")
                             .hasRole("ABRIGO");
                     requests.requestMatchers(
-                            "/tutores", "/tutores/*")
+                                    HttpMethod.GET, "/abrigos/*")
+                            .hasAnyRole("TUTOR", "ABRIGO");
+                    requests.requestMatchers(
+                                    "/abrigos/*")
+                            .hasRole("ABRIGO");
+                    requests.requestMatchers(
+                        "/tutores", "/tutores/*")
                             .hasRole("TUTOR");
                     requests.anyRequest()
                             .authenticated();
@@ -68,7 +74,7 @@ public class SecurityConfig {
 
     UrlBasedCorsConfigurationSource apiConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:4200"));
+        configuration.setAllowedOrigins(List.of("http://localhost:4200", "http://localhost"));
         configuration.setAllowedMethods(List.of("*"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setExposedHeaders(List.of("Authorization"));
