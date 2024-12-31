@@ -1,5 +1,5 @@
 <h1 align="center"> Adopet </h1>
-[![Video Demo:](https://img.youtube.com/vi/Hrt1_oqMih8/0.jpg)](https://www.youtube.com/watch?v=Hrt1_oqMih8 "Project CS50x Adopet")
+[![Video Demo:](https://img.youtube.com/vi/Hrt1_oqMih8/0.jpg)] (https://www.youtube.com/watch?v=Hrt1_oqMih8 "Project CS50x Adopet")
 
 ## About the project
 
@@ -10,7 +10,7 @@ or that I changed the world. <br> So I thought that this idea of project was goi
 
 The project consists of: <br>
 A Spring Boot API that stores people and animal shelters with endpoints to access and modify the data, including endpoints 
-to access pets from a specific shelter,<br> only pets that aren't adopted yet and an endpoint to connect 
+to access pets from a specific shelter, see only pets that aren't adopted yet and an endpoint to connect 
 animal shelters with people interested in their pets. <br>
 An Angular application to navigate through the endpoints in a friendly way, taking care of the authentication with jwt and
 sending some parameters automatically.
@@ -28,11 +28,7 @@ For better management of activities, trello was used.
 
 The programming language, frameworks and technologies were of free choice. I chose to develop the project with the following technologies:
 
-<img alt="Java" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original-wordmark.svg" width="50" height="50" /> 
-<img alt="Spring" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/spring/spring-original-wordmark.svg" width="50" height="50" /> 
-<img alt="PostgreSQL" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original-wordmark.svg" width="50" height="50"/> 
-<img alt="Docker" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-plain-wordmark.svg" width="50" height="50" /> 
-<img alt="Angular" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/angular/angular-original.svg" width="50" height="50" />
+<img alt="Java" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original-wordmark.svg" width="50" height="50" /> <img alt="Spring" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/spring/spring-original-wordmark.svg" width="50" height="50" /> <img alt="PostgreSQL" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original-wordmark.svg" width="50" height="50"/> <img alt="Docker" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-plain-wordmark.svg" width="50" height="50" /> <img alt="Angular" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/angular/angular-original.svg" width="50" height="50" />
 
 I really wanted to try building something with Angular, after a lot of tutorials and documentations on the internet,
 I managed to build the front-end for the Spring API, and I am very proud of it.
@@ -57,12 +53,14 @@ for the entities is of type JOINED. <br>
 Entities use UUID as their ids, with makes very unlikely that someone guesses the id of another person, but can also be <br>
 inconvenient for the users when trying to get a entity by the id. <br>
 
+![relationships real large](https://github.com/user-attachments/assets/0d9db12f-ee61-4bc0-90d5-eebddd3da4ee)
+
 <b>GlobalControllerExceptionHandler.java</b> controls treats all the exceptions that can (and shouldn't) happen; <br>
 <b>MapStructMapper.java</b> builds mappers automatically just based on method signatures, saving a lot of time; <br>
 <b>EncodeDecorator.java</b> makes sure that all the entities with passwords, have them encoded before being saved; <br>
 <b>SecurityConfig.java</b> takes care of the security of the API, with CORS configuration for only the Front-End to be able to connect, <br>
 provides authentication related @Beans and secure endpoints based on roles; <br>
-<b>TokenService.java</b> validates the Json Web Tokens and generates then, sending the token with the subject (user email) and expiration date,<br> 
+<b>TokenService.java</b> validates the Json Web Tokens and generates then, sending the token with the subject (user email) and expiration date,
 with the token also comes the expiration date again, user roles and the user id (to facilitate on the Front-end); <br>
 <b>TokenAuthenticationFilter.java</b>> is a filter that sees every request and makes sure that the users who sent the "Bearer token"<br>
 can access the secured endpoints. <br>
