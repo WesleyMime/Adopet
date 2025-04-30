@@ -2,15 +2,16 @@ import { Injectable } from '@angular/core';
 import { LoginForm } from './LoginForm';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoginService {
-  url = "http://localhost:8080/auth/login"
+  private apiUrl = environment.API_URL
 
   login(login: LoginForm) {
-    this.http.post(this.url, login)
+    this.http.post(this.apiUrl + "/auth/login", login)
     .subscribe({
       next: (v) => {
         this.setSession(v)

@@ -5,23 +5,24 @@ import { Router } from '@angular/router';
 import { map, Observable } from 'rxjs';
 import { Pet } from './pet';
 import { Adocao } from './adocao-pet/adocao';
+import { environment } from '../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PetsService {
-  url = 'http://localhost:8080/pets'
+  private apiUrl = environment.API_URL
 
   getAllPets(): Observable<PetsPage> {
-    return this.http.get<PetsPage>(this.url + "/adopt");
+    return this.http.get<PetsPage>(this.apiUrl + "/pets/adopt");
   }
 
   getAllPetsFromAbrigoId(id: string | null): Observable<PetsPage> {
-    return this.http.get<PetsPage>(this.url + "/abrigo/" + id);
+    return this.http.get<PetsPage>(this.apiUrl + "/pets/abrigo/" + id);
   }
 
   cadastrarPet(pet: Pet | undefined) {
-    this.http.post<Pet>(this.url, pet)
+    this.http.post<Pet>(this.apiUrl, pet)
     .subscribe({
       next: (v) => {
         console.log(v)

@@ -3,15 +3,16 @@ import { Tutor } from './register-tutor/tutor';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Abrigo } from './register-abrigo/abrigo';
 import { Router } from '@angular/router';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RegisterService {
-  url = 'http://localhost:8080'
+  private apiUrl = environment.API_URL
 
   postNewTutor(tutor: Tutor) {
-    this.http.post(this.url + "/tutores", tutor)
+    this.http.post(this.apiUrl + "/tutores", tutor)
     .subscribe({
       next: (v) => {
         console.log(v)
@@ -26,7 +27,7 @@ export class RegisterService {
   }
 
   async postNewAbrigo(abrigo: Abrigo) {
-    this.http.post(this.url + "/abrigos", abrigo)
+    this.http.post(this.apiUrl + "/abrigos", abrigo)
     .subscribe({
       next: (v) => {
         console.log(v)

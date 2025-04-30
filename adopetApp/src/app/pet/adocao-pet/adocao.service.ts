@@ -3,15 +3,16 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { map, Observable } from 'rxjs';
 import { Adocao } from './adocao';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AdocaoService {
-  url = 'http://localhost:8080/adocao'
+  private apiUrl = environment.API_URL
 
   adotarPet(adocao: Adocao | undefined) {
-    this.http.post<Adocao>(this.url, adocao)
+    this.http.post<Adocao>(this.apiUrl + "/adocao", adocao)
     .subscribe({
       next: (v) => {
         console.log(v)
