@@ -37,9 +37,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain config(HttpSecurity http) throws Exception {
         http
-                .cors((cors) -> {
-                    cors.configurationSource(apiConfigurationSource());
-                })
+                .cors((cors) -> cors.configurationSource(apiConfigurationSource()))
                 .authorizeHttpRequests((requests) -> {
                     requests.requestMatchers(
                             HttpMethod.POST, "/auth/*", "/abrigos", "/tutores")
@@ -63,19 +61,17 @@ public class SecurityConfig {
                             .authenticated();
                 })
                 .csrf(AbstractHttpConfigurer::disable)
-                .sessionManagement((configure) -> {
-                    configure.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-                })
+                .sessionManagement((configure) ->
+                        configure.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(new TokenAuthenticationFilter(tokenService, repository),
                         UsernamePasswordAuthenticationFilter.class);
-        ;
         return http.build();
     }
 
     UrlBasedCorsConfigurationSource apiConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:4200", "http://localhost"));
-        configuration.setAllowedMethods(List.of("*"));
+        configuration.setAllowedOriginPatterns(List.of("https://adopet.marujo.site", "http://localhost:[4200,80]", "http://localhost"));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setExposedHeaders(List.of("Authorization"));
         configuration.setMaxAge(3600L);
