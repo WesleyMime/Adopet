@@ -42,11 +42,13 @@ jobs:
         run: docker compose -f docker-compose-dev.yml build
 
       - name: Tag Docker Images
-        run: docker tag adopet-front-end wesleymime/adopet-front-end
-          docker tag adopet wesleymime/adopet
+        run: |
+          docker tag adopet-front-end wesleymime/adopet-front-end
+          docker tag adopet:0.0.1-SNAPSHOT wesleymime/adopet
 
       - name: Publish Docker images
-        run: docker push wesleymime/adopet-front-end
+        run: | 
+          docker push wesleymime/adopet-front-end
           docker push wesleymime/adopet
 
   dependency-submission:
