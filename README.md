@@ -1,5 +1,4 @@
 <h1 align="center"> Adopet </h1>
-[![Video Demo:](https://img.youtube.com/vi/Hrt1_oqMih8/0.jpg)] (https://www.youtube.com/watch?v=Hrt1_oqMih8 "Project CS50x Adopet")
 
 ## About the project
 
@@ -28,7 +27,7 @@ For better management of activities, trello was used.
 
 The programming language, frameworks and technologies were of free choice. I chose to develop the project with the following technologies:
 
-<img alt="Java" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original-wordmark.svg" width="50" height="50" /> <img alt="Spring" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/spring/spring-original-wordmark.svg" width="50" height="50" /> <img alt="PostgreSQL" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original-wordmark.svg" width="50" height="50"/> <img alt="Docker" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-plain-wordmark.svg" width="50" height="50" /> <img alt="Angular" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/angular/angular-original.svg" width="50" height="50" />
+<img alt="Java" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original-wordmark.svg" height="50"/> <img alt="Spring" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/spring/spring-original-wordmark.svg" height="50" /> <img alt="PostgreSQL" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original-wordmark.svg" height="50" /> <img alt="Docker" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-plain-wordmark.svg" height="50" /> <img alt="Angular" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/angular/angular-original.svg" height="50" /> <img alt="Google Cloud" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/googlecloud/googlecloud-original.svg" height="50" /> <img alt="Cloudflare" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/cloudflare/cloudflare-original.svg" height="50" />
 
 I really wanted to try building something with Angular, after a lot of tutorials and documentations on the internet,
 I managed to build the front-end for the Spring API, and I am very proud of it.
@@ -89,13 +88,20 @@ logged-in user and the ability to logout, <br> and a feature to send messages di
 
 ## Deploy
 
+The Angular app is running on GitHub Pages and the Spring Boot API is running on a Google Cloud Virtual Machine, 
+with DNS and HTTPS from Cloudflare.
+
+The links to access are:
+- Angular application https://adopet.marujo.site
+- Spring Boot API https://api.marujo.site
+
 To run locally you need to have Docker installed.
 
 - Open the terminal and clone the project using the command
   ```git clone https://github.com/WesleyMime/Adopet.git```
 
-- Enter the "adopet" folder and use the command "docker compose up".
+- Enter the "adopet" folder and use the command ```docker compose up```
 
-If everything is working, the links to access are:
-- Angular application http://localhost/
-- Spring API http://localhost:8080/
+The links to access are:
+- Angular application http://localhost
+- Spring Boot API http://localhost:8080
