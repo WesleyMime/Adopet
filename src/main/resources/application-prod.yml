@@ -13,4 +13,4 @@ spring:
       enabled: ALWAYS
 adopet:
   jwt:
-    secret: xJ6wAVei24KQClHqOn1RoFnyLOYFa4rtA30cobUWYGe99J4I0M3oxU3bh/kU9pMmvzaNUPq5EbZ6rdElHdhBfg==
+    secret: +XhULg9H+Ht8dN6rd/ubsgLtSUMMMCYV+/+X1mGXtKlLYDVCbkiGpISi8/OQBgtFUB7GZCOUC8D6mMmeGukdhQ==
