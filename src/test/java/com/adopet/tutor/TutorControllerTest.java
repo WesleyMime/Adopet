@@ -62,6 +62,14 @@ class TutorControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ABRIGO")
+    void getAllTutors_AsAbrigo_Return403() throws Exception {
+        mvc.perform(get(URL))
+                .andExpect(status().isForbidden())
+                .andDo(print());
+    }
+
+    @Test
     @WithMockUser(roles = "TUTOR")
     void getAllTutorsWrongPage_Empty_Return404() throws Exception {
         mvc.perform(get(URL).param("page", "1"))
@@ -227,6 +235,19 @@ class TutorControllerTest {
                         jsonPath("$.id", is(tutor.getId().toString())),
                         jsonPath("$.name", is("testPutName")),
                         jsonPath("$.email", is("testPut@email.com")))
+                .andDo(print());
+    }
+
+    @Test
+    @WithMockUser(roles = "ABRIGO")
+    void updateTutor_AsAbrigo_Return403() throws Exception {
+        TutorForm form = new TutorForm("testPutName", "testPut@email.com", "testPutPass");
+
+        mvc.perform(put(URL + "/" + tutor.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(form.toString()))
+                .andExpectAll(
+                        status().isForbidden())
                 .andDo(print());
     }
 

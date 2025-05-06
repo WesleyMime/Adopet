@@ -236,6 +236,19 @@ class AbrigoControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "TUTOR")
+    void updateAbrigo_AsTutor_Return403() throws Exception {
+        AbrigoForm form = new AbrigoForm("testPutName","testPut@email.com", "testPass", "0123456789", "TestLand");
+
+        mvc.perform(put(URL + "/" + abrigo.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(form.toString()))
+                .andExpectAll(
+                        status().isForbidden())
+                .andDo(print());
+    }
+
+    @Test
     @WithMockUser(roles = "ABRIGO")
     void updateAbrigo_WrongId_Return404() throws Exception {
         AbrigoForm form = new AbrigoForm("testPutName", "testPut@email.com", "testPass", "0123456789", "TestLand");

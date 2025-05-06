@@ -9,8 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authorization.AuthorizationDeniedException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -31,8 +31,8 @@ public class GlobalControllerExceptionHandler {
         return ResponseEntity.status(problemDetail.getStatus()).body(problemDetail);
     }
 
-    @ExceptionHandler(BadCredentialsException.class)
-    public ResponseEntity<ProblemDetail> badCredentialsExceptionHandler(BadCredentialsException e) {
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<ProblemDetail> authenticationExceptionHandler(AuthenticationException e) {
         ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.FORBIDDEN);
         problemDetail.setDetail("Invalid e-mail and password.");
         return ResponseEntity.status(problemDetail.getStatus()).body(problemDetail);

@@ -37,40 +37,41 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain config(HttpSecurity http) throws Exception {
         http
-                .cors((cors) -> cors.configurationSource(apiConfigurationSource()))
-                .authorizeHttpRequests((requests) -> {
-                    requests.requestMatchers(
-                            HttpMethod.POST, "/auth/*", "/abrigos", "/tutores")
-                            .permitAll();
-                    requests.requestMatchers(
-                            "/pets/adopt")
-                            .permitAll();
-                    requests.requestMatchers(
-                            "/adocao", "/pets", "/pets/*")
-                            .hasRole("ABRIGO");
-                    requests.requestMatchers(
-                                    HttpMethod.GET, "/abrigos/*")
-                            .hasAnyRole("TUTOR", "ABRIGO");
-                    requests.requestMatchers(
-                                    "/abrigos/*")
-                            .hasRole("ABRIGO");
-                    requests.requestMatchers(
-                        "/tutores", "/tutores/*")
-                            .hasRole("TUTOR");
-                    requests.anyRequest()
-                            .authenticated();
-                })
-                .csrf(AbstractHttpConfigurer::disable)
-                .sessionManagement((configure) ->
-                        configure.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(new TokenAuthenticationFilter(tokenService, repository),
-                        UsernamePasswordAuthenticationFilter.class);
+            .cors((cors) ->
+                cors.configurationSource(apiConfigurationSource()))
+            .authorizeHttpRequests((requests) -> {
+                requests.requestMatchers(
+                                HttpMethod.POST, "/auth/*", "/abrigos", "/tutores")
+                        .permitAll();
+                requests.requestMatchers(
+                                "/pets/adopt")
+                        .permitAll();
+                requests.requestMatchers(
+                                "/adocao", "/pets", "/pets/*")
+                        .hasRole("ABRIGO");
+                requests.requestMatchers(
+                                HttpMethod.GET, "/abrigos/*")
+                        .hasAnyRole("TUTOR", "ABRIGO");
+                requests.requestMatchers(
+                                "/abrigos/*")
+                        .hasRole("ABRIGO");
+                requests.requestMatchers(
+                                "/tutores", "/tutores/*")
+                        .hasRole("TUTOR");
+                requests.anyRequest()
+                        .authenticated();
+        })
+            .csrf(AbstractHttpConfigurer::disable)
+            .sessionManagement((configure) ->
+                configure.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .addFilterBefore(new TokenAuthenticationFilter(tokenService, repository),
+                UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
     UrlBasedCorsConfigurationSource apiConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOriginPatterns(List.of("https://adopet.marujo.site", "http://localhost:[4200,80]", "http://localhost"));
+        configuration.setAllowedOriginPatterns(List.of("https://adopet.marujo.site, http://localhost:[4200,80]"));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setExposedHeaders(List.of("Authorization"));
