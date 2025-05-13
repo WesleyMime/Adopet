@@ -6,6 +6,7 @@
 [![project_license][license-shield]][license-url]
 [![last-commit][commit-shield]][commit-url]
 ![workflow][workflow-shield]
+![deploy-status]
 </div>
 
 ![frontend-gif]
@@ -177,6 +178,7 @@ Distributed under the MIT license. See `LICENSE.txt` for more information.
 [license-url]: https://github.com/wesleymime/adopet/blob/master/LICENSE.txt
 [workflow-shield]: https://img.shields.io/github/actions/workflow/status/wesleymime/adopet/.github/workflows/main.yml?style=for-the-badge
 [workflow-url]: https://img.shields.io/github/actions/workflow/status/wesleymime/adopet/.github/workflows/main.yml
+[deploy-status]: http://167.234.233.130:3001/api/badge/1/status?upColor=lightdarkgreen&style=for-the-badge
 
 [java]: https://img.shields.io/badge/Java-000000?logo=openjdk&logoColor=white&style=for-the-badge
 [spring]: https://img.shields.io/badge/Spring%20Boot-6DB33F?logo=springboot&logoColor=fff&style=for-the-badge
