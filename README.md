@@ -6,8 +6,9 @@
 [![project_license][license-shield]][license-url]
 [![last-commit][commit-shield]][commit-url]
 ![workflow][workflow-shield]
-
 </div>
+
+![frontend-gif]
 
 ## Description
 
@@ -128,6 +129,8 @@ The links to access are:
 - Angular application https://adopet.marujo.site
 - Spring Boot API https://api.marujo.site
 
+![backend-gif]
+
 ## Run locally
 
 
@@ -162,6 +165,8 @@ The links to access are:
 
 Distributed under the MIT license. See `LICENSE.txt` for more information.
 
+[frontend-gif]: /adopetApp/src/assets/frontend.gif
+[backend-gif]: /adopetApp/src/assets/backend.gif
 [en-shield]: https://img.shields.io/badge/lang-en-green.svg?style=for-the-badge
 [en-url]: https://github.com/WesleyMime/adopet/blob/main/README.md
 [pt-br-shield]: https://img.shields.io/badge/lang-pt--br-lightdarkgreen.svg?style=for-the-badge
