@@ -83,7 +83,7 @@ inconvenient for the users when trying to get a entity by the id.
 
 ---
 
-**GlobalControllerExceptionHandler.java** controls treats all the exceptions that can (and shouldn't) happen;  
+**GlobalControllerExceptionHandler.java** treats all the exceptions that can (or shouldn't) happen;  
 **MapStructMapper.java** builds mappers automatically just based on method signatures, saving a lot of time;  
 **EncodeDecorator.java** makes sure that all the entities with passwords, have them encoded before being saved;  
 **SecurityConfig.java** takes care of the security of the API, with CORS configuration for only the Front-End to be able to connect,
