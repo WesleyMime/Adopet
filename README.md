@@ -47,7 +47,7 @@ For better management of activities, trello was used.
 
 ## Technologies
 
-![java]![spring]![postgresql]![docker]![angular]![google]![cloudflare]
+![java] ![spring] ![postgresql] ![docker] ![angular] ![google] ![cloudflare]
 
 ### Thought Behind the Technologies Chosen
 
@@ -182,7 +182,7 @@ Distributed under the MIT license. See `LICENSE.txt` for more information.
 
 [java]: https://img.shields.io/badge/Java-000000?logo=openjdk&logoColor=white&style=for-the-badge
 [spring]: https://img.shields.io/badge/Spring%20Boot-6DB33F?logo=springboot&logoColor=fff&style=for-the-badge
-[postgresql]: https://img.shields.io/badge/MongoDB-47A248.svg?logo=mongodb&logoColor=white&style=for-the-badge
+[postgresql]: https://img.shields.io/badge/postgresql-4169E1?style=for-the-badge&logo=postgresql&logoColor=white
 [docker]: https://img.shields.io/badge/docker-2496ED?logo=docker&logoColor=white&style=for-the-badge
 [angular]: https://img.shields.io/badge/Angular-%23DD0031.svg?logo=angular&logoColor=white&style=for-the-badge
 [google]: https://img.shields.io/badge/Google%20Cloud-%234285F4.svg?logo=google-cloud&logoColor=white&style=for-the-badge
